@@ -61,6 +61,8 @@ Authentication (user)
 - [ ] Check to see if the name has already been used
 
 Database
+- [ ] Set up database (with how data is stored)
+- [ ] Store pickems
 
 Pickem (admin)
 - [ ] Create a teams
