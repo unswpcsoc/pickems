@@ -15,22 +15,8 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const [error, setError] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  // const handleSignup = () => {
-
-  //   createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // send verification mail.
-  //       userCredential.user.sendEmailVerification();
-  //       auth.signOut();
-  //       alert("Email sent");
-  //   })
-  //     .catch((error) => {
-  //       setError(error.message);
-  //     });
-  // };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,8 +31,14 @@ const Signup = () => {
       await registerUser(name, email, password)
       navigate("/user");
     } catch (error:any) {
-      if (error.code === 'auth/email-already-in-use') {
-        alert('Email already exists!')
+      if (error) {
+        if (error.code === "auth/weak-password") {
+          setError("Password must be at least 6 characters.");
+        } else if (error.code === "auth/email-already-in-use") {
+          setError("Email is already in use.");
+        } else {
+          setError(error.message || "An error occurred during signup.");
+        }
       }
     }
   }
@@ -80,7 +72,7 @@ const Signup = () => {
         />
         <button type="submit">Sign Up</button>
       </form>
-      {/* {error && <p>{error}</p>} */}
+      {error && <p>{error}</p>}
     </div>
   );
 };

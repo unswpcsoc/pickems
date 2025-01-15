@@ -53,20 +53,21 @@ export default tseslint.config({
 # pickems
 
 ## Todos
-- [] Authentication (user)
+Authentication (user)
 - [X] Email register/login
 - [X] Email password reset
 - [X] Email account verification (verify account)
-- [] Email restrict accounts to "edu.au" accounts.
+- [ ] Email restrict accounts to "edu.au" accounts.
+- [ ] Check to see if the name has already been used
 
-- [] Database
+Database
 
-- [] Pickem (admin)
-- [] Create a teams
-- [] Create a match
-- [] Pick a winner
+Pickem (admin)
+- [ ] Create a teams
+- [ ] Create a match
+- [ ] Pick a winner
 
-- [] Pickem (user)
-- [] Choose a team for a pickem
-- [] Rechoose pickems
-- [] See current score
+Pickem (user)
+- [ ] Choose a team for a pickem
+- [ ] Rechoose pickems
+- [ ] See current score

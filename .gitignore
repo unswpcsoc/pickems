@@ -25,6 +25,7 @@ dist-ssr
 
 # ENVIRONMENT VARIABLES AND API KEYS!!!!
 *.env
+.env
 
 # firebase
 .firebase/

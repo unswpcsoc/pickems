@@ -27,7 +27,7 @@ export const registerUser = async (
         photoURL: "https://google.com"
       })
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
