@@ -8,7 +8,7 @@ type UserPanelProps = {
 
 const User = ({ teams, matches }: UserPanelProps) => {
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
-
+  console.log(teams)
   const handlePick = (matchIdx: number, team: string) => {
     setUserPicks({
       ...userPicks,
@@ -29,13 +29,13 @@ const User = ({ teams, matches }: UserPanelProps) => {
             <div>
               <button
                 onClick={() => handlePick(idx, match.team1)}
-                disabled={userPicks[idx]}
+                disabled={!!userPicks[idx]}
               >
                 Pick {match.team1}
               </button>
               <button
                 onClick={() => handlePick(idx, match.team2)}
-                disabled={userPicks[idx]}
+                disabled={!!userPicks[idx]}
               >
                 Pick {match.team2}
               </button>

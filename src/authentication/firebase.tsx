@@ -1,4 +1,4 @@
-import { getAuth, connectAuthEmulator, createUserWithEmailAndPassword, sendEmailVerification, updateProfile, applyActionCode, sendPasswordResetEmail, confirmPasswordReset} from "firebase/auth";
+import { getAuth, /*connectAuthEmulator,*/ createUserWithEmailAndPassword, sendEmailVerification, updateProfile, applyActionCode, sendPasswordResetEmail, confirmPasswordReset} from "firebase/auth";
 
 const auth = getAuth();
 

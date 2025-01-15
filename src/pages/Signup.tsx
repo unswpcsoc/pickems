@@ -1,21 +1,21 @@
 import { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword,  } from "firebase/auth";
+// import { getAuth, createUserWithEmailAndPassword,  } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from '../authentication/firebase'
 
-const auth = getAuth();
+// const auth = getAuth();
 
-const defaultFormFields = {
-  email: "",
-  password: ","
-}
+// const defaultFormFields = {
+//   email: "",
+//   password: ","
+// }
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const navigate = useNavigate();
 
   // const handleSignup = () => {
@@ -80,7 +80,7 @@ const Signup = () => {
         />
         <button type="submit">Sign Up</button>
       </form>
-      {error && <p>{error}</p>}
+      {/* {error && <p>{error}</p>} */}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 // src/App.tsx
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate  } from 'react-router-dom'
-import { getAnalytics } from "firebase/analytics";
+import { /*BrowserRouter as Router,*/ Routes, Route, /*Link,*/ useNavigate  } from 'react-router-dom'
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from './firebase';
 
@@ -15,7 +14,6 @@ type Match = {
   userPick: string | null;
 };
 
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 
 function App() {
