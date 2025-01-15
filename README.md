@@ -2,6 +2,8 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+(NOTE: all specific todos are at the bottom of the readme)
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
@@ -49,3 +51,22 @@ export default tseslint.config({
 })
 ```
 # pickems
+
+## Todos
+- [] Authentication (user)
+- [X] Email register/login
+- [X] Email password reset
+- [X] Email account verification (verify account)
+- [] Email restrict accounts to "edu.au" accounts.
+
+- [] Database
+
+- [] Pickem (admin)
+- [] Create a teams
+- [] Create a match
+- [] Pick a winner
+
+- [] Pickem (user)
+- [] Choose a team for a pickem
+- [] Rechoose pickems
+- [] See current score
