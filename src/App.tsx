@@ -1,8 +1,9 @@
 // src/App.tsx
 import { useState, useEffect } from 'react';
 import { /*BrowserRouter as Router,*/ Routes, Route, /*Link,*/ useNavigate  } from 'react-router-dom'
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from './firebase';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { Firestore, getFirestore } from "firebase/firestore";
 
 import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot } from './pages';
 import { Navbar } from './components';
@@ -16,9 +17,10 @@ type Match = {
 
 const auth = getAuth(app);
 
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
 function App() {
-  const [teams, setTeams] = useState<string[]>([]);
-  const [matches, setMatches] = useState<Match[]>([]);
   const [user, setUser] = useState<any>(null);  // Store authenticated user
   const [loading, setLoading] = useState<boolean>(true);  // Loading state (since stuff is running async)
   const navigate = useNavigate();
@@ -62,17 +64,17 @@ function App() {
         <Routes>
           <Route path = "/" element={<Home />} />
 
-          {/* Protected routes */}
+          {/* Protected routes: Only accessible after logged in and verified */}
           <Route
             path = "/admin"
-            element = {(user && user.emailVerified) ? <Admin teams={teams} setTeams={setTeams} matches={matches} setMatches={setMatches} /> : <Signup />}
+            element = {(user && user.emailVerified) ? <Admin db = {db} /> : <Signup />}
           />
-          <Route
+          {/* <Route
             path = "/user"
-            element = {(user && user.emailVerified) ? <User teams={teams} matches={matches} /> : <Login />}
-          />
+            element = {(user && user.emailVerified) ? <User db = {db} /> : <Login />}
+          /> */}
 
-          {/* Auth/login Routes */}
+          {/* Auth/login Routes: only available if the user is not logged in */}
           {!user && (
             <>
               <Route path = "/signup" element = {<Signup />} />
@@ -92,19 +94,6 @@ function App() {
       )}
     </div>
     // Later on add Guest Route and Auth Route !!
-
-
-
-
-    // <div className="App">
-    //   <h1>Pick'em System</h1>
-
-    //   {/* Admin Panel */}
-    //   <AdminPanel teams={teams} setTeams={setTeams} matches={matches} setMatches={setMatches} />
-      
-    //   {/* User Panel */}
-    //   <UserPanel teams={teams} matches={matches} />
-    // </div>
   );
 }
 

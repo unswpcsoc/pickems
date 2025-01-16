@@ -61,15 +61,17 @@ Authentication (user)
 - [ ] Check to see if the name has already been used
 
 Database
-- [ ] Set up database (with how data is stored)
+- [X] Set up database (with how data is stored)
+- [ ] Configure read/write perms
 - [ ] Store pickems
 
 Pickem (admin)
-- [ ] Create a teams
-- [ ] Create a match
+- [X] Create a teams
+- [ ] Store a team's image
+- [X] Create a match
 - [ ] Pick a winner
 
 Pickem (user)
-- [ ] Choose a team for a pickem
+- [ ] Choose a team for each pickem
 - [ ] Rechoose pickems
 - [ ] See current score

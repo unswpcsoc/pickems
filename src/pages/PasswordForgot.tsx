@@ -1,6 +1,6 @@
 
 import { FormEvent, useState } from "react";
-import { passwordReset } from "../authentication/firebase";
+import { passwordReset } from "../firebase/authentication";
 
 function PasswordForgot() {
   const [email, setEmail] = useState('')
