@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 
 import { getAuth } from "firebase/auth";
-import { collection, query, where, addDoc, getDocs, Firestore, Timestamp } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
+import { collection, query, getDocs, Firestore, Timestamp } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
+import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
 
 const auth = getAuth();
 
@@ -22,6 +23,10 @@ const Admin = ({ db }: UserPanelProps) => {
   const [teamOptions, setTeamOptions] = useState<{ name: string, id: string }[]>([]);
   const [matches, setMatches] = useState<{ matchId: number, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp }[]>([]); // Matches state
 
+  // Flags to trigger re-fetching
+  const [teamAdded, setTeamAdded] = useState(false);
+  const [matchAdded, setMatchAdded] = useState(false);
+
   // Fetch the teams from Firestore on initial load
   useEffect(() => {
     const fetchTeams = async () => {
@@ -36,13 +41,15 @@ const Admin = ({ db }: UserPanelProps) => {
         });
 
         setTeamOptions(teamsList);
+        setTeamAdded(false);
       } catch (error) {
         console.error("Error fetching teams: ", error);
       }
     };
     fetchTeams();
-  }, [db]);
+  }, [db, teamAdded]);
 
+  // Fetch the matches/pickems from Firestore on initial load
   useEffect(() => {
     const fetchMatches = async () => {
       try {
@@ -63,12 +70,13 @@ const Admin = ({ db }: UserPanelProps) => {
         });
 
         setMatches(matchList);
+        setMatchAdded(false);
       } catch (error) {
         console.error("Error fetching matches: ", error);
       }
     };
     fetchMatches();
-  }, [db]);
+  }, [db, matchAdded]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -79,57 +87,16 @@ const Admin = ({ db }: UserPanelProps) => {
   };
 
   const addTeam = async () => {
-    // Todo: add image system (add and store)
-    if (!teamName) {
-      return; // Ensure there's a team name to add
-    }
-
-    const q = query(collection(db, "teams"), where("name", "==", teamName)); // Query the teams collection for the name
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      console.log('Team name already exists');
-      return; // Do not add the team if it already exists
-    }
-
-    try {
-      await addDoc(collection(db, "teams"), {
-        name: teamName,
-        teamID: Date.now(), // Change to a system that is efficient (may not be worth reading through the db)
-      });
-    
+    const success = await addTeamToDatabase(db, teamName);
+    if (success) {
       setTeamName('');
-      console.log('Team added successfully');
-    } catch (error) {
-      console.error('Error adding team: ', error);
+      setTeamAdded(true);
     }
   };
 
   const addMatch = async () => {
-    const { matchTeam1, matchTeam2, category, points, closeTime } = formData;
-
-    if (!matchTeam1 || !matchTeam2 || !category || !points || !closeTime) {
-      console.log('Please fill out all fields');
-      return;  // Ensure all fields are filled
-    }
-
-    try {
-      const team1Id = matchTeam1;
-      const team2Id = matchTeam2;
-      const closeTimestamp = Timestamp.fromDate(new Date(closeTime));
-      const matchId = Math.random()*1000000;
-
-      // Add match data to Firestore
-      await addDoc(collection(db, "matches"), {
-        closeTime: closeTimestamp,
-        matchId: matchId,
-        open: true,  // Match is open initially for pickems (might be a bug if admin makes closeTime in the past)
-        points: points,
-        team1Id: team1Id,
-        team2Id: team2Id,
-        category: category,
-      });
-
+    const success = await addMatchToDatabase(db, formData);
+    if (success) {
       setFormData({
         matchTeam1: '',
         matchTeam2: '',
@@ -137,9 +104,7 @@ const Admin = ({ db }: UserPanelProps) => {
         points: '',
         closeTime: '',
       });
-      console.log("Match added to Firestore successfully!");
-    } catch (error) {
-      console.log("Error adding match/pickem:", error);
+      setMatchAdded(true);
     }
   };
 
