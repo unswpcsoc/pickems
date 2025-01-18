@@ -63,15 +63,16 @@ Authentication (user)
 Database
 - [X] Set up database (with how data is stored)
 - [ ] Configure read/write perms
-- [ ] Store pickems
+- [X] Store pickems
 
 Pickem (admin)
 - [X] Create a teams
 - [ ] Store a team's image
 - [X] Create a match
-- [ ] Pick a winner
+- [X] Pick a winner
+- [ ] Option to update leaderboard
 
 Pickem (user)
-- [ ] Choose a team for each pickem
-- [ ] Rechoose pickems
-- [ ] See current score
+- [X] Choose a team for each pickem
+- [X] Rechoose pickems
+- [X] See current score

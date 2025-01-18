@@ -23,13 +23,13 @@ const Signup = () => {
 
     try {
       if (password !== confirmPassword) {
-        alert("Passwords did not match.")
+        setError("Passwords did not match."); 
         return;
       }
 
       // The user will be login upon successful registration.
-      await registerUser(name, email, password)
-      navigate("/user");
+      await registerUser(name, email, password);
+      navigate("/");
     } catch (error:any) {
       if (error) {
         if (error.code === "auth/weak-password") {

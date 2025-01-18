@@ -5,7 +5,7 @@ import { app } from './firebase';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { Firestore, getFirestore } from "firebase/firestore";
 
-import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot } from './pages';
+import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem } from './pages';
 import { Navbar } from './components';
 
 // Define types for teams and matches
@@ -39,17 +39,6 @@ function App() {
     return () => unsubscribe(); // Cleanup listener on component unmount
   }, []);
 
-  // Handle Sign Out
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        navigate('/'); // Redirect to home page after sign out
-      })
-      .catch((error) => {
-        console.error("Error signing out:", error);
-      });
-  };
-
   if (loading) {
     return <div>Loading...</div>;  // Display loading indicator while checking auth state (will go to the main return after async runs)
   }
@@ -65,14 +54,20 @@ function App() {
           <Route path = "/" element={<Home />} />
 
           {/* Protected routes: Only accessible after logged in and verified */}
+          {/* ADMIN ROUTE SHOULD ONLY BE ACCESSED BY MOD/ADMIN CORRECT LATER */}
           <Route
             path = "/admin"
-            element = {(user && user.emailVerified) ? <Admin db = {db} /> : <Signup />}
+            element = {(user && user.emailVerified) ? <Admin db = {db} /> : <Login />}
           />
-          {/* <Route
+
+          <Route
             path = "/user"
-            element = {(user && user.emailVerified) ? <User db = {db} /> : <Login />}
-          /> */}
+            element = {user ? <User db = {db} /> : <Login />}
+          />
+          <Route
+            path = "/pickems"
+            element = {(user && user.emailVerified) ? <Pickem db = {db} /> : <Login />}
+          />
 
           {/* Auth/login Routes: only available if the user is not logged in */}
           {!user && (
@@ -85,15 +80,8 @@ function App() {
           )}
         </Routes>
       </main>
-
-      {/* Sign Out Button: move elsewhere later */}
-      {user && (
-        <footer>
-          <button onClick = {handleSignOut}>Sign Out</button>
-        </footer>
-      )}
     </div>
-    // Later on add Guest Route and Auth Route !!
+    
   );
 }
 

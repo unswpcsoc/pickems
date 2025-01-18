@@ -1,5 +1,6 @@
 // src/database.ts
-import { collection, query, where, addDoc, getDocs, Firestore, Timestamp } from "firebase/firestore";
+import { v4 as uuidv4} from 'uuid';
+import { collection, doc, getDoc, setDoc, updateDoc, Firestore, Timestamp } from "firebase/firestore";
 
 // Function to add a team to the Firestore database
 export const addTeamToDatabase = async (db: Firestore, teamName: string) => {
@@ -8,19 +9,19 @@ export const addTeamToDatabase = async (db: Firestore, teamName: string) => {
     return false;
   }
 
-  const q = query(collection(db, "teams"), where("name", "==", teamName));
-  const querySnapshot = await getDocs(q);
-
-  if (!querySnapshot.empty) {
-    console.log('Team name already exists');
-    return false;
-  }
-
   try {
-    await addDoc(collection(db, "teams"), {
-      name: teamName,
-      teamID: Date.now(),
-    });
+    const teamsDocRef = doc(db, "teams", "teamData"); // Document holding all teams
+    const teamsDocSnap = await getDoc(teamsDocRef);
+
+    let teamsData = {};
+    if (teamsDocSnap.exists()) {
+      teamsData = teamsDocSnap.data();
+    }
+
+    const teamId = uuidv4();
+    teamsData[teamId] = { name: teamName };
+
+    await setDoc(teamsDocRef, teamsData);  // Update the entire document with the new map
     console.log('Team added successfully');
     return true;
   } catch (error) {
@@ -28,6 +29,25 @@ export const addTeamToDatabase = async (db: Firestore, teamName: string) => {
     return false;
   }
 };
+
+// export const fetchTeamFromDatabase = async (db: Firestore) => {
+//   try {
+//         const teamsDocRef = doc(db, "teams", "teamData"); // Assuming "teamData" document stores all teams
+//         const teamsDocSnap = await getDoc(teamsDocRef);
+
+//         if (teamsDocSnap.exists()) {
+//           const teamsData = teamsDocSnap.data();
+//           const teamsList = Object.keys(teamsData).map(id => ({
+//             name: teamsData[id].name,
+//             id,
+//           }));
+//           setTeamOptions(teamsList);
+//         }
+//         setTeamAdded(false);
+//       } catch (error) {
+//         console.error("Error fetching teams: ", error);
+//       }
+// }
 
 // Function to add a match to the Firestore database
 export const addMatchToDatabase = async (
@@ -38,7 +58,7 @@ export const addMatchToDatabase = async (
     category: string;
     points: string;
     closeTime: string;
-  } // make an interface.tsx file :skull:
+  }
 ) => {
   const { matchTeam1, matchTeam2, category, points, closeTime } = formData;
 
@@ -48,21 +68,29 @@ export const addMatchToDatabase = async (
   }
 
   try {
-    const team1Id = matchTeam1;
-    const team2Id = matchTeam2;
+    const matchesDocRef = doc(db, "matches", "matchData"); // Document holding all matches
+    const matchesDocSnap = await getDoc(matchesDocRef);
+
+    let matchesData = {};
+    if (matchesDocSnap.exists()) {
+      matchesData = matchesDocSnap.data();
+    }
+
+    const matchId = uuidv4();
     const closeTimestamp = Timestamp.fromDate(new Date(closeTime));
-    const matchId = Math.random() * 1000000;
 
-    await addDoc(collection(db, "matches"), {
-      closeTime: closeTimestamp,
+    matchesData[matchId] = {
       matchId: matchId,
-      open: true,
-      points: points,
-      team1Id: team1Id,
-      team2Id: team2Id,
+      team1Id: matchTeam1,
+      team2Id: matchTeam2,
       category: category,
-    });
+      points: points,
+      closeTime: closeTimestamp,
+      open: true, // Boolean which lets user figure out if the match is still open for pickems.
+      winner: -1, // Either 1 or 2 (based on team 1/2)
+    };
 
+    await setDoc(matchesDocRef, matchesData);  // Update the entire document with the new match
     console.log('Match added to Firestore successfully!');
     return true;
   } catch (error) {

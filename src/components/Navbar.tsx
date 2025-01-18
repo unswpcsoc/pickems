@@ -16,14 +16,25 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
       </div>
       <div className="navbar-center">
         <ul className="nav-links">
-          { (user && user.emailVerified) ?(
+          {user ? (
             <>
-            <li>
-              <a href="/admin">Admin</a>
-            </li>
-            <li>
-              <a href="/user">User</a>
-            </li>
+              {user.emailVerified ? (
+                <>
+                  <li>
+                  <a href="/pickems">Pickems</a>
+                  </li>
+                  <li>
+                  <a href="/admin">Admin</a>
+                  </li>
+                  <li>
+                    <a href="/user">User</a>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <a href="/user">User</a>
+                </li>
+              )}
             </>
           ) : (
             <>
@@ -34,9 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
               <a href="/login">Login</a>
             </li>
             </>
-          )
-          }
-          
+          )}
         </ul>
       </div>
     </nav>
