@@ -1,56 +1,21 @@
-# React + TypeScript + Vite
+# Pickems
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the active branch for the project. Refer to the todos at the bottom for current progress.
 
-(NOTE: all specific todos are at the bottom of the readme)
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# How to run it
+1) To run it on your own machine make a .env file in the root directory with the following
+``` js
+  VITE_FIREBASE_APIKEY = "AIzaSyClSxwusMFv2axyVT2POPEEr174mPcUqJQ"
+  VITE_FIREBASE_AUTH_DOMAIN = "pickems-2c806.firebaseapp.com"
+  VITE_FIREBASE_PROJECT_ID = "pickems-2c806"
+  VITE_FIREBASE_STORAGE_BUCKET = "pickems-2c806.firebasestorage.app"
+  VITE_FIREBASE_MESSAGE_SENDER_ID = "305137214855" 
+  VITE_FIREBASE_APP_ID = "1:305137214855:web:e38d6870cd94c917f51f22"
+  VITE_FIREBASE_MEASUREMENT_ID = "G-8DKC5RNVJ9"
 ```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-# pickems
+2) Make sure that you have firebase set up with a firestore database with rules allowing reads and writes.
+3) Use (npm install) to download all necessary modules/libraries.
 
 ## Todos
 Authentication (user)
@@ -70,6 +35,7 @@ Pickem (admin)
 - [ ] Store a team's image
 - [X] Create a match
 - [X] Pick a winner
+- [X] Update all user scores after a winner is chosen
 - [ ] Option to update leaderboard
 
 Pickem (user)
