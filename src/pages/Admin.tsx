@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { TypesOfMatches } from "../defines";
 
 import { getAuth } from "firebase/auth";
-import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
+import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
 
 const auth = getAuth();
@@ -13,6 +13,7 @@ type UserPanelProps = {
 };
 
 const Admin = ({ db }: UserPanelProps) => {
+  // States for forms/input when making teams and matches
   const [teamName, setTeamName] = useState<string>('');
   const [formData, setFormData] = useState({
     matchTeam1: '',
@@ -21,67 +22,56 @@ const Admin = ({ db }: UserPanelProps) => {
     points: '',
     closeTime: ''
   });
+
+  // States for team and match display
   const [teamOptions, setTeamOptions] = useState<{ name: string, id: string }[]>([]);
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
 
-  // Flags to trigger re-fetching
-  const [teamAdded, setTeamAdded] = useState(false);
-  const [matchAdded, setMatchAdded] = useState(false);
-
-  // Fetch the teams from Firestore on initial load
+  // Using snapshot to update both teams and matches on server update
   useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const teamsDocRef = doc(db, "teams", "teamData"); // Assuming "teamData" document stores all teams
-        const teamsDocSnap = await getDoc(teamsDocRef);
-
-        if (teamsDocSnap.exists()) {
-          const teamsData = teamsDocSnap.data();
-          const teamsList = Object.keys(teamsData).map(id => ({
-            name: teamsData[id].name,
-            id,
-          }));
-          setTeamOptions(teamsList);
-        }
-        setTeamAdded(false);
-      } catch (error) {
-        console.error("Error fetching teams: ", error);
+    const fetchTeams = onSnapshot(doc(db, "teams", "teamData"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const teamsData = docSnapshot.data();
+        const teamsList = Object.keys(teamsData).map(id => ({
+          name: teamsData[id].name,
+          id,
+        }));
+        setTeamOptions(teamsList);
       }
-    };
-    
-    fetchTeams();
-  }, [db, teamAdded]);
+    }, (error) => {
+      console.error("Error fetching teams: ", error);
+    });
 
-  // Fetch the matches/pickems from Firestore on initial load
-  useEffect(() => {
-    const fetchMatches = async () => {
-      try {
-        const matchesDocRef = doc(db, "matches", "matchData"); // Assuming "matchData" document stores all matches
-        const matchesDocSnap = await getDoc(matchesDocRef);
+    // Set up the real-time listeners
+    const fetchMatches = onSnapshot(doc(db, 'matches', 'matchData'), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const matchesData = docSnapshot.data();
+        let matchList = Object.keys(matchesData).map((id) => ({
+          matchId: matchesData[id].matchId,
+          team1Id: matchesData[id].team1Id,
+          team2Id: matchesData[id].team2Id,
+          category: matchesData[id].category,
+          points: matchesData[id].points,
+          closeTime: matchesData[id].closeTime,
+          open: matchesData[id].open,
+          winner: matchesData[id].winner,
+        }));
 
-        if (matchesDocSnap.exists()) {
-          const matchesData = matchesDocSnap.data();
-          const matchList = Object.keys(matchesData).map(id => ({
-            matchId: matchesData[id].matchId,
-            team1Id: matchesData[id].team1Id,
-            team2Id: matchesData[id].team2Id,
-            category: matchesData[id].category,
-            points: matchesData[id].points,
-            closeTime: matchesData[id].closeTime,
-            open: matchesData[id].open,
-            winner: matchesData[id].winner,
-          }));
-          setMatches(matchList);
-        }
-        
-        setMatchAdded(false);
-      } catch (error) {
-        console.error("Error fetching matches: ", error);
+        matchList = matchList.sort((a, b) => 
+          a.closeTime.seconds - b.closeTime.seconds
+        );
+        setMatches(matchList);
       }
-    };
+    }, (error) => {
+      console.error("Error listening to matches: ", error);
+    });
 
-    fetchMatches();
-  }, [db, matchAdded]);
+    // Clean up the listener when the component unmounts
+    return () => {
+      fetchTeams();
+      fetchMatches(); 
+    };
+  }, [db]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -95,7 +85,6 @@ const Admin = ({ db }: UserPanelProps) => {
     const success = await addTeamToDatabase(db, teamName);
     if (success) {
       setTeamName('');
-      setTeamAdded(true);
     }
   };
 
@@ -109,7 +98,6 @@ const Admin = ({ db }: UserPanelProps) => {
         points: '',
         closeTime: '',
       });
-      setMatchAdded(true);
     }
   };
 
@@ -122,7 +110,6 @@ const Admin = ({ db }: UserPanelProps) => {
         const matchesData = matchesDocSnap.data();
         matchesData[matchId].open = false; // Close the pickem
         await setDoc(matchesDocRef, matchesData);
-        setMatchAdded(true); // Trigger a re-fetch
         console.log(`Pickem closed for match ${matchId}`);
       }
     } catch (error) {
@@ -137,21 +124,12 @@ const Admin = ({ db }: UserPanelProps) => {
   
       if (matchesDocSnap.exists()) {
         const matchesData = matchesDocSnap.data();
-        matchesData[matchId].winner = winner;
-        matchesData[matchId].open = false;
-        setMatches(Object.keys(matchesData).map(id => ({
-          matchId: matchesData[id].matchId,
-          team1Id: matchesData[id].team1Id,
-          team2Id: matchesData[id].team2Id,
-          category: matchesData[id].category,
-          points: matchesData[id].points,
-          closeTime: matchesData[id].closeTime,
-          open: matchesData[id].open,
-          winner: matchesData[id].winner,
-        })))
-  
+
         // Update match winner in Firestore
-        await setDoc(matchesDocRef, matchesData); 
+        await updateDoc(matchesDocRef, {
+          [`${matchId}.winner`]: winner,
+          [`${matchId}.open`]: false,
+        }); 
   
         // Fetch all user documents
         const usersCollectionRef = collection(db, "users");
@@ -169,7 +147,10 @@ const Admin = ({ db }: UserPanelProps) => {
             });
           }
         });
-  
+
+        // TODO:
+        // MAKE LEADERBOARD (UPDATE LEADERBOARD )
+
       } else {
         console.error("Match data not found.");
       }
