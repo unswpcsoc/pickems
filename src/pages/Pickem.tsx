@@ -21,7 +21,7 @@ const Pickem = ({ db }: UserPanelProps) => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
 
     // Set up the real-time listeners
-    const unsubscribeActiveMatches = onSnapshot(matchesDocRef, (docSnapshot) => {
+    const subscribeActiveMatches = onSnapshot(matchesDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const matchesData = docSnapshot.data();
         
@@ -34,12 +34,8 @@ const Pickem = ({ db }: UserPanelProps) => {
             closeTime: matchesData[id].closeTime,
             open: matchesData[id].open,
         }));
-        
-        // Apply filtering and sorting
-        let time = new Date().getTime() / 1000;
-        matchList = matchList.filter((match) => 
-          match.open && match.closeTime.seconds >= time
-        );
+
+        // Sort based on time
         matchList = matchList.sort((a, b) => 
           a.closeTime.seconds - b.closeTime.seconds
         );
@@ -51,7 +47,7 @@ const Pickem = ({ db }: UserPanelProps) => {
       console.error("Error listening to matches: ", error);
     });
 
-    const unsubscribeUserPicks = onSnapshot(doc(db, 'users', (auth.currentUser as User).uid), (docSnapshot) => {
+    const subscribeUserPicks = onSnapshot(doc(db, 'users', (auth.currentUser as User).uid), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const picks = docSnapshot.data().picks;
         setUserPicks(picks);
@@ -60,17 +56,16 @@ const Pickem = ({ db }: UserPanelProps) => {
 
     // Clean up the listener when the component unmounts
     return () => {
-      unsubscribeActiveMatches(); 
-      unsubscribeUserPicks();
+      subscribeActiveMatches(); 
+      subscribeUserPicks();
     };
   }, [db]);
 
   const handlePick = async (matchId: number, teamId: string) => {
-
     const match = activeMatches.find((m) => m.matchId === matchId);
 
-    if (!match) {
-      alert('Match has already started or closed.');
+    // Pick can only occur if a match exists and is open for pickems
+    if (!match || match.open == false) {
       return;
     } else {
       const updatedPicks = { ...userPicks, [matchId]: teamId };
