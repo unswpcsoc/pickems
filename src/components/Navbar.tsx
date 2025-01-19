@@ -1,8 +1,12 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
 import './Navbar.css'
 
-function Navbar () {
+interface NavbarProps {
+  user: any; 
+}
+
+const Navbar: React.FC<NavbarProps> = ({ user }) => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -12,12 +16,36 @@ function Navbar () {
       </div>
       <div className="navbar-center">
         <ul className="nav-links">
-          <li>
-            <a href="/admin">Admin</a>
-          </li>
-          <li>
-            <a href="/user">User</a>
-          </li>
+          {user ? (
+            <>
+              {user.emailVerified ? (
+                <>
+                  <li>
+                  <a href="/pickems">Pickems</a>
+                  </li>
+                  <li>
+                  <a href="/admin">Admin</a>
+                  </li>
+                  <li>
+                    <a href="/user">User</a>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <a href="/user">User</a>
+                </li>
+              )}
+            </>
+          ) : (
+            <>
+            <li>
+              <a href="/signup">Signup</a>
+            </li>
+            <li>
+              <a href="/login">Login</a>
+            </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>

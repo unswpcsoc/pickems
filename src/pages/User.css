@@ -1,0 +1,49 @@
+.match-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between team and details */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  position: relative;
+  overflow: hidden;
+}
+
+.teams {
+  display: flex;
+  flex: 1; /* Take up available space */
+  margin-right: 10px; /* Add some spacing before the details section */
+}
+
+.team {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.team.chosen {
+  flex: 3; /* Expand the chosen team */
+  background-color: #4caf50;
+  color: white;
+  /* transform: scale(1.1); */
+}
+
+.team.unchosen {
+  flex: 0.5; /* Shrink the unchosen team */
+  opacity: 0.6;
+  /* transform: scale(0.9); */
+}
+
+.details {
+  flex-shrink: 0; /* Prevent shrinking */
+  min-width: 150px; /* Ensure it has enough space */
+  text-align: right; /* Align text to the right */
+  font-size: 14px;
+  color: #555;
+}

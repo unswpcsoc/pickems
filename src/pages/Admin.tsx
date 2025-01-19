@@ -1,35 +1,161 @@
 // src/components/AdminPanel.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { TypesOfMatches } from "../defines";
 
-type AdminPanelProps = {
-  teams: string[];
-  setTeams: React.Dispatch<React.SetStateAction<string[]>>;
-  matches: { team1: string; team2: string; userPick: string | null }[];
-  setMatches: React.Dispatch<React.SetStateAction<{ team1: string; team2: string; userPick: string | null }[]>>;
+import { getAuth } from "firebase/auth";
+import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
+import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
+
+const auth = getAuth();
+
+type UserPanelProps = {
+  db: Firestore; 
 };
 
-const Admin = ({ teams, setTeams, matches, setMatches }: AdminPanelProps) => {
+const Admin = ({ db }: UserPanelProps) => {
+  // States for forms/input when making teams and matches
   const [teamName, setTeamName] = useState<string>('');
-  const [matchTeam1, setMatchTeam1] = useState<string>('');
-  const [matchTeam2, setMatchTeam2] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
-  const [points, setPoints] = useState<string>('');
-  const [closeTime, setCloseTime] = useState<string>('');
+  const [formData, setFormData] = useState({
+    matchTeam1: '',
+    matchTeam2: '',
+    category: '',
+    points: '',
+    closeTime: ''
+  });
 
-  const addTeam = () => {
-    // Prevent duplicate teams!
-    // Todo: add image system (add and store)
-    if (teamName && !teams.includes(teamName)) {
-      setTeams([...teams, teamName]);
+  // States for team and match display
+  const [teamOptions, setTeamOptions] = useState<{ name: string, id: string }[]>([]);
+  const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
+
+  // Using snapshot to update both teams and matches on server update
+  useEffect(() => {
+    const fetchTeams = onSnapshot(doc(db, "teams", "teamData"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const teamsData = docSnapshot.data();
+        const teamsList = Object.keys(teamsData).map(id => ({
+          name: teamsData[id].name,
+          id,
+        }));
+        setTeamOptions(teamsList);
+      }
+    }, (error) => {
+      console.error("Error fetching teams: ", error);
+    });
+
+    // Set up the real-time listeners
+    const fetchMatches = onSnapshot(doc(db, 'matches', 'matchData'), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const matchesData = docSnapshot.data();
+        let matchList = Object.keys(matchesData).map((id) => ({
+          matchId: matchesData[id].matchId,
+          team1Id: matchesData[id].team1Id,
+          team2Id: matchesData[id].team2Id,
+          category: matchesData[id].category,
+          points: matchesData[id].points,
+          closeTime: matchesData[id].closeTime,
+          open: matchesData[id].open,
+          winner: matchesData[id].winner,
+        }));
+
+        matchList = matchList.sort((a, b) => 
+          a.closeTime.seconds - b.closeTime.seconds
+        );
+        setMatches(matchList);
+      }
+    }, (error) => {
+      console.error("Error listening to matches: ", error);
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => {
+      fetchTeams();
+      fetchMatches(); 
+    };
+  }, [db]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const addTeam = async () => {
+    const success = await addTeamToDatabase(db, teamName);
+    if (success) {
       setTeamName('');
     }
   };
 
-  const addMatch = () => {
-    if (matchTeam1 && matchTeam2 && teams.includes(matchTeam1) && teams.includes(matchTeam2)) {
-      setMatches([...matches, { team1: matchTeam1, team2: matchTeam2, userPick: null }]);
-      setMatchTeam1('');
-      setMatchTeam2('');
+  const addMatch = async () => {
+    const success = await addMatchToDatabase(db, formData);
+    if (success) {
+      setFormData({
+        matchTeam1: '',
+        matchTeam2: '',
+        category: '',
+        points: '',
+        closeTime: '',
+      });
+    }
+  };
+
+  const closePickem = async (matchId: string) => {
+    try {
+      const matchesDocRef = doc(db, "matches", "matchData");
+      const matchesDocSnap = await getDoc(matchesDocRef);
+
+      if (matchesDocSnap.exists()) {
+        const matchesData = matchesDocSnap.data();
+        matchesData[matchId].open = false; // Close the pickem
+        await setDoc(matchesDocRef, matchesData);
+        console.log(`Pickem closed for match ${matchId}`);
+      }
+    } catch (error) {
+      console.error("Error closing pickem:", error);
+    }
+  };
+
+  const setWinner = async (matchId: string, winner: string) => {
+    try {
+      const matchesDocRef = doc(db, "matches", "matchData");
+      const matchesDocSnap = await getDoc(matchesDocRef);
+  
+      if (matchesDocSnap.exists()) {
+        const matchesData = matchesDocSnap.data();
+
+        // Update match winner in Firestore
+        await updateDoc(matchesDocRef, {
+          [`${matchId}.winner`]: winner,
+          [`${matchId}.open`]: false,
+        }); 
+  
+        // Fetch all user documents
+        const usersCollectionRef = collection(db, "users");
+        const userDocsSnap = await getDocs(usersCollectionRef);
+  
+        userDocsSnap.forEach(async (userDoc) => {
+          const userData = userDoc.data();
+          // Check if the user made a pick for this match
+          const userPick = userData.picks?.[matchId];
+          if (userPick === winner) {
+            const updatedScore = (userData.score || 0) + parseInt(matchesData[matchId].points, 10);
+            // Update the user's score in their document
+            await updateDoc(doc(db, "users", userDoc.id), {
+              score: updatedScore,
+            });
+          }
+        });
+
+        // TODO:
+        // MAKE LEADERBOARD (UPDATE LEADERBOARD )
+
+      } else {
+        console.error("Match data not found.");
+      }
+    } catch (error) {
+      console.error("Error setting winner:", error);
     }
   };
 
@@ -45,63 +171,89 @@ const Admin = ({ teams, setTeams, matches, setMatches }: AdminPanelProps) => {
           onChange={(e) => setTeamName(e.target.value)}
           placeholder="Team Name"
         />
-
         <button onClick={addTeam}>Add Team</button>
       </div>
 
-      
-
       <div>
         <h3>Create Match</h3>
-        <input
-          type="text"
-          value={matchTeam1}
-          onChange={(e) => setMatchTeam1(e.target.value)}
-          placeholder="Team 1"
-        />
-        <input
-          type="text"
-          value={matchTeam2}
-          onChange={(e) => setMatchTeam2(e.target.value)}
-          placeholder="Team 2"
-        />
+        <select
+          name="matchTeam1"
+          value={formData.matchTeam1}
+          onChange={handleChange}
+        >
+          <option value="">Select Team 1</option>
+          {teamOptions.map((team) => (
+            <option key={team.id} value={team.name}>{team.name}</option>
+          ))}
+        </select>
+        <select
+          name="matchTeam2"
+          value={formData.matchTeam2}
+          onChange={handleChange}
+        >
+          <option value="">Select Team 2</option>
+          {teamOptions.map((team) => (
+            <option key={team.id} value={team.name}>{team.name}</option>
+          ))}
+        </select>
       </div>
-
       <div>
-      <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="category"
-        />
+        <div>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            <option value="">Select Match Category</option>
+            {Object.keys(TypesOfMatches).map((matchTypeKey) => (
+              <option key={matchTypeKey} value={TypesOfMatches[matchTypeKey as keyof typeof TypesOfMatches]}>
+                {matchTypeKey}  {/* Display the enum key */}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <input
           type="text"
-          value={points}
-          onChange={(e) => setPoints(e.target.value)}
+          name = "points"
+          value={formData.points}
+          onChange={handleChange}
           placeholder="Points"
         />
         <input
-          type="text"
-          value={closeTime}
-          onChange={(e) => setCloseTime(e.target.value)}
+          type="datetime-local"
+          name = "closeTime"
+          value={formData.closeTime}
+          onChange={handleChange}
           placeholder="Time to close pickem"
         />
       </div>
-
       <div>
         <button onClick={addMatch}>Create Match</button>
       </div>
 
       <h4>Teams</h4>
       <ul>
-        {teams.map((team, idx) => <li key={idx}>{team}</li>)}
+        {teamOptions.map((team, idx) => (
+          <li key={idx}>{team.name}</li>  // Display list of teams
+        ))}
       </ul>
 
       <h4>Matches</h4>
       <ul>
         {matches.map((match, idx) => (
-          <li key={idx}>{match.team1} vs {match.team2}</li>
+          <li key={idx}>
+            {match.team1Id} vs {match.team2Id} | {match.category} | Points: {match.points} | Open: {match.open ? "Yes" : "No"}
+            <button onClick={() => closePickem(match.matchId)} disabled={!match.open}>
+              Close Pickem
+            </button>
+            <button onClick={() => setWinner(match.matchId, match.team1Id)} disabled={match.winner !== -1}>
+              Set Winner: {match.team1Id}
+            </button>
+            <button onClick={() => setWinner(match.matchId, match.team2Id)} disabled={match.winner !== -1}>
+              Set Winner: {match.team2Id}
+            </button>
+          </li>
         ))}
       </ul>
     </div>
