@@ -21,6 +21,9 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
               {user.emailVerified ? (
                 <>
                   <li>
+                  <a href="/leaderboard">Leaderboard</a>
+                  </li>
+                  <li>
                   <a href="/pickems">Pickems</a>
                   </li>
                   <li>

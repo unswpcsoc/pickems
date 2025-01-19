@@ -5,7 +5,7 @@ import { app } from './firebase';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { Firestore, getFirestore } from "firebase/firestore";
 
-import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem } from './pages';
+import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard } from './pages';
 import { Navbar } from './components';
 
 // Define types for teams and matches
@@ -52,6 +52,7 @@ function App() {
       <main>
         <Routes>
           <Route path = "/" element={<Home />} />
+          
 
           {/* Protected routes: Only accessible after logged in and verified */}
           {/* ADMIN ROUTE SHOULD ONLY BE ACCESSED BY MOD/ADMIN CORRECT LATER */}
@@ -67,6 +68,10 @@ function App() {
           <Route
             path = "/pickems"
             element = {(user && user.emailVerified) ? <Pickem db = {db} /> : <Login />}
+          />
+          <Route
+            path = "/leaderboard"
+            element={(user && user.emailVerified) ? <Leaderboard db = {db} /> : <Login />}
           />
 
           {/* Auth/login Routes: only available if the user is not logged in */}

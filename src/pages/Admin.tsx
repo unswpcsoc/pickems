@@ -1,9 +1,10 @@
 // src/components/AdminPanel.tsx
 import { useState, useEffect } from 'react';
 import { TypesOfMatches } from "../defines";
+import { rank_users } from "../utils";
 
 import { getAuth } from "firebase/auth";
-import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
+import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
 
 const auth = getAuth();
@@ -131,7 +132,7 @@ const Admin = ({ db }: UserPanelProps) => {
           [`${matchId}.open`]: false,
         }); 
   
-        // Fetch all user documents
+        // Update all user scores
         const usersCollectionRef = collection(db, "users");
         const userDocsSnap = await getDocs(usersCollectionRef);
   
@@ -150,6 +151,40 @@ const Admin = ({ db }: UserPanelProps) => {
 
         // TODO:
         // MAKE LEADERBOARD (UPDATE LEADERBOARD )
+        const leaderboardQuery = query(usersCollectionRef, orderBy("score", "desc"));
+        const leaderboardDocsSnap = await getDocs(leaderboardQuery);
+        if (!leaderboardDocsSnap.empty) {
+          const matchesData = leaderboardDocsSnap.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              userId: doc.id,
+              name: data.name,
+              score: data.score,
+              rank: data.rank,
+            }
+          });
+
+          // Algo for ties
+          rank_users(matchesData);
+
+          matchesData.forEach(async (user) => {
+            const userDocRef = doc(db, "users", user.userId);
+            await updateDoc(userDocRef, {
+              rank: user.rank,
+            });
+          });
+
+          // Updating leaderboard
+          const leaderboardCollection = matchesData.map((user) => {
+            return {
+              name: user.name,
+              rank: user.rank,
+              score: user.score
+            }
+          })
+          const userDocRef = doc(db, "leaderboard", "leaderboardStatus");
+          await setDoc(userDocRef, { leaderboard: leaderboardCollection});
+        }
 
       } else {
         console.error("Match data not found.");
