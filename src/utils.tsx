@@ -18,12 +18,13 @@ export function rank_users(matchesData: MatchData[]): MatchData[] {
   let tie = false;
 
   let rank = 1;
+  let tiedRank = 1;
   for (let i = 0; i < matchesData.length; i++) {
     // Edge case: at the end of the array -> Either all tied last or last one is last
     if (i + 1 === matchesData.length) {
       if (tie) {
         while (start <= end) {
-          matchesData[start].rank = rank;
+          matchesData[start].rank = tiedRank;
           start++;
         }
       } else {
@@ -38,6 +39,7 @@ export function rank_users(matchesData: MatchData[]): MatchData[] {
       if (!tie) {
         start = i;
         end = i + 1;
+        tiedRank = rank;
         tie = true;
       } else {
         end++;
@@ -50,8 +52,8 @@ export function rank_users(matchesData: MatchData[]): MatchData[] {
         matchesData[i].rank = rank;
       } else {
       // but previously tied with other users, the start user to curr user share rank
-        while (start < end) {
-          matchesData[start].rank = rank;
+        while (start <= end) {
+          matchesData[start].rank = tiedRank;
           start++;
         }
 

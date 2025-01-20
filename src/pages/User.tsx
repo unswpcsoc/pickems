@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getOrdinalSuffix } from "../utils";
 import { getDoc, doc, Firestore } from "firebase/firestore";  // For fetching data from Firestore
 import { getAuth, signOut } from "firebase/auth";  // For logging out the user
 
@@ -67,14 +68,13 @@ const User = ({ db }: UserPanelProps) => {
     );
   }
 
-  // Blank rank is --th (when the rank is set to -1)
+  // Blank rank is --th (when user hasn't participated in a pickem yet, -1 is the default value)
   // Only happens prior to a submitted/processed pickem the user has done
-  const displayRank = userData.rank === -1 ? '--' : `${userData.rank}`;
+  const displayRank = userData.rank === -1 ? '--' : `${getOrdinalSuffix(userData.rank)}`;
   let verified = "Unverified";
   if (auth.currentUser !== null && auth.currentUser.emailVerified === true) {
     verified = "Verified";
   }
-
 
   return (
     <div>
