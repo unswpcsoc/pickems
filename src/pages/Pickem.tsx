@@ -15,13 +15,14 @@ const Pickem = ({ db }: UserPanelProps) => {
     { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean }[]
   >([]);
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
+  const [teams, setTeams] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
     // Create the reference to your matches document
     const matchesDocRef = doc(db, 'matches', 'matchData');
 
     // Set up the real-time listeners
-    const subscribeActiveMatches = onSnapshot(matchesDocRef, (docSnapshot) => {
+    const unsubscribeActiveMatches = onSnapshot(matchesDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const matchesData = docSnapshot.data();
         
@@ -47,17 +48,32 @@ const Pickem = ({ db }: UserPanelProps) => {
       console.error("Error listening to matches: ", error);
     });
 
-    const subscribeUserPicks = onSnapshot(doc(db, 'users', (auth.currentUser as User).uid), (docSnapshot) => {
+    const unsubscribeUserPicks = onSnapshot(doc(db, 'users', (auth.currentUser as User).uid), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const picks = docSnapshot.data().picks;
         setUserPicks(picks);
       }
     });
 
+    const unsubscribeTeams = onSnapshot(doc(db, 'teams', "teamData"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const teamsData = docSnapshot.data();
+        const teamMap = new Map<string, string>(); // Create a Map to store team names by their IDs
+        Object.keys(teamsData).forEach((id) => {
+          teamMap.set(id, teamsData[id].name);
+        });
+
+        console.log(teamMap)
+
+        setTeams(teamMap);
+      }
+    });
+
     // Clean up the listener when the component unmounts
     return () => {
-      subscribeActiveMatches(); 
-      subscribeUserPicks();
+      unsubscribeActiveMatches(); 
+      unsubscribeUserPicks();
+      unsubscribeTeams();
     };
   }, [db]);
 
@@ -93,7 +109,7 @@ const Pickem = ({ db }: UserPanelProps) => {
                 })}
                 onClick={() => handlePick(match.matchId, match.team1Id)}
               >
-                <p>{match.team1Id}</p>
+                <p>{teams.get(match.team1Id)}</p> 
               </div>
               <div
                 className={classNames('team', {
@@ -102,7 +118,7 @@ const Pickem = ({ db }: UserPanelProps) => {
                 })}
                 onClick={() => handlePick(match.matchId, match.team2Id)}
               >
-                <p>{match.team2Id}</p>
+                <p>{teams.get(match.team2Id)}</p>
               </div>
             </div>
             <div className="details">

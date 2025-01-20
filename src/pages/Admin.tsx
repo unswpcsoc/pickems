@@ -27,6 +27,7 @@ const Admin = ({ db }: UserPanelProps) => {
   // States for team and match display
   const [teamOptions, setTeamOptions] = useState<{ name: string, id: string }[]>([]);
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
+  const [teams, setTeams] = useState<Map<string, string>>(new Map());
 
   // Using snapshot to update both teams and matches on server update
   useEffect(() => {
@@ -35,7 +36,7 @@ const Admin = ({ db }: UserPanelProps) => {
         const teamsData = docSnapshot.data();
         const teamsList = Object.keys(teamsData).map(id => ({
           name: teamsData[id].name,
-          id,
+          id: id,
         }));
         setTeamOptions(teamsList);
       }
@@ -67,10 +68,25 @@ const Admin = ({ db }: UserPanelProps) => {
       console.error("Error listening to matches: ", error);
     });
 
+    const unsubscribeTeams = onSnapshot(doc(db, 'teams', "teamData"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const teamsData = docSnapshot.data();
+        const teamMap = new Map<string, string>(); // Create a Map to store team names by their IDs
+        Object.keys(teamsData).forEach((id) => {
+          teamMap.set(id, teamsData[id].name);
+        });
+
+        console.log(teamMap)
+
+        setTeams(teamMap);
+      }
+    });
+
     // Clean up the listener when the component unmounts
     return () => {
       fetchTeams();
-      fetchMatches(); 
+      fetchMatches();
+      unsubscribeTeams();
     };
   }, [db]);
 
@@ -149,8 +165,7 @@ const Admin = ({ db }: UserPanelProps) => {
           }
         });
 
-        // TODO:
-        // MAKE LEADERBOARD (UPDATE LEADERBOARD )
+        // Make leaderboard
         const leaderboardQuery = query(usersCollectionRef, orderBy("score", "desc"));
         const leaderboardDocsSnap = await getDocs(leaderboardQuery);
         if (!leaderboardDocsSnap.empty) {
@@ -218,7 +233,7 @@ const Admin = ({ db }: UserPanelProps) => {
         >
           <option value="">Select Team 1</option>
           {teamOptions.map((team) => (
-            <option key={team.id} value={team.name}>{team.name}</option>
+            <option key={team.id} value={team.id}>{team.name}</option>
           ))}
         </select>
         <select
@@ -228,7 +243,7 @@ const Admin = ({ db }: UserPanelProps) => {
         >
           <option value="">Select Team 2</option>
           {teamOptions.map((team) => (
-            <option key={team.id} value={team.name}>{team.name}</option>
+            <option key={team.id} value={team.id}>{team.name}</option>
           ))}
         </select>
       </div>
@@ -278,15 +293,15 @@ const Admin = ({ db }: UserPanelProps) => {
       <ul>
         {matches.map((match, idx) => (
           <li key={idx}>
-            {match.team1Id} vs {match.team2Id} | {match.category} | Points: {match.points} | Open: {match.open ? "Yes" : "No"}
+            {teams.get(match.team1Id)} vs {teams.get(match.team2Id)} | {match.category} | Points: {match.points} | Open: {match.open ? "Yes" : "No"}
             <button onClick={() => closePickem(match.matchId)} disabled={!match.open}>
               Close Pickem
             </button>
             <button onClick={() => setWinner(match.matchId, match.team1Id)} disabled={match.winner !== -1}>
-              Set Winner: {match.team1Id}
+              Set Winner: {teams.get(match.team1Id)}
             </button>
             <button onClick={() => setWinner(match.matchId, match.team2Id)} disabled={match.winner !== -1}>
-              Set Winner: {match.team2Id}
+              Set Winner: {teams.get(match.team2Id)}
             </button>
           </li>
         ))}
