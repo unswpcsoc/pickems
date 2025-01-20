@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { getOrdinalSuffix } from "../utils";
+
 import { Firestore, doc, onSnapshot } from 'firebase/firestore';
 import './User.css';
 
@@ -44,7 +46,7 @@ const Leaderboard = ({ db }: UserPanelProps) => {
         <tbody>
           {leaderboard.map((user, index) => (
             <tr key={index}>
-              <td>{user.rank}</td>
+              <td>{getOrdinalSuffix(user.rank)}</td>
               <td>{user.name}</td>
               <td>{user.score}</td>
             </tr>
