@@ -7,11 +7,16 @@ import { getAuth } from "firebase/auth";
 import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
 
+import DataTable from 'react-data-table-component';
+function isOpen(match: any) {
+  return match.open && match.closeTime.seconds > Date.now() / 1000;
+}
 const auth = getAuth();
 
 type UserPanelProps = {
   db: Firestore; 
 };
+
 
 const Admin = ({ db }: UserPanelProps) => {
   // States for forms/input when making teams and matches
@@ -209,6 +214,64 @@ const Admin = ({ db }: UserPanelProps) => {
     }
   };
 
+  const columns = [
+    {
+      name: 'closeTime',
+      selector: match => new Date(match.closeTime.seconds * 1000).toLocaleString(),
+      sortable: true,
+      sortFunction: (a, b) => a.closeTime.seconds - b.closeTime.seconds
+    },
+    {
+      name: 'Category',
+      selector: match => match.category,
+      sortable: true,
+    },
+    {
+      name: 'open',
+      cell:(match) => {
+        if (isOpen(match)) {
+          return <button onClick={() => closePickem(match.matchId)}>Close</button>
+        } else {
+          return <button onClick={() => closePickem(match.matchId)} disabled>Close</button>
+        }
+      },
+      sortable: true,
+      sortFunction: (a, b) => a.open - b.open
+    },
+    {
+      name: 'team1',
+      selector: match => teams.get(match.team1Id),
+      cell: (match) => {
+        if (match.winner === -1) {
+          return <button onClick={() => setWinner(match.matchId, match.team1Id)}>{teams.get(match.team1Id)}</button>
+        } else {
+          return teams.get(match.team1Id);
+        }
+      }
+    },
+    {
+      name: 'team2',
+      cell: (match) => {
+        if (match.winner === -1) {
+          return <button onClick={() => setWinner(match.matchId, match.team2Id)}>{teams.get(match.team2Id)}</button>
+        } else {
+          return teams.get(match.team2Id);
+        }
+      },
+    },
+    {
+      name: 'winner',
+      selector: match => teams.get(match.winner),
+      sortable: true,
+    },
+    {
+      name: 'points',
+      selector: match => match.points,
+      sortable: true,
+      sortFunction : (a, b) => a.points - b.points
+    },
+  ];
+  
   return (
     <div>
       <h2>Admin Panel</h2>
@@ -288,24 +351,14 @@ const Admin = ({ db }: UserPanelProps) => {
           <li key={idx}>{team.name}</li>  // Display list of teams
         ))}
       </ul>
+      
+      <DataTable
+        title="Matches"
+        columns={columns}
+        data={matches}
+        defaultSortFieldId={1}
+      />
 
-      <h4>Matches</h4>
-      <ul>
-        {matches.map((match, idx) => (
-          <li key={idx}>
-            {teams.get(match.team1Id)} vs {teams.get(match.team2Id)} | {match.category} | Points: {match.points} | Open: {match.open ? "Yes" : "No"}
-            <button onClick={() => closePickem(match.matchId)} disabled={!match.open}>
-              Close Pickem
-            </button>
-            <button onClick={() => setWinner(match.matchId, match.team1Id)} disabled={match.winner !== -1}>
-              Set Winner: {teams.get(match.team1Id)}
-            </button>
-            <button onClick={() => setWinner(match.matchId, match.team2Id)} disabled={match.winner !== -1}>
-              Set Winner: {teams.get(match.team2Id)}
-            </button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

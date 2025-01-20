@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { Firestore, getDoc, doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { Firestore, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { getAuth, User } from 'firebase/auth';
 import './User.css';
 
@@ -9,6 +9,10 @@ type UserPanelProps = {
 };
 
 const auth = getAuth();
+
+function isOpen(match: any) {
+  return match.open && match.closeTime.seconds > Date.now() / 1000;
+}
 
 const Pickem = ({ db }: UserPanelProps) => {
   const [activeMatches, setActiveMatches] = useState<
@@ -35,6 +39,8 @@ const Pickem = ({ db }: UserPanelProps) => {
             closeTime: matchesData[id].closeTime,
             open: matchesData[id].open,
         }));
+        
+        matchList = matchList.filter((match) => isOpen(match));
 
         // Sort based on time
         matchList = matchList.sort((a, b) => 
@@ -81,7 +87,7 @@ const Pickem = ({ db }: UserPanelProps) => {
     const match = activeMatches.find((m) => m.matchId === matchId);
 
     // Pick can only occur if a match exists and is open for pickems
-    if (!match || match.open == false) {
+    if (!match || !isOpen(match)) {
       return;
     } else {
       const updatedPicks = { ...userPicks, [matchId]: teamId };
