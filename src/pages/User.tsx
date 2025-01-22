@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getOrdinalSuffix } from "../utils";
-import { getDoc, doc, Firestore } from "firebase/firestore";  // For fetching data from Firestore
+import { getDoc, doc, Firestore, updateDoc } from "firebase/firestore";  // For fetching data from Firestore
 import { getAuth, signOut } from "firebase/auth";  // For logging out the user
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Modal from 'react-bootstrap/Modal';
 
 type UserPanelProps = {
   db: Firestore; 
@@ -18,9 +23,16 @@ const User = ({ db }: UserPanelProps) => {
     email: string;
     score: number;
     rank: number;
+    discordUsername?: string;
   } | null>(null);  // State to hold user data
 
   const [loading, setLoading] = useState(true);  // Loading state
+
+  // States used for Discord username change
+  const [discordName, setDiscordName] = useState("");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     // Fetch user data from Firestore on component mount
@@ -41,6 +53,24 @@ const User = ({ db }: UserPanelProps) => {
 
     fetchUserData();
   }, []);
+
+  // Handle Discord username change
+  const discordChange = async () => {
+    if (userData === null || discordName === "" ) {
+      return; // SOme error
+    }
+
+    try {
+      // Add discord name to user profile
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        discordUsername: discordName
+      });
+      handleClose;
+    } catch (error) {
+      return;
+    }
+    
+  }
 
   // Handle Sign Out
   const handleSignOut = () => {
@@ -77,20 +107,42 @@ const User = ({ db }: UserPanelProps) => {
   }
 
   return (
-    <div>
-      <h2>User Panel</h2>
-      <div className="user-info">
-        <p><strong>Name:</strong> {userData.name}</p>
-        <p><strong>Email:</strong> {userData.email}</p>
-        <p><strong>Email Verification Status:</strong> {verified}</p>
-        <p><strong>Score:</strong> {userData.score}</p>
-        <p><strong>Rank:</strong> {displayRank}</p>
-      </div>
-      
-      <div>
-        <button onClick = {handleSignOut}>Sign Out</button>
-      </div>
-    </div>
+    <>
+      <Card style={{ width: '18rem' }}>
+      <Card.Body>
+        <Card.Title>User Panel</Card.Title>
+        <Card.Text>Name: {userData.name}</Card.Text>
+        <Card.Text>Email: {userData.email}</Card.Text>
+        <Card.Text>Email Verification: {verified}</Card.Text>
+        <Card.Text>Discord Username: {userData?.discordUsername || "N/A"}</Card.Text>
+        <Card.Text>Score: {userData.score}</Card.Text>
+        <Card.Text>Rank: {displayRank}</Card.Text>
+        <Button variant="primary" onClick = {handleShow} >Update Discord Username</Button>
+      </Card.Body>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Discord Username Change</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Label htmlFor="basic-url">Enter Discord Username</Form.Label>
+          <InputGroup className="mb-3">
+            <Form.Control id="discordName" aria-describedby="basic-addon3" onChange={(e) => setDiscordName(e.target.value)}/>
+          </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={discordChange}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </Card>
+      <Button variant="primary" onClick = {handleSignOut} >Sign Out</Button>
+    </>
   );
 };
 

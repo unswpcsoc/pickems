@@ -13,7 +13,8 @@ const db = getFirestore();
 export const registerUser = async (
   displayName: string,
   email: string, 
-  password: string
+  password: string,
+  discordName: string,
 ) => {
   // if (!email && !password) return;  
 
@@ -32,6 +33,7 @@ export const registerUser = async (
       await setDoc(userRef, {
         email: auth.currentUser.email,
         name: displayName,
+        discordUsername: discordName,
         picks: picksObject,
         score: 0,
         rank: -1, // Default rank is nothing until first pickem

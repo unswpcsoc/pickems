@@ -1,78 +1,182 @@
 import { useState } from "react";
-// import { getAuth, createUserWithEmailAndPassword,  } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../firebase/authentication"
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User  } from "firebase/auth";
+import { registerUser } from "../firebase/authentication";
+import { getFirestore, doc, setDoc, getDoc, Timestamp  } from "firebase/firestore";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
-// const auth = getAuth();
-
-// const defaultFormFields = {
-//   email: "",
-//   password: ","
-// }
+const auth = getAuth();
+const db = getFirestore();
 
 const Signup = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    discordUsername: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      if (password !== confirmPassword) {
-        setError("Passwords did not match."); 
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords did not match.");
         return;
       }
 
-      // The user will be login upon successful registration.
-      await registerUser(name, email, password);
+      // if (!formData.email.endsWith("edu.au")) {
+      //   setError("You are not registering with a University email (edu.au), please try Google Sign in");
+      //   return;
+      // }
+
+      // Register user
+      await registerUser(formData.name, formData.email, formData.password, formData.discordUsername);
       navigate("/");
-    } catch (error:any) {
-      if (error) {
-        if (error.code === "auth/weak-password") {
-          setError("Password must be at least 6 characters.");
-        } else if (error.code === "auth/email-already-in-use") {
-          setError("Email is already in use.");
-        } else {
-          setError(error.message || "An error occurred during signup.");
-        }
+    } catch (error: any) {
+      if (error.code === "auth/weak-password") {
+        setError("Password must be at least 6 characters.");
+      } else if (error.code === "auth/email-already-in-use") {
+        setError("Email is already in use.");
+      } else {
+        setError(error.message || "An error occurred during signup.");
       }
     }
-  }
+  };
+
+  const handleGoogleLogin = () => {
+    const provider = new GoogleAuthProvider();
+  
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        if (credential === null) {
+          setError("Google Auth Error");
+        }
+        
+        const user = auth.currentUser as User;
+        console.log([user, result])
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          setError("User already exists in the database, please try logging in!");
+        } else {
+          await setDoc(userRef, {
+            email: user.email,
+            name: user.displayName,
+            picks: {},
+            score: 0,
+            rank: -1, // Default rank is nothing until first pickem
+            lastEdited: Timestamp.now()
+          });
+          navigate("/");
+        }
+      
+
+        // navigate("/user");
+      }).catch((error) => {
+        setError(error.message);
+      });
+    };
 
   return (
-    <div>
-      <form onSubmit={handleSignup}>
-      <input
-          type="string"
-          placeholder="Display Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-      {error && <p>{error}</p>}
+    <div style={{ width: "45vw", margin: "auto" }}>
+      <h1>Sign up</h1>
+      <Tabs
+      defaultActiveKey="email"
+      id="uncontrolled-tab-example"
+      className="mb-3"
+    >
+        <Tab eventKey="email" title="Email">
+          <Form onSubmit={handleSignup}>
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              placeholder="Enter Username"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <Form.Text className="text-muted">
+              Visible name that will be displayed on the leaderboard and used when distributing prizes.
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <Form.Text className="text-muted">
+              Note: Only edu.au emails are accepted as valid emails.
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicDiscord">
+            <Form.Label>Discord Username</Form.Label>
+            <Form.Control
+              type="text"
+              name="discordUsername"
+              placeholder="Enter Discord Username"
+              value={formData.discordUsername}
+              onChange={handleChange}
+            />
+            <Form.Text className="text-muted">
+              Discord usernames are strictly used for contacting winners who won prizes for the pickems.
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          {error && <p>Error: {error}</p>}
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+          </Form>
+        </Tab>
+        <Tab eventKey="google" title="Google">
+          <Button variant="primary" onClick={handleGoogleLogin}>Sign up with Google</Button>
+        </Tab>
+      </Tabs>
     </div>
   );
 };

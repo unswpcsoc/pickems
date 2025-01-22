@@ -6,12 +6,14 @@ import { rank_users } from "../utils";
 import { getAuth } from "firebase/auth";
 import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
+import { getStorage, ref } from "firebase/storage";
 
 import DataTable from 'react-data-table-component';
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
 const auth = getAuth();
+const storage = getStorage();
 
 type UserPanelProps = {
   db: Firestore; 
