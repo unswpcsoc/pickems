@@ -8,6 +8,11 @@ import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDo
 import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
 import { getStorage, ref } from "firebase/storage";
 
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import { teamCard } from "../components"
 import DataTable from 'react-data-table-component';
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
@@ -275,44 +280,79 @@ const Admin = ({ db }: UserPanelProps) => {
   ];
   
   return (
-    <div>
+    <div style={{ width: "95vw", margin: "auto"}}>
       <h2>Admin Panel</h2>
+      <Tabs
+      defaultActiveKey="teams"
+      id="uncontrolled-tab-example"
+      className="mb-3"
+      >
+        <Tab eventKey="teams" title="Teams">
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <h4>Team name</h4>
+            <Form.Control
+              type="text"
+              name="name"
+              placeholder="SKT1"
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+            />
+          </Form.Group>
+          <Button variant="primary" type="button" onClick={addTeam}>
+            Submit
+          </Button>
+        </Form>
 
-      <div>
-        <h3>Create Team</h3>
-        <input
-          type="text"
-          value={teamName}
-          onChange={(e) => setTeamName(e.target.value)}
-          placeholder="Team Name"
-        />
-        <button onClick={addTeam}>Add Team</button>
-      </div>
+        <h4>Teams</h4>
 
-      <div>
-        <h3>Create Match</h3>
-        <select
-          name="matchTeam1"
-          value={formData.matchTeam1}
-          onChange={handleChange}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap', // Cards wrap to next row when no more space in the row
+            gap: '20px',
+            justifyContent: 'flex-start', // Aligns cards to the left
+          }}
         >
-          <option value="">Select Team 1</option>
           {teamOptions.map((team) => (
-            <option key={team.id} value={team.id}>{team.name}</option>
+            <div
+              key={team.id}
+              style={{
+                flex: '0 0 286px', // Fixed box width
+                boxSizing: 'border-box',
+              }}
+            >
+              {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND PARAM */}
+              {teamCard(team.name, '')} 
+            </div>
           ))}
-        </select>
-        <select
-          name="matchTeam2"
-          value={formData.matchTeam2}
-          onChange={handleChange}
-        >
-          <option value="">Select Team 2</option>
-          {teamOptions.map((team) => (
-            <option key={team.id} value={team.id}>{team.name}</option>
-          ))}
-        </select>
-      </div>
-      <div>
+        </div>
+        </Tab>
+        <Tab eventKey="match" title="Matches">
+        <div>
+          <h3>Create Match</h3>
+          <select
+            name="matchTeam1"
+            value={formData.matchTeam1}
+            onChange={handleChange}
+          >
+            <option value="">Select Team 1</option>
+            {teamOptions.map((team) => (
+              <option key={team.id} value={team.id}>{team.name}</option>
+            ))}
+          </select>
+          
+          <select
+            name="matchTeam2"
+            value={formData.matchTeam2}
+            onChange={handleChange}
+          >
+            <option value="">Select Team 2</option>
+            {teamOptions.map((team) => (
+              <option key={team.id} value={team.id}>{team.name}</option>
+            ))}
+          </select>
+        </div>
         <div>
           <select
             name="category"
@@ -326,41 +366,34 @@ const Admin = ({ db }: UserPanelProps) => {
               </option>
             ))}
           </select>
+
+          <input
+            type="text"
+            name = "points"
+            value={formData.points}
+            onChange={handleChange}
+            placeholder="Points"
+          />
+          <input
+            type="datetime-local"
+            name = "closeTime"
+            value={formData.closeTime}
+            onChange={handleChange}
+            placeholder="Time to close pickem"
+          />
+        </div>
+        <div>
+          <button onClick={addMatch}>Create Match</button>
         </div>
 
-        <input
-          type="text"
-          name = "points"
-          value={formData.points}
-          onChange={handleChange}
-          placeholder="Points"
+        <DataTable
+          title="Matches"
+          columns={columns}
+          data={matches}
+          defaultSortFieldId={1}
         />
-        <input
-          type="datetime-local"
-          name = "closeTime"
-          value={formData.closeTime}
-          onChange={handleChange}
-          placeholder="Time to close pickem"
-        />
-      </div>
-      <div>
-        <button onClick={addMatch}>Create Match</button>
-      </div>
-
-      <h4>Teams</h4>
-      <ul>
-        {teamOptions.map((team, idx) => (
-          <li key={idx}>{team.name}</li>  // Display list of teams
-        ))}
-      </ul>
-      
-      <DataTable
-        title="Matches"
-        columns={columns}
-        data={matches}
-        defaultSortFieldId={1}
-      />
-
+        </Tab>
+      </Tabs>
     </div>
   );
 };
