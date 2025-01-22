@@ -65,7 +65,8 @@ const Login = () => {
     };
 
   return (
-    <div style={{ width: "45vw", minWidth: "350px",margin: "auto" }}>
+    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }}>
+      <br />
       <h1>Sign in</h1>
       <Tabs
       defaultActiveKey="email"
@@ -104,7 +105,7 @@ const Login = () => {
           </Form>
         </Tab>
         <Tab eventKey="google" title="Google">
-          <Button variant="primary" onClick={handleGoogleLogin}>Sign up with Google</Button>
+          <Button variant="primary" onClick={handleGoogleLogin}>Sign in with Google</Button>
         </Tab>
       </Tabs>
     </div>

@@ -11,7 +11,8 @@ import { useState } from 'react';
 const HomePage = () => {
 
   return (
-    <div>
+    <div style={{ width: "95vw", margin: "auto"}}>
+      <br />
       <h1>A home page</h1>
 
       <h3> Most likely instructions and twitch links here, have a separate pickems page for pickems</h3>

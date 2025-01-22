@@ -113,7 +113,8 @@ const User = ({ db }: UserPanelProps) => {
   }
 
   return (
-    <>
+    <div style={{ width: "95vw", margin: "auto"}}>
+      <br />
       <Card style={{ width: '18rem' }}>
       <Card.Body>
         <Card.Title>User Panel</Card.Title>
@@ -147,8 +148,9 @@ const User = ({ db }: UserPanelProps) => {
       </Modal>
 
     </Card>
-      <Button variant="primary" onClick = {handleSignOut} >Sign Out</Button>
-    </>
+    <br />
+    <Button variant="primary" onClick = {handleSignOut} >Sign Out</Button>
+    </div>
   );
 };
 

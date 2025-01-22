@@ -96,6 +96,7 @@ const Signup = () => {
 
   return (
     <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }}>
+      <br />
       <h1>Sign up</h1>
       <Tabs
       defaultActiveKey="email"

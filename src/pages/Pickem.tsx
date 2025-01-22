@@ -100,7 +100,8 @@ const Pickem = ({ db }: UserPanelProps) => {
   }
 
   return (
-    <div>
+    <div style={{ width: "95vw", margin: "auto"}}>
+      <br />
       <h1>Pick'em Matches</h1>
       {activeMatches.length === 0 ? (
         <p>No matches available.</p>
