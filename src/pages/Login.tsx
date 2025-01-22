@@ -2,6 +2,11 @@ import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User  } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { getFirestore, doc, setDoc, getDoc, Timestamp  } from "firebase/firestore";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+
 const auth = getAuth();
 const db = getFirestore();
 
@@ -53,35 +58,55 @@ const Login = () => {
         }
       
 
-        // navigate("/user");
+        navigate("/user");
       }).catch((error) => {
         setError(error.message);
       });
     };
 
   return (
-    <div>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p>{error}</p>}
-      <button onClick={handleGoogleLogin}>Sign in with Google</button>
-
-      <div className="password-forgot">
-        <Link to="/password-forgot">Forgot your Password?</Link>
-      </div>
+    <div style={{ width: "45vw", margin: "auto" }}>
+      <h1>Sign in</h1>
+      <Tabs
+      defaultActiveKey="email"
+      id="uncontrolled-tab-example"
+      className="mb-3"
+    >
+        <Tab eventKey="email" title="Email">
+          <Form onSubmit={handleLogin}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          {error && <p>Error: {error}</p>}
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+          <div className="password-forgot">
+            <Link to="/password-forgot">Forgot your Password?</Link>
+          </div>
+          </Form>
+        </Tab>
+        <Tab eventKey="google" title="Google">
+          <Button variant="primary" onClick={handleGoogleLogin}>Sign up with Google</Button>
+        </Tab>
+      </Tabs>
     </div>
   );
 };
