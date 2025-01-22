@@ -31,25 +31,31 @@ const User = ({ db }: UserPanelProps) => {
   // States used for Discord username change
   const [discordName, setDiscordName] = useState("");
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+
+  // Fetch user data from Firestore on component mount
+  const fetchUserData = async () => {
+    if (auth.currentUser) {
+      try {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          setUserData(userDoc.data() as any);
+        }
+      } catch (error) {
+        console.log("Error fetching user data: ", error);
+      }
+    }
+    setLoading(false);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    fetchUserData();
+  }
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    // Fetch user data from Firestore on component mount
-    const fetchUserData = async () => {
-      if (auth.currentUser) {
-        try {
-          const userRef = doc(db, "users", auth.currentUser.uid);
-          const userDoc = await getDoc(userRef);
-          if (userDoc.exists()) {
-            setUserData(userDoc.data() as any);
-          }
-        } catch (error) {
-          console.log("Error fetching user data: ", error);
-        }
-      }
-      setLoading(false);
-    };
+
 
     fetchUserData();
   }, []);
@@ -65,7 +71,7 @@ const User = ({ db }: UserPanelProps) => {
       await updateDoc(doc(db, "users", auth.currentUser.uid), {
         discordUsername: discordName
       });
-      handleClose;
+      handleClose();
     } catch (error) {
       return;
     }
