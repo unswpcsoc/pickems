@@ -62,26 +62,8 @@ const Leaderboard = ({ db }: UserPanelProps) => {
         title="Matches"
         columns={columns}
         data={leaderboard}
-        // defaultSortFieldId={1}
+        defaultSortFieldId={1}
       />
-      {/* <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {leaderboard.map((user, index) => (
-            <tr key={index}>
-              <td>{getOrdinalSuffix(user.rank)}</td>
-              <td>{user.name}</td>
-              <td>{user.score}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
     </div>
   );
 };

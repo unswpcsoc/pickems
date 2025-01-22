@@ -284,6 +284,7 @@ const Admin = ({ db }: UserPanelProps) => {
   
   return (
     <div style={{ width: "95vw", margin: "auto"}}>
+      <br />
       <h2>Admin Panel</h2>
       <Tabs
       defaultActiveKey="teams"
