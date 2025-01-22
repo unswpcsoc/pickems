@@ -287,52 +287,10 @@ const Admin = ({ db }: UserPanelProps) => {
       <br />
       <h2>Admin Panel</h2>
       <Tabs
-      defaultActiveKey="teams"
-      id="uncontrolled-tab-example"
-      className="mb-3"
+        defaultActiveKey="match"
+        id="uncontrolled-tab-example"
+        className="mb-3"
       >
-        <Tab eventKey="teams" title="Teams">
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicName">
-            <h3>Create Team</h3>
-            <Form.Label>Team Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="name"
-              placeholder="SKT1"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" type="button" onClick={addTeam}>
-            Submit
-          </Button>
-        </Form>
-
-        <h3>Teams</h3>
-
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap', // Cards wrap to next row when no more space in the row
-            gap: '20px',
-            justifyContent: 'flex-start', // Aligns cards to the left
-          }}
-        >
-          {teamOptions.map((team) => (
-            <div
-              key={team.id}
-              style={{
-                flex: '0 0 286px', // Fixed box width
-                boxSizing: 'border-box',
-              }}
-            >
-              {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
-              {teamCard(team.name, '')} 
-            </div>
-          ))}
-        </div>
-        </Tab>
         <Tab eventKey="match" title="Matches">
         <h3>Create Match</h3>
         <Form>
@@ -431,7 +389,49 @@ const Admin = ({ db }: UserPanelProps) => {
           data={matches}
           defaultSortFieldId={1}
         />
-      </Tab>
+        </Tab>
+        <Tab eventKey="teams" title="Teams">
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <h3>Create Team</h3>
+              <Form.Label>Team Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                placeholder="SKT1"
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+              />
+            </Form.Group>
+            <Button variant="primary" type="button" onClick={addTeam}>
+              Submit
+            </Button>
+          </Form>
+
+          <h3>Teams</h3>
+
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap', // Cards wrap to next row when no more space in the row
+              gap: '20px',
+              justifyContent: 'flex-start', // Aligns cards to the left
+            }}
+          >
+            {teamOptions.map((team) => (
+              <div
+                key={team.id}
+                style={{
+                  flex: '0 0 286px', // Fixed box width
+                  boxSizing: 'border-box',
+                }}
+              >
+                {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
+                {teamCard(team.name, '')} 
+              </div>
+            ))}
+          </div>
+        </Tab>
       </Tabs>
     </div>
   );
