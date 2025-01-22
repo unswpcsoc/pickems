@@ -12,6 +12,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { teamCard } from "../components"
 import DataTable from 'react-data-table-component';
 function isOpen(match: any) {
@@ -290,7 +293,8 @@ const Admin = ({ db }: UserPanelProps) => {
         <Tab eventKey="teams" title="Teams">
         <Form>
           <Form.Group className="mb-3" controlId="formBasicName">
-            <h4>Team name</h4>
+            <h3>Create Team</h3>
+            <Form.Label>Team Name</Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -304,7 +308,7 @@ const Admin = ({ db }: UserPanelProps) => {
           </Button>
         </Form>
 
-        <h4>Teams</h4>
+        <h3>Teams</h3>
 
         <div
           style={{
@@ -322,77 +326,111 @@ const Admin = ({ db }: UserPanelProps) => {
                 boxSizing: 'border-box',
               }}
             >
-              {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND PARAM */}
+              {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
               {teamCard(team.name, '')} 
             </div>
           ))}
         </div>
         </Tab>
         <Tab eventKey="match" title="Matches">
-        <div>
-          <h3>Create Match</h3>
-          <select
-            name="matchTeam1"
-            value={formData.matchTeam1}
-            onChange={handleChange}
-          >
-            <option value="">Select Team 1</option>
-            {teamOptions.map((team) => (
-              <option key={team.id} value={team.id}>{team.name}</option>
-            ))}
-          </select>
-          
-          <select
-            name="matchTeam2"
-            value={formData.matchTeam2}
-            onChange={handleChange}
-          >
-            <option value="">Select Team 2</option>
-            {teamOptions.map((team) => (
-              <option key={team.id} value={team.id}>{team.name}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-          >
-            <option value="">Select Match Category</option>
-            {Object.keys(TypesOfMatches).map((matchTypeKey) => (
-              <option key={matchTypeKey} value={TypesOfMatches[matchTypeKey as keyof typeof TypesOfMatches]}>
-                {matchTypeKey}  {/* Display the enum key */}
-              </option>
-            ))}
-          </select>
+        <h3>Create Match</h3>
+        <Form>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId="formMatchTeam1">
+                <Form.Label>Select Team 1</Form.Label>
+                <Form.Select
+                  name="matchTeam1"
+                  value={formData.matchTeam1}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Team 1</option>
+                  {teamOptions.map((team) => (
+                    <option key={team.id} value={team.id}>{team.name}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
 
-          <input
-            type="text"
-            name = "points"
-            value={formData.points}
-            onChange={handleChange}
-            placeholder="Points"
-          />
-          <input
-            type="datetime-local"
-            name = "closeTime"
-            value={formData.closeTime}
-            onChange={handleChange}
-            placeholder="Time to close pickem"
-          />
-        </div>
-        <div>
-          <button onClick={addMatch}>Create Match</button>
-        </div>
+            <Col md={6}>
+              <Form.Group controlId="formMatchTeam2">
+                <Form.Label>Select Team 2</Form.Label>
+                <Form.Select
+                  name="matchTeam2"
+                  value={formData.matchTeam2}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Team 2</option>
+                  {teamOptions.map((team) => (
+                    <option key={team.id} value={team.id}>{team.name}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
 
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId="formMatchCategory">
+                <Form.Label>Select Match Category</Form.Label>
+                <Form.Select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Category</option>
+                  {Object.keys(TypesOfMatches).map((matchTypeKey) => (
+                    <option key={matchTypeKey} value={TypesOfMatches[matchTypeKey as keyof typeof TypesOfMatches]}>
+                      {matchTypeKey}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+
+            <Col md={6}>
+              <Form.Group controlId="formMatchPoints">
+                <Form.Label>Points</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="points"
+                  value={formData.points}
+                  onChange={handleChange}
+                  placeholder="Points"
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={12}>
+              <Form.Group controlId="formMatchCloseTime">
+                <Form.Label>Pickem Close Time</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  name="closeTime"
+                  value={formData.closeTime}
+                  onChange={handleChange}
+                  placeholder="Time to close pickem"
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          {/* Submit Button */}
+          <Button variant="primary" type="button" onClick={addMatch}>
+            Create Match
+          </Button>
+        </Form>
+        
+        {/* Matches Table */}
         <DataTable
           title="Matches"
           columns={columns}
           data={matches}
           defaultSortFieldId={1}
         />
-        </Tab>
+      </Tab>
       </Tabs>
     </div>
   );
