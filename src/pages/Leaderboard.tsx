@@ -56,6 +56,7 @@ const Leaderboard = ({ db }: UserPanelProps) => {
 
   return (
     <div style={{ width: "95vw", margin: "auto"}}>
+      <br />
       <h1>Leaderboard</h1>
       <DataTable
         title="Matches"
