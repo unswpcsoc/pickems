@@ -15,6 +15,8 @@ const HomePage = () => {
           allowFullScreen={true}
         ></iframe>
       </div>
+
+      {/* Add social links here */}
     </div>
   );
 };
