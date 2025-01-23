@@ -1,4 +1,4 @@
-export {default as Navbar} from "./Navbar";
+export {default as Header} from "./Header";
 // export {default as DiscordAlert} from "./DiscordAlert";
 export {default as teamCard} from "./teamCards";
 export {default as pickemResult} from "./pickemResult";

@@ -4,7 +4,7 @@ import { app } from './firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard } from './pages';
-import { Navbar, Footer } from './components';
+import { Header, Footer } from './components';
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -49,7 +49,7 @@ function App() {
   return (
     <div>
       <header>
-        <Navbar user={user} />
+        <Header user={user} />
       </header>
 
       <main style={{ minHeight: '100vh' }}>  {/* Ensure the main content area is at least 100vh */}
