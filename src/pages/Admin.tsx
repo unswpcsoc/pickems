@@ -74,9 +74,7 @@ const Admin = ({ db }: UserPanelProps) => {
           winner: matchesData[id].winner,
         }));
 
-        matchList = matchList.sort((a, b) => 
-          a.closeTime.seconds - b.closeTime.seconds
-        );
+        matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
         setMatches(matchList);
       }
     }, (error) => {

@@ -41,7 +41,8 @@ const Pickem = ({ db }: UserPanelProps) => {
         }));
 
         matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
-        
+        matchList = matchList.filter(isOpen);
+
         setActiveMatches(matchList);
       }
     }, (error) => {
