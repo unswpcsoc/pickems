@@ -23,21 +23,51 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: bold;
-  padding: 10px;
-  border-radius: 4px;
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .team.chosen {
   flex: 3; /* Expand the chosen team */
-  background-color: #4caf50;
   color: white;
-  /* transform: scale(1.1); */
 }
 
 .team.unchosen {
   flex: 0.5; /* Shrink the unchosen team */
   opacity: 0.6;
-  /* transform: scale(0.9); */
+}
+
+.team-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Make the content take full width */
+}
+
+.points {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px; /* Space between points and the logo/name */
+  text-align: left;
+}
+
+.team-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.team-image {
+  margin-bottom: 5px; /* Space between image and team name */
+}
+
+.team-name {
+  font-weight: bold;
+  text-align: center;
 }
 
 .details {
@@ -46,4 +76,8 @@
   text-align: right; /* Align text to the right */
   font-size: 14px;
   color: #555;
+}
+
+button {
+  width: 100%; /* Ensure the button takes the full width of its container */
 }

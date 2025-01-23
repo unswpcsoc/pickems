@@ -87,7 +87,7 @@ export const addMatchToDatabase = async (
       points: points,
       closeTime: closeTimestamp,
       open: true, // Boolean which lets user figure out if the match is still open for pickems.
-      winner: -1, // Either 1 or 2 (based on team 1/2)
+      winner: "-1", // Either 1 or 2 (based on team 1/2)
     };
 
     await setDoc(matchesDocRef, matchesData);  // Update the entire document with the new match

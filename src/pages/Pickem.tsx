@@ -1,7 +1,9 @@
+// src/components/Pickem.tsx
 import { useState, useEffect } from 'react';
-import classNames from 'classnames';
 import { Firestore, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { getAuth, User } from 'firebase/auth';
+import { PickemBar } from '../components'; // Import the PickemBar component
+
 import './User.css';
 
 type UserPanelProps = {
@@ -16,38 +18,30 @@ function isOpen(match: any) {
 
 const Pickem = ({ db }: UserPanelProps) => {
   const [activeMatches, setActiveMatches] = useState<
-    { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean }[]
+    { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
   >([]);
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
   const [teams, setTeams] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
-    // Create the reference to your matches document
     const matchesDocRef = doc(db, 'matches', 'matchData');
-
-    // Set up the real-time listeners
     const unsubscribeActiveMatches = onSnapshot(matchesDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const matchesData = docSnapshot.data();
         
         let matchList = Object.keys(matchesData).map((id) => ({
-            matchId: matchesData[id].matchId,
-            team1Id: matchesData[id].team1Id,
-            team2Id: matchesData[id].team2Id,
-            category: matchesData[id].category,
-            points: matchesData[id].points,
-            closeTime: matchesData[id].closeTime,
-            open: matchesData[id].open,
+          matchId: matchesData[id].matchId,
+          team1Id: matchesData[id].team1Id,
+          team2Id: matchesData[id].team2Id,
+          category: matchesData[id].category,
+          points: matchesData[id].points,
+          closeTime: matchesData[id].closeTime,
+          open: matchesData[id].open,
+          winner: matchesData[id].winner,
         }));
-        
-        matchList = matchList.filter((match) => isOpen(match));
 
-        // Sort based on time
-        matchList = matchList.sort((a, b) => 
-          a.closeTime.seconds - b.closeTime.seconds
-        );
+        matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
         
-        // Update state with the new data
         setActiveMatches(matchList);
       }
     }, (error) => {
@@ -64,20 +58,16 @@ const Pickem = ({ db }: UserPanelProps) => {
     const unsubscribeTeams = onSnapshot(doc(db, 'teams', "teamData"), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const teamsData = docSnapshot.data();
-        const teamMap = new Map<string, string>(); // Create a Map to store team names by their IDs
+        const teamMap = new Map<string, string>();
         Object.keys(teamsData).forEach((id) => {
           teamMap.set(id, teamsData[id].name);
         });
-
-        console.log(teamMap)
-
         setTeams(teamMap);
       }
     });
 
-    // Clean up the listener when the component unmounts
     return () => {
-      unsubscribeActiveMatches(); 
+      unsubscribeActiveMatches();
       unsubscribeUserPicks();
       unsubscribeTeams();
     };
@@ -85,8 +75,6 @@ const Pickem = ({ db }: UserPanelProps) => {
 
   const handlePick = async (matchId: number, teamId: string) => {
     const match = activeMatches.find((m) => m.matchId === matchId);
-
-    // Pick can only occur if a match exists and is open for pickems
     if (!match || !isOpen(match)) {
       return;
     } else {
@@ -95,45 +83,25 @@ const Pickem = ({ db }: UserPanelProps) => {
       await updateDoc(userDocRef, {
         picks: updatedPicks,
       });
+      setUserPicks(updatedPicks); // Optimistic UI update
     }
-
-  }
+  };
 
   return (
-    <div style={{ width: "95vw", margin: "auto"}}>
+    <div style={{ width: "95vw", margin: "auto" }}>
       <br />
       <h1>Pick'em Matches</h1>
       {activeMatches.length === 0 ? (
         <p>No matches available.</p>
       ) : (
         activeMatches.map((match) => (
-          <div key={match.matchId} className="match-container">
-            <div className="teams">
-              <div
-                className={classNames('team', {
-                  chosen: userPicks[match.matchId] === match.team1Id,
-                  unchosen: userPicks[match.matchId] === match.team2Id,
-                })}
-                onClick={() => handlePick(match.matchId, match.team1Id)}
-              >
-                <p>{teams.get(match.team1Id)}</p> 
-              </div>
-              <div
-                className={classNames('team', {
-                  chosen: userPicks[match.matchId] === match.team2Id,
-                  unchosen: userPicks[match.matchId] === match.team1Id,
-                })}
-                onClick={() => handlePick(match.matchId, match.team2Id)}
-              >
-                <p>{teams.get(match.team2Id)}</p>
-              </div>
-            </div>
-            <div className="details">
-              <p>Category: {match.category}</p>
-              <p>Points: {match.points}</p>
-              <p>Close Time: {new Date(match.closeTime.seconds * 1000).toLocaleString()}</p>
-            </div>
-          </div>
+          <PickemBar
+            key={match.matchId}
+            match={match}
+            userPick={userPicks[match.matchId] || ''}
+            teams={teams}
+            handlePick={handlePick}
+          />
         ))
       )}
     </div>

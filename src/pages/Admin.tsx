@@ -252,7 +252,7 @@ const Admin = ({ db }: UserPanelProps) => {
       name: 'team1',
       selector: match => teams.get(match.team1Id),
       cell: (match) => {
-        if (match.winner === -1) {
+        if (match.winner === "-1") {
           return <button onClick={() => setWinner(match.matchId, match.team1Id)}>{teams.get(match.team1Id)}</button>
         } else {
           return teams.get(match.team1Id);
@@ -262,7 +262,7 @@ const Admin = ({ db }: UserPanelProps) => {
     {
       name: 'team2',
       cell: (match) => {
-        if (match.winner === -1) {
+        if (match.winner === "-1") {
           return <button onClick={() => setWinner(match.matchId, match.team2Id)}>{teams.get(match.team2Id)}</button>
         } else {
           return teams.get(match.team2Id);
@@ -362,7 +362,7 @@ const Admin = ({ db }: UserPanelProps) => {
           </Row>
 
           <Row className="mb-3">
-            <Col md={12}>
+            <Col md={6}>
               <Form.Group controlId="formMatchCloseTime">
                 <Form.Label>Pickem Close Time</Form.Label>
                 <Form.Control
