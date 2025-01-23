@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User  } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, User  } from "firebase/auth";
 import { registerUser } from "../firebase/authentication";
 import { getFirestore, doc, setDoc, getDoc, Timestamp  } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';

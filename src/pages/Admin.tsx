@@ -3,30 +3,37 @@ import { useState, useEffect } from 'react';
 import { TypesOfMatches } from "../defines";
 import { rank_users } from "../utils";
 
-import { getAuth } from "firebase/auth";
 import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
-import { getStorage, ref } from "firebase/storage";
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { teamCard } from "../components"
 import DataTable from 'react-data-table-component';
+import { TableColumn } from 'react-data-table-component';
+
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
-const auth = getAuth();
-const storage = getStorage();
+
+type Match = {
+  matchId: string;
+  team1Id: string;
+  team2Id: string;
+  category: string;
+  points: string;
+  closeTime: Timestamp;
+  open: boolean;
+  winner: string;
+};
 
 type UserPanelProps = {
   db: Firestore; 
 };
-
 
 const Admin = ({ db }: UserPanelProps) => {
   // States for forms/input when making teams and matches
@@ -41,7 +48,7 @@ const Admin = ({ db }: UserPanelProps) => {
 
   // States for team and match display
   const [teamOptions, setTeamOptions] = useState<{ name: string, id: string }[]>([]);
-  const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
+  const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: string }[]>([]); // Matches state
   const [teams, setTeams] = useState<Map<string, string>>(new Map());
 
   // Using snapshot to update both teams and matches on server update
@@ -105,11 +112,12 @@ const Admin = ({ db }: UserPanelProps) => {
     };
   }, [db]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // I hate react event shit
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -224,61 +232,62 @@ const Admin = ({ db }: UserPanelProps) => {
     }
   };
 
-  const columns = [
+  const columns: TableColumn<Match>[] = [
     {
       name: 'closeTime',
-      selector: match => new Date(match.closeTime.seconds * 1000).toLocaleString(),
+      selector: (match: Match) => new Date(match.closeTime.seconds * 1000).toLocaleString(),
       sortable: true,
-      sortFunction: (a, b) => a.closeTime.seconds - b.closeTime.seconds
+      sortFunction: (a: Match, b: Match) => a.closeTime.seconds - b.closeTime.seconds
     },
     {
       name: 'Category',
-      selector: match => match.category,
+      selector: (match: Match) => match.category,
       sortable: true,
     },
     {
       name: 'open',
-      cell:(match) => {
-        if (isOpen(match)) {
-          return <button onClick={() => closePickem(match.matchId)}>Close</button>
-        } else {
-          return <button onClick={() => closePickem(match.matchId)} disabled>Close</button>
-        }
+      cell: (row: Match) => {
+        return isOpen(row) ? (
+          <button onClick={() => closePickem(row.matchId)}>Close</button>
+        ) : (
+          <button onClick={() => closePickem(row.matchId)} disabled>Close</button>
+        );
       },
       sortable: true,
-      sortFunction: (a, b) => a.open - b.open
+      sortFunction: (a: Match, b: Match) => (a.open ? 1 : 0) - (b.open ? 1 : 0)
     },
     {
       name: 'team1',
-      selector: match => teams.get(match.team1Id),
-      cell: (match) => {
-        if (match.winner === "-1") {
-          return <button onClick={() => setWinner(match.matchId, match.team1Id)}>{teams.get(match.team1Id)}</button>
+      selector: (match: Match) => teams.get(match.team1Id) || "",
+      cell: (row: Match) => {
+        if (row.winner === "-1") {
+          return <button onClick={() => setWinner(row.matchId, row.team1Id)}>{teams.get(row.team1Id)}</button>;
         } else {
-          return teams.get(match.team1Id);
+          return teams.get(row.team1Id);
         }
-      }
+      },
     },
     {
       name: 'team2',
-      cell: (match) => {
-        if (match.winner === "-1") {
-          return <button onClick={() => setWinner(match.matchId, match.team2Id)}>{teams.get(match.team2Id)}</button>
+      selector: (match: Match) => teams.get(match.team2Id) || "",
+      cell: (row: Match) => {
+        if (row.winner === "-1") {
+          return <button onClick={() => setWinner(row.matchId, row.team2Id)}>{teams.get(row.team2Id)}</button>;
         } else {
-          return teams.get(match.team2Id);
+          return teams.get(row.team2Id);
         }
       },
     },
     {
       name: 'winner',
-      selector: match => teams.get(match.winner),
+      selector: (match: Match) => teams.get(match.winner) || "",
       sortable: true,
     },
     {
       name: 'points',
-      selector: match => match.points,
+      selector: (match: Match) => match.points,
       sortable: true,
-      sortFunction : (a, b) => a.points - b.points
+      sortFunction: (a: Match, b: Match) => parseInt(a.points) - parseInt(b.points)
     },
   ];
   

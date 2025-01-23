@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { app } from './firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -13,7 +13,7 @@ function App() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isContentLarge, setIsContentLarge] = useState<boolean>(false);  // To track content height
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

@@ -1,6 +1,6 @@
 // src/database.ts
 import { v4 as uuidv4} from 'uuid';
-import { collection, doc, getDoc, setDoc, updateDoc, Firestore, Timestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, Firestore, Timestamp } from "firebase/firestore";
 
 // Function to add a team to the Firestore database
 export const addTeamToDatabase = async (db: Firestore, teamName: string) => {

@@ -1,9 +1,10 @@
+import { Timestamp } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 import Badge from 'react-bootstrap/Badge';
 import Image from 'react-bootstrap/Image';
 import correctImage from "../assets/Correct.png";
 import incorrectImage from "../assets/Incorrect.png";
 
-interface Match { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }
+interface Match { matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: string };
 
 function pickemResult(match: Match, pick: string) {
   if (match.winner === "-1") {

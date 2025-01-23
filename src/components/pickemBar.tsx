@@ -1,15 +1,16 @@
 import React from 'react';
+import { Timestamp } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
+
 import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
-import { Match } from './Pickem'; // Assuming this is your Match type
 import pickemResult from "./pickemResult";
 import imagea from "../assets/faker.png"; // Correct image path
 
 interface PickemBarProps {
-  match: Match;
+  match: { matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: string };
   userPick: string;
   teams: Map<string, string>;
-  handlePick: (matchId: number, teamId: string) => void;
+  handlePick: (matchId: string, teamId: string) => void;
 }
 
 const PickemBar: React.FC<PickemBarProps> = ({ match, userPick, teams, handlePick }) => {

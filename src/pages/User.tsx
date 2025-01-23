@@ -68,6 +68,8 @@ const User = ({ db }: UserPanelProps) => {
 
     try {
       // Add discord name to user profile
+      if (auth.currentUser === null) {return};
+
       await updateDoc(doc(db, "users", auth.currentUser.uid), {
         discordUsername: discordName
       });

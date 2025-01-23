@@ -20,7 +20,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* DO NOT USE THIS FOR PROD */
+    "noImplicitAny": false,
   },
   "include": ["src"]
 }

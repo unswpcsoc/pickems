@@ -18,7 +18,7 @@ function isOpen(match: any) {
 
 const Pickem = ({ db }: UserPanelProps) => {
   const [activeMatches, setActiveMatches] = useState<
-    { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
+    { matchId: string; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
   >([]);
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
   const [teams, setTeams] = useState<Map<string, string>>(new Map());
@@ -73,7 +73,7 @@ const Pickem = ({ db }: UserPanelProps) => {
     };
   }, [db]);
 
-  const handlePick = async (matchId: number, teamId: string) => {
+  const handlePick = async (matchId: string, teamId: string) => {
     const match = activeMatches.find((m) => m.matchId === matchId);
     if (!match || !isOpen(match)) {
       return;
