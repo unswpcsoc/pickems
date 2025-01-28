@@ -1,9 +1,9 @@
 // src/database.ts
 import { v4 as uuidv4} from 'uuid';
-import { collection, doc, getDoc, setDoc, updateDoc, Firestore, Timestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, Firestore, Timestamp } from "firebase/firestore";
 
 // Function to add a team to the Firestore database
-export const addTeamToDatabase = async (db: Firestore, teamName: string) => {
+export const addTeamToDatabase = async (db: Firestore, teamName: string, teamColour: string, teamLogoUrl: string) => {
   if (!teamName) {
     console.log('No team name provided');
     return false;
@@ -19,7 +19,11 @@ export const addTeamToDatabase = async (db: Firestore, teamName: string) => {
     }
 
     const teamId = uuidv4();
-    teamsData[teamId] = { name: teamName };
+    teamsData[teamId] = {
+      name: teamName,
+      teamColour: teamColour,
+      teamLogoUrl: teamLogoUrl,
+    };
 
     await setDoc(teamsDocRef, teamsData);  // Update the entire document with the new map
     console.log('Team added successfully');
@@ -61,7 +65,6 @@ export const addMatchToDatabase = async (
   }
 ) => {
   const { matchTeam1, matchTeam2, category, points, closeTime } = formData;
-
   if (!matchTeam1 || !matchTeam2 || !category || !points || !closeTime) {
     console.log('Please fill out all fields');
     return false;

@@ -23,3 +23,19 @@ input {
   margin: 5px;
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.container {
+  width: 100%;
+  overflow-x: hidden; /* Ensure content stays within the container */
+}
+
+.match-container {
+  max-width: 100%;
+  box-sizing: border-box; /* Prevent overflow */
+  overflow: hidden; /* Hide overflow */
+}

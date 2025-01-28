@@ -21,7 +21,7 @@ const Pickem = ({ db }: UserPanelProps) => {
     { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
   >([]);
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
-  const [teams, setTeams] = useState<Map<string, string>>(new Map());
+  const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogoUrl: string }}>({});
 
   useEffect(() => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
@@ -41,7 +41,7 @@ const Pickem = ({ db }: UserPanelProps) => {
         }));
 
         matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
-        matchList = matchList.filter(isOpen);
+        // matchList = matchList.filter(isOpen);
 
         setActiveMatches(matchList);
       }
@@ -59,11 +59,18 @@ const Pickem = ({ db }: UserPanelProps) => {
     const unsubscribeTeams = onSnapshot(doc(db, 'teams', "teamData"), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const teamsData = docSnapshot.data();
-        const teamMap = new Map<string, string>();
-        Object.keys(teamsData).forEach((id) => {
-          teamMap.set(id, teamsData[id].name);
-        });
-        setTeams(teamMap);
+        // console.log(teamsData)
+
+        const teamList = Object.keys(teamsData).reduce((acc, id) => {
+          acc[id] = {
+            name: teamsData[id].name,
+            colour: teamsData[id].teamColour,
+            teamLogoUrl: teamsData[id].teamLogoUrl,
+          };
+          return acc;
+        }, {});
+
+        setTeams(teamList);
       }
     });
 
@@ -89,9 +96,11 @@ const Pickem = ({ db }: UserPanelProps) => {
   };
 
   return (
-    <div style={{ width: "95vw", margin: "auto" }}>
-      <br />
-      <h1>Pick'em Matches</h1>
+    <div style={{ width: "100vw", margin: "auto" }}>
+      <br/>
+      <div style={{ outline: "5px solid grey", paddingTop:"4px", paddingBottom:"4px", marginBottom:"24px"}}>
+        <h2 style={{ marginLeft:"30px" }}>Pick'em Matches</h2>
+      </div>
       {activeMatches.length === 0 ? (
         <p>No matches available.</p>
       ) : (

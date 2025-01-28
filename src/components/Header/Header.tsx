@@ -2,7 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import pcsocLogo from "../assets/pcsoc.png";
+import pcsocLogo from "../../assets/pcsoc.png";
 
 interface NavbarProps {
   user: any;

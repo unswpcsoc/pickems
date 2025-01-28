@@ -1,21 +1,14 @@
 // src/components/AdminPanel.tsx
 import { useState, useEffect } from 'react';
-import { TypesOfMatches } from "../defines";
 import { rank_users } from "../utils";
 
 import { getAuth } from "firebase/auth";
 import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
-import { addTeamToDatabase, addMatchToDatabase } from "../firebase/database"; 
-import { getStorage, ref } from "firebase/storage";
+import { getStorage } from "firebase/storage";
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { teamCard } from "../components"
+import { teamCard, TeamBuilder, MatchBuilder } from "../components"
 import DataTable from 'react-data-table-component';
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
@@ -27,18 +20,7 @@ type UserPanelProps = {
   db: Firestore; 
 };
 
-
 const Admin = ({ db }: UserPanelProps) => {
-  // States for forms/input when making teams and matches
-  const [teamName, setTeamName] = useState<string>('');
-  const [formData, setFormData] = useState({
-    matchTeam1: '',
-    matchTeam2: '',
-    category: '',
-    points: '',
-    closeTime: ''
-  });
-
   // States for team and match display
   const [teamOptions, setTeamOptions] = useState<{ name: string, id: string }[]>([]);
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
@@ -52,6 +34,7 @@ const Admin = ({ db }: UserPanelProps) => {
         const teamsList = Object.keys(teamsData).map(id => ({
           name: teamsData[id].name,
           id: id,
+          teamColour: teamsData[id].teamColour
         }));
         setTeamOptions(teamsList);
       }
@@ -102,34 +85,6 @@ const Admin = ({ db }: UserPanelProps) => {
       unsubscribeTeams();
     };
   }, [db]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const addTeam = async () => {
-    const success = await addTeamToDatabase(db, teamName);
-    if (success) {
-      setTeamName('');
-    }
-  };
-
-  const addMatch = async () => {
-    const success = await addMatchToDatabase(db, formData);
-    if (success) {
-      setFormData({
-        matchTeam1: '',
-        matchTeam2: '',
-        category: '',
-        points: '',
-        closeTime: '',
-      });
-    }
-  };
 
   const closePickem = async (matchId: string) => {
     try {
@@ -290,124 +245,21 @@ const Admin = ({ db }: UserPanelProps) => {
         className="mb-3"
       >
         <Tab eventKey="match" title="Matches">
-        <h3>Create Match</h3>
-        <Form>
-          <Row className="mb-3">
-            <Col md={6}>
-              <Form.Group controlId="formMatchTeam1">
-                <Form.Label>Select Team 1</Form.Label>
-                <Form.Select
-                  name="matchTeam1"
-                  value={formData.matchTeam1}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Team 1</option>
-                  {teamOptions.map((team) => (
-                    <option key={team.id} value={team.id}>{team.name}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-
-            <Col md={6}>
-              <Form.Group controlId="formMatchTeam2">
-                <Form.Label>Select Team 2</Form.Label>
-                <Form.Select
-                  name="matchTeam2"
-                  value={formData.matchTeam2}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Team 2</option>
-                  {teamOptions.map((team) => (
-                    <option key={team.id} value={team.id}>{team.name}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <Form.Group controlId="formMatchCategory">
-                <Form.Label>Select Match Category</Form.Label>
-                <Form.Select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Category</option>
-                  {Object.keys(TypesOfMatches).map((matchTypeKey) => (
-                    <option key={matchTypeKey} value={TypesOfMatches[matchTypeKey as keyof typeof TypesOfMatches]}>
-                      {matchTypeKey}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col>
-
-            <Col md={6}>
-              <Form.Group controlId="formMatchPoints">
-                <Form.Label>Points</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="points"
-                  value={formData.points}
-                  onChange={handleChange}
-                  placeholder="Points"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <Form.Group controlId="formMatchCloseTime">
-                <Form.Label>Pickem Close Time</Form.Label>
-                <Form.Control
-                  type="datetime-local"
-                  name="closeTime"
-                  value={formData.closeTime}
-                  onChange={handleChange}
-                  placeholder="Time to close pickem"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          {/* Submit Button */}
-          <Button variant="primary" type="button" onClick={addMatch}>
-            Create Match
-          </Button>
-        </Form>
-        
-        {/* Matches Table */}
-        <DataTable
-          title="Matches"
-          columns={columns}
-          data={matches}
-          defaultSortFieldId={1}
-        />
+          <MatchBuilder db={db} teamOptions={teamOptions}/>
+          
+          {/* Matches Table */}
+          <DataTable
+            title="Matches"
+            columns={columns}
+            data={matches}
+            defaultSortFieldId={1}
+          />
         </Tab>
+
         <Tab eventKey="teams" title="Teams">
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicName">
-              <h3>Create Team</h3>
-              <Form.Label>Team Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                placeholder="SKT1"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="primary" type="button" onClick={addTeam}>
-              Submit
-            </Button>
-          </Form>
+          <TeamBuilder db={db} />
 
           <h3>Teams</h3>
-
           <div
             style={{
               display: 'flex',
