@@ -1,15 +1,14 @@
 import { useState } from "react";
+import { auth, db } from "../firebase/index";
+
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User  } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, User  } from "firebase/auth";
 import { registerUser } from "../firebase/authentication";
-import { getFirestore, doc, setDoc, getDoc, Timestamp  } from "firebase/firestore";
+import { doc, setDoc, getDoc, Timestamp  } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-
-const auth = getAuth();
-const db = getFirestore();
 
 const Signup = () => {
   const [formData, setFormData] = useState({

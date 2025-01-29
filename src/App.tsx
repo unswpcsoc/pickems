@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { app } from './firebase';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { auth } from './firebase/index';
+import { onAuthStateChanged } from "firebase/auth";
 import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard } from './pages';
 import { Header, Footer } from './components';
-
-const auth = getAuth(app);
-const db = getFirestore(app);
 
 function App() {
   const [user, setUser] = useState<any>(null);
@@ -57,19 +53,19 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/admin"
-            element={(user && user.emailVerified) ? <Admin db={db} /> : <Login />}
+            element={(user && user.emailVerified) ? <Admin /> : <Login />}
           />
           <Route
             path="/user"
-            element={user ? <User db={db} /> : <Login />}
+            element={user ? <User /> : <Login />}
           />
           <Route
             path="/pickems"
-            element={(user && user.emailVerified) ? <Pickem db={db} /> : <Login />}
+            element={(user && user.emailVerified) ? <Pickem /> : <Login />}
           />
           <Route
             path="/leaderboard"
-            element={(user && user.emailVerified) ? <Leaderboard db={db} /> : <Login />}
+            element={(user && user.emailVerified) ? <Leaderboard /> : <Login />}
           />
           {!user && (
             <>

@@ -1,22 +1,17 @@
 // src/components/Pickem.tsx
 import { useState, useEffect } from 'react';
-import { Firestore, doc, updateDoc, onSnapshot } from 'firebase/firestore';
-import { getAuth, User } from 'firebase/auth';
+import { auth, db } from "../firebase/index";
+import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { User } from 'firebase/auth';
 import { PickemBar } from '../components'; // Import the PickemBar component
 
 import './User.css';
-
-type UserPanelProps = {
-  db: Firestore;
-};
-
-const auth = getAuth();
 
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
 
-const Pickem = ({ db }: UserPanelProps) => {
+const Pickem = () => {
   const [activeMatches, setActiveMatches] = useState<
     { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
   >([]);

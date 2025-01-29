@@ -1,21 +1,16 @@
 import { useState, useEffect } from 'react';
+import { auth, db } from "../firebase/index";
 import { useNavigate } from 'react-router-dom';
 import { getOrdinalSuffix } from "../utils";
-import { getDoc, doc, Firestore, updateDoc } from "firebase/firestore";  // For fetching data from Firestore
-import { getAuth, signOut } from "firebase/auth";  // For logging out the user
+import { getDoc, doc, updateDoc } from "firebase/firestore";  // For fetching data from Firestore
+import { signOut } from "firebase/auth";  // For logging out the user
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 
-type UserPanelProps = {
-  db: Firestore; 
-};
-
-const auth = getAuth();
-
-const User = ({ db }: UserPanelProps) => {
+const User = () => {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState<{

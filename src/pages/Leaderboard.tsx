@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getOrdinalSuffix } from "../utils";
-
-import { Firestore, doc, onSnapshot } from 'firebase/firestore';
+import { db } from "../firebase/index";
+import { doc, onSnapshot } from 'firebase/firestore';
 import './User.css';
 
 import DataTable from 'react-data-table-component';
 
-type UserPanelProps = {
-  db: Firestore;
-};
-
-const Leaderboard = ({ db }: UserPanelProps) => {
+const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
 
   useEffect(() => {

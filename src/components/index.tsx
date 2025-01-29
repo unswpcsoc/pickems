@@ -1,6 +1,6 @@
 export {default as Header} from "./Header/Header";
 // export {default as DiscordAlert} from "./DiscordAlert";
-export {default as teamCard} from "./teamCards";
+export {default as teamCard} from "./TeamEditor/TeamCards";
 export {default as pickemResult} from "./PickemSelector/pickemResult";
 export {default as PickemBar} from "./PickemSelector/pickemBar";
 export {default as Footer} from "./Footer/Footer";

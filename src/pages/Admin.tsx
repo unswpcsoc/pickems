@@ -1,10 +1,8 @@
 // src/components/AdminPanel.tsx
 import { useState, useEffect } from 'react';
+import { db } from "../firebase/index";
 import { rank_users } from "../utils";
-
-import { getAuth } from "firebase/auth";
-import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
-import { getStorage } from "firebase/storage";
+import { collection, query, getDocs, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -13,16 +11,10 @@ import DataTable from 'react-data-table-component';
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
-const auth = getAuth();
-const storage = getStorage();
 
-type UserPanelProps = {
-  db: Firestore; 
-};
-
-const Admin = ({ db }: UserPanelProps) => {
+const Admin = () => {
   // States for team and match display
-  const [teamOptions, setTeamOptions] = useState<{ name: string, id: string }[]>([]);
+  const [teamOptions, setTeamOptions] = useState<{ name: string, id: string, teamColour: string, teamLogo: string }[]>([]);
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
   const [teams, setTeams] = useState<Map<string, string>>(new Map());
 
@@ -34,7 +26,8 @@ const Admin = ({ db }: UserPanelProps) => {
         const teamsList = Object.keys(teamsData).map(id => ({
           name: teamsData[id].name,
           id: id,
-          teamColour: teamsData[id].teamColour
+          teamColour: teamsData[id].teamColour,
+          teamLogo: teamsData[id].teamLogoUrl,
         }));
         setTeamOptions(teamsList);
       }
@@ -277,7 +270,7 @@ const Admin = ({ db }: UserPanelProps) => {
                 }}
               >
                 {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
-                {teamCard(team.name, '')} 
+                {teamCard(team.name, team.teamLogo)} 
               </div>
             ))}
           </div>
