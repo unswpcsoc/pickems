@@ -14,22 +14,25 @@ function isOpen(match: any) {
 
 const Admin = () => {
   // States for team and match display
-  const [teamOptions, setTeamOptions] = useState<{ name: string, id: string, teamColour: string, teamLogo: string }[]>([]);
+  const [teams, setTeams] = useState<Map<string, {name: string, teamColour: string, teamLogo: string}>>(new Map());
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
-  const [teams, setTeams] = useState<Map<string, string>>(new Map());
+  const [graphTeams, setGraphTeams] = useState<Map<string, string>>(new Map());
 
   // Using snapshot to update both teams and matches on server update
   useEffect(() => {
     const fetchTeams = onSnapshot(doc(db, "teams", "teamData"), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const teamsData = docSnapshot.data();
-        const teamsList = Object.keys(teamsData).map(id => ({
-          name: teamsData[id].name,
-          id: id,
-          teamColour: teamsData[id].teamColour,
-          teamLogo: teamsData[id].teamLogoUrl,
-        }));
-        setTeamOptions(teamsList);
+        const teams =  new Map<string, {name: string, teamColour: string, teamLogo: string}>();
+        Object.keys(teamsData).forEach((id) => {
+          teams.set(id, {
+            name: teamsData[id].name, 
+            teamColour: teamsData[id].teamColour, 
+            teamLogo: teamsData[id].teamLogo
+          })
+        })
+
+        setTeams(teams);
       }
     }, (error) => {
       console.error("Error fetching teams: ", error);
@@ -64,10 +67,7 @@ const Admin = () => {
         Object.keys(teamsData).forEach((id) => {
           teamMap.set(id, teamsData[id].name);
         });
-
-        console.log(teamMap)
-
-        setTeams(teamMap);
+        setGraphTeams(teamMap);
       }
     });
 
@@ -196,12 +196,12 @@ const Admin = () => {
     },
     {
       name: 'team1',
-      selector: match => teams.get(match.team1Id),
+      selector: match => graphTeams.get(match.team1Id),
       cell: (match) => {
         if (match.winner === "-1") {
-          return <button onClick={() => setWinner(match.matchId, match.team1Id)}>{teams.get(match.team1Id)}</button>
+          return <button onClick={() => setWinner(match.matchId, match.team1Id)}>{graphTeams.get(match.team1Id)}</button>
         } else {
-          return teams.get(match.team1Id);
+          return graphTeams.get(match.team1Id);
         }
       }
     },
@@ -209,15 +209,15 @@ const Admin = () => {
       name: 'team2',
       cell: (match) => {
         if (match.winner === "-1") {
-          return <button onClick={() => setWinner(match.matchId, match.team2Id)}>{teams.get(match.team2Id)}</button>
+          return <button onClick={() => setWinner(match.matchId, match.team2Id)}>{graphTeams.get(match.team2Id)}</button>
         } else {
-          return teams.get(match.team2Id);
+          return graphTeams.get(match.team2Id);
         }
       },
     },
     {
       name: 'winner',
-      selector: match => teams.get(match.winner),
+      selector: match => graphTeams.get(match.winner),
       sortable: true,
     },
     {
@@ -238,7 +238,7 @@ const Admin = () => {
         className="mb-3"
       >
         <Tab eventKey="match" title="Matches">
-          <MatchBuilder db={db} teamOptions={teamOptions}/>
+          <MatchBuilder db={db} teamOptions={teams}/>
           
           {/* Matches Table */}
           <DataTable
@@ -261,16 +261,15 @@ const Admin = () => {
               justifyContent: 'flex-start', // Aligns cards to the left
             }}
           >
-            {teamOptions.map((team) => (
+            {Array.from(teams.entries()).map(([id, team]) => (
               <div
-                key={team.id}
                 style={{
                   flex: '0 0 286px', // Fixed box width
                   boxSizing: 'border-box',
                 }}
               >
                 {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
-                {teamCard(team.name, team.teamLogo)} 
+                {teamCard(id, team)} 
               </div>
             ))}
           </div>

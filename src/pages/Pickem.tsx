@@ -16,7 +16,7 @@ const Pickem = () => {
     { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
   >([]);
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
-  const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogoUrl: string }}>({});
+  const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogo: string }}>({});
 
   useEffect(() => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
@@ -60,7 +60,7 @@ const Pickem = () => {
           acc[id] = {
             name: teamsData[id].name,
             colour: teamsData[id].teamColour,
-            teamLogoUrl: teamsData[id].teamLogoUrl,
+            teamLogo: teamsData[id].teamLogo,
           };
           return acc;
         }, {});

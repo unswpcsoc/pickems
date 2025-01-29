@@ -17,8 +17,8 @@ type UserPanelProps = {
 const TeamBuilder = ({ db }: UserPanelProps) => {
   // States for forms/input when making teams and matches
   const [teamName, setTeamName] = useState<string>('');
-  const [teamColour, setteamColour] = useState("#ff0000");
-  const [teamLogoUrl, setTeamLogoUrl] = useState<string>('');
+  const [teamColour, setTeamColour] = useState("#ff0000");
+  const [teamLogo, setTeamLogo] = useState<string>('');
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const addTeam = async () => {
@@ -27,10 +27,10 @@ const TeamBuilder = ({ db }: UserPanelProps) => {
       return;
     }
 
-    const success = await addTeamToDatabase(db, teamName, teamColour, teamLogoUrl);
+    const success = await addTeamToDatabase(db, teamName, teamColour, teamLogo);
     if (success) {
       setTeamName('');
-      setteamColour("#ff0000");
+      setTeamColour("#ff0000");
       setIsImageUploaded(false);
     }
   };
@@ -55,12 +55,12 @@ const TeamBuilder = ({ db }: UserPanelProps) => {
             <Form.Group className="mb-3" controlId="formBasicName">
             <label htmlFor="teamColour">Select Team Color:</label>
             <br></br>
-            <input type="color" id="teamColour" name="teamColour" value={teamColour} onChange={(e) => setteamColour(e.target.value)} />
+            <input type="color" id="teamColour" name="teamColour" value={teamColour} onChange={(e) => setTeamColour(e.target.value)} />
             </Form.Group>
           </Col>
 
           <Col md={6}>
-            <ImageUpload onFileUpload={setIsImageUploaded} onTeamLogo={setTeamLogoUrl}/>
+            <ImageUpload onFileUpload={setIsImageUploaded} onTeamLogo={setTeamLogo}/>
           </Col>
         </Row>
 

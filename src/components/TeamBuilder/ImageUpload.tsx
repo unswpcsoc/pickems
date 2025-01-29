@@ -1,6 +1,6 @@
-// ImageUpload Component
 import React, { useState } from 'react';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, getMetadata } from 'firebase/storage';
+import Button from 'react-bootstrap/Button';
 
 type ImageUploadProps = {
   // callbacks to notify TeamBuilder of the upload status/url
@@ -12,6 +12,7 @@ const ImageUpload = ({ onFileUpload, onTeamLogo }: ImageUploadProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [url, setUrl] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("")
 
   const storage = getStorage();
 
@@ -24,11 +25,29 @@ const ImageUpload = ({ onFileUpload, onTeamLogo }: ImageUploadProps) => {
     }
   };
 
+  // Check if file already exists in Firebase Storage
+  const checkIfFileExists = async (fileRef: any) => {
+    try {
+      await getMetadata(fileRef);  // Attempt to get the file's metadata
+      return true; // File exists
+    } catch (error) {
+      return false; // File does not exist
+    }
+  };
+
   // Upload file to Firebase Storage
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!file) return;
 
     const fileRef = ref(storage, `uploads/${file.name}`);
+
+    // First check if the file already exists
+    const fileExists = await checkIfFileExists(fileRef);
+    if (fileExists) {
+      setErrorMessage('This file already exists! Please either rename it or contact tech support!\n Hint: This is due to the fact a file with the same name exists in the storage system.');
+      return; // Stop the upload if the file exists
+    }
+
     const uploadTask = uploadBytesResumable(fileRef, file);
 
     uploadTask.on(
@@ -62,11 +81,14 @@ const ImageUpload = ({ onFileUpload, onTeamLogo }: ImageUploadProps) => {
           <p>File size: {(file.size / 1024).toFixed(2)} KB</p>
         </div>
       )}
-      <button type="button" onClick={handleUpload} disabled={!file}>
+      <Button type="button" onClick={handleUpload} disabled={!file}>
         Upload
-      </button>
+      </Button>
       {progress > 0 && progress < 100 && (
         <div>Uploading: {Math.round(progress)}%</div>
+      )}
+      {errorMessage !== "" && (
+        <p>{errorMessage}</p>
       )}
       {url && (
         <div>

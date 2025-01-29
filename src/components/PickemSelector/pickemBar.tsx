@@ -8,7 +8,7 @@ import imagea from "../../assets/faker.png"; // Correct image path
 interface PickemBarProps {
   match: Match;
   userPick: string;
-  teams: { [key: string]: { name: string, colour: string, teamLogoUrl: string } };
+  teams: { [key: string]: { name: string, colour: string, teamLogo: string } };
   handlePick: (matchId: number, teamId: string) => void;
 }
 
@@ -45,7 +45,7 @@ const PickemBar: React.FC<PickemBarProps> = ({ match, userPick, teams, handlePic
 
               <div className="team-center">
                 <div className="team-image">
-                  <img src={teams[match.team1Id]?.teamLogoUrl || imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
+                  <img src={teams[match.team1Id]?.teamLogo || imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
                 </div>
                 <div className="team-name">
                   {teams[match.team1Id]?.name}
@@ -82,7 +82,7 @@ const PickemBar: React.FC<PickemBarProps> = ({ match, userPick, teams, handlePic
 
               <div className="team-center">
                 <div className="team-image">
-                  <img src={teams[match.team2Id]?.teamLogoUrl ||  imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
+                  <img src={teams[match.team2Id]?.teamLogo ||  imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
                 </div>
                 <div className="team-name">
                   {teams[match.team2Id]?.name}

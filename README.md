@@ -30,15 +30,28 @@ Database
 - [ ] Configure read/write perms
 - [X] Store pickems
 
+Storage
+- [X] Set up storage db for team images
+- [ ] Method to delete images that are no longer in use
+
 Pickem (admin)
 - [X] Create a teams
-- [ ] Store a team's image
+- [X] Store a team's image
+- [X] Colour picker to choose a team's colour accent in pickems.
 - [X] Create a match
 - [X] Pick a winner
 - [X] Update all user scores after a winner is chosen
+- [ ] Edit team features
+- [ ] Edit match features
 - [ ] Option to update leaderboard
 
 Pickem (user)
 - [X] Choose a team for each pickem
 - [X] Rechoose pickems
 - [X] See current score
+
+UI work
+- [ ] Pickem (concise and descriptive)
+- [ ] Leaderboard (cleaner akin to league 2024 pickems or CR leaderboard)
+- [ ] Home page (content + UI)
+- [ ] Colour scheme (dark mode !!!)

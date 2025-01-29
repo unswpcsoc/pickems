@@ -12,7 +12,11 @@ import Col from 'react-bootstrap/Col';
 
 type UserPanelProps = {
   db: Firestore;
-  teamOptions: { name: string, id: string }[];
+  teamOptions: Map<string, {
+    name: string;
+    teamColour: string;
+    teamLogo: string;
+  }>
 };
 
 const MatchBuilder = ({ db, teamOptions }: UserPanelProps) => { 
@@ -62,8 +66,8 @@ const MatchBuilder = ({ db, teamOptions }: UserPanelProps) => {
                 onChange={handleChange}
               >
                 <option value="">Select Team 1</option>
-                {teamOptions.map((team) => (
-                  <option key={team.id} value={team.id}>{team.name}</option>
+                {Array.from(teamOptions.entries()).map(([id, team]) => (
+                  <option key={id} value={id}>{team.name}</option>
                 ))}
               </Form.Select>
             </Form.Group>
@@ -78,8 +82,8 @@ const MatchBuilder = ({ db, teamOptions }: UserPanelProps) => {
                 onChange={handleChange}
               >
                 <option value="">Select Team 2</option>
-                {teamOptions.map((team) => (
-                  <option key={team.id} value={team.id}>{team.name}</option>
+                {Array.from(teamOptions.entries()).map(([id, team]) => (
+                  <option key={id} value={id}>{team.name}</option>
                 ))}
               </Form.Select>
             </Form.Group>

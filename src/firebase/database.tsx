@@ -3,7 +3,7 @@ import { v4 as uuidv4} from 'uuid';
 import { doc, getDoc, setDoc, Firestore, Timestamp } from "firebase/firestore";
 
 // Function to add a team to the Firestore database
-export const addTeamToDatabase = async (db: Firestore, teamName: string, teamColour: string, teamLogoUrl: string) => {
+export const addTeamToDatabase = async (db: Firestore, teamName: string, teamColour: string, teamLogo: string) => {
   if (!teamName) {
     console.log('No team name provided');
     return false;
@@ -22,7 +22,7 @@ export const addTeamToDatabase = async (db: Firestore, teamName: string, teamCol
     teamsData[teamId] = {
       name: teamName,
       teamColour: teamColour,
-      teamLogoUrl: teamLogoUrl,
+      teamLogo: teamLogo,
     };
 
     await setDoc(teamsDocRef, teamsData);  // Update the entire document with the new map
