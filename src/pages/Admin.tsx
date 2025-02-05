@@ -23,6 +23,7 @@ const Admin = () => {
     const fetchTeams = onSnapshot(doc(db, "teams", "teamData"), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const teamsData = docSnapshot.data();
+        console.log(teamsData);
         const teams =  new Map<string, {name: string, teamColour: string, teamLogo: string}>();
         Object.keys(teamsData).forEach((id) => {
           teams.set(id, {
@@ -173,13 +174,13 @@ const Admin = () => {
   const columns = [
     {
       name: 'closeTime',
-      selector: match => new Date(match.closeTime.seconds * 1000).toLocaleString(),
+      selector: (match: any) => new Date(match.closeTime.seconds * 1000).toLocaleString(),
       sortable: true,
       sortFunction: (a, b) => a.closeTime.seconds - b.closeTime.seconds
     },
     {
       name: 'Category',
-      selector: match => match.category,
+      selector: (match: any) => match.category,
       sortable: true,
     },
     {

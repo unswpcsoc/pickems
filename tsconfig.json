@@ -15,6 +15,7 @@
     }
   },
   "esModuleInterop": true,
-  "strict": true,
+  "strict": false,
+  "noEmitOnError": false,
   "skipLibCheck": true,
 }

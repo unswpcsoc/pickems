@@ -1,12 +1,11 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
-import { Match } from './Pickem';
 import { pickemResult } from "../../components";
 import imagea from "../../assets/faker.png"; // Correct image path
 
 interface PickemBarProps {
-  match: Match;
+  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string };
   userPick: string;
   teams: { [key: string]: { name: string, colour: string, teamLogo: string } };
   handlePick: (matchId: number, teamId: string) => void;

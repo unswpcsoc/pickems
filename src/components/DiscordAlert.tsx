@@ -1,8 +1,8 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
 function DiscordAlert() {
-const [show, setShow] = useState(false);
+const show = false;
 
   if (show) {
     return (

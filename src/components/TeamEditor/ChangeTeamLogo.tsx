@@ -38,9 +38,8 @@ const ChangeTeamColour = ({ id, teamData }: ChangeTeamColourProps) => {
 
       // Delete the old logo (DOESNT WORK- NEED TO REGEX URL)
       deleteObject(oldLogoRef).then(() => {
-      }).catch((error) => {
-        // Should NEVER GET TO HERE
-        console.log("Debug statement 4")
+      }).catch((e) => {
+        console.log(e);
       });
       handleClose();
     } catch (error) {
