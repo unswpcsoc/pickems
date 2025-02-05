@@ -8,9 +8,17 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { teamCard, TeamBuilder, MatchBuilder } from "../components"
 import DataTable from 'react-data-table-component';
+import { createTheme } from 'react-data-table-component';
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
+
+createTheme('dark', {
+  background: {
+    default: 'transparent',
+  },
+});
+
 
 const Admin = () => {
   // States for team and match display
@@ -247,6 +255,7 @@ const Admin = () => {
             columns={columns}
             data={matches}
             defaultSortFieldId={1}
+            theme="dark"
           />
         </Tab>
 

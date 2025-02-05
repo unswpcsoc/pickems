@@ -5,6 +5,12 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import './User.css';
 
 import DataTable from 'react-data-table-component';
+import { createTheme } from 'react-data-table-component';
+createTheme('dark', {
+  background: {
+    default: 'transparent',
+  },
+});
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
@@ -59,6 +65,7 @@ const Leaderboard = () => {
         columns={columns}
         data={leaderboard}
         defaultSortFieldId={1}
+        theme='dark'
       />
     </div>
   );
