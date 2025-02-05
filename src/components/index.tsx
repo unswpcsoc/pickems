@@ -8,3 +8,4 @@ export {default as Footer} from "./Footer/Footer";
 export {default as TeamBuilder} from "./TeamBuilder/TeamBuilder";
 export {default as ImageUpload} from "./TeamBuilder/ImageUpload";
 export {default as MatchBuilder} from "./MatchBuilder/MatchBuilder";
+export {default as EmailVerificationAlert} from "./EmailVerificationAlert/EmailVerificationAlert";

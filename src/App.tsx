@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { auth } from './firebase/index';
 import { onAuthStateChanged } from "firebase/auth";
 import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard } from './pages';
-import { Header, Footer } from './components';
+import { Header, Footer, EmailVerificationAlert } from './components';
 
 function App() {
   const [user, setUser] = useState<any>(null);
@@ -46,6 +46,7 @@ function App() {
       <header>
         <Header user={user} />
       </header>
+      {user && (<EmailVerificationAlert verified={user.emailVerified as boolean} />)}
 
       <main style={{ minHeight: '100vh' }}>  {/* Ensure the main content area is at least 100vh */}
         <Routes>
