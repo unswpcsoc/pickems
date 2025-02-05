@@ -1,5 +1,5 @@
 .footer {
-  background-color: #f4f4f4;
+  background-color: #000000;
   padding: 2rem;
   font-family: Arial, sans-serif;
 }
@@ -37,7 +37,7 @@
 .footer-links a,
 .footer-socials a,
 .footer-contact a {
-  color: #333;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -50,6 +50,6 @@
 .footer-bottom {
   text-align: center;
   font-size: 0.9rem;
-  color: #777;
+  color: #ffffff;
   margin-top: 1rem;
 }

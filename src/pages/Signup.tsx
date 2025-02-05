@@ -38,10 +38,10 @@ const Signup = () => {
         return;
       }
 
-      // if (!formData.email.endsWith("edu.au")) {
-      //   setError("You are not registering with a University email (edu.au), please try Google Sign in");
-      //   return;
-      // }
+      if (!formData.email.endsWith("edu.au")) {
+        setError("You are not registering with a University email (edu.au), please try Google Sign in");
+        return;
+      }
 
       // Register user
       await registerUser(formData.name, formData.email, formData.password, formData.discordUsername);
@@ -155,6 +155,9 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
             />
+            <Form.Text className="text-muted">
+              Note: Passwords must be 6 characters or longer and contain at least 1 uppercase letter, lowercase letter, and numeric character.
+            </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicConfirmPassword">

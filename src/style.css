@@ -38,4 +38,5 @@ body, html {
   max-width: 100%;
   box-sizing: border-box; /* Prevent overflow */
   overflow: hidden; /* Hide overflow */
+  border: none;
 }

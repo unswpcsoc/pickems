@@ -4,6 +4,7 @@ import { auth, db } from "../firebase/index";
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import { PickemBar } from '../components'; // Import the PickemBar component
+import { Button } from "react-bootstrap";
 
 import './User.css';
 
@@ -15,6 +16,7 @@ const Pickem = () => {
   const [activeMatches, setActiveMatches] = useState<
     { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
   >([]);
+  const [userScore, setUserScore] = useState<number>(0)
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
   const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogo: string }}>({});
 
@@ -48,6 +50,7 @@ const Pickem = () => {
       if (docSnapshot.exists()) {
         const picks = docSnapshot.data().picks;
         setUserPicks(picks);
+        setUserScore(docSnapshot.data().score);
       }
     });
 
@@ -93,8 +96,15 @@ const Pickem = () => {
   return (
     <div style={{ width: "100vw", margin: "auto" }}>
       <br/>
-      <div style={{ outline: "5px solid grey", paddingTop:"4px", paddingBottom:"4px", marginBottom:"24px"}}>
-        <h2 style={{ marginLeft:"30px" }}>Pick'em Matches</h2>
+      <div style={{ outline: "1px solid grey", paddingTop: "4px", paddingBottom: "4px", marginBottom: "24px", display: "flex", justifyContent: "space-between" }}>
+        <div>
+          <h2 style={{ marginLeft: "20px" }}>Pick'em Matches</h2>
+        </div>
+        <div style={{ display: "flex", gap: "10px", textAlign: "right", marginRight:"20px" }}>
+          <div>Info</div>
+          <div>Prizes</div>
+          <div><Button variant="outline-info" size="lg" active disabled>Points: {userScore}</Button></div>
+        </div>
       </div>
       {activeMatches.length === 0 ? (
         <p>No matches available.</p>

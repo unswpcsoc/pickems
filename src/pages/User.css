@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between team and details */
-  border: 1px solid #ffffff;
   border-radius: 8px;
   margin: 10px 0;
   padding: 15px;

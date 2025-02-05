@@ -8,8 +8,8 @@ const HomePage = () => {
       <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'center', marginRight: '16px', color: 'white' }}>
         <iframe
           src="https://player.twitch.tv/?channel=unswpcsoc&parent=localhost&parent=alexgao.au"
-          height="100%"
-          width="95vw"
+          width="100%"
+          height="800"
           title="Faker Stream"
           frameBorder="0"
           allowFullScreen={true}
