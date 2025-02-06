@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { auth } from './firebase/index';
 import { onAuthStateChanged } from "firebase/auth";
-import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard } from './pages';
+import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard, InfoAndPrize } from './pages';
 import { Header, Footer, EmailVerificationAlert } from './components';
 
 function App() {
@@ -51,6 +51,7 @@ function App() {
       <main style={{ minHeight: '100vh' }}>  {/* Ensure the main content area is at least 100vh */}
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/InfoAndPrize" element={<InfoAndPrize />} />
           <Route
             path="/admin"
             element={(user && user.emailVerified) ? <Admin /> : <Login />}

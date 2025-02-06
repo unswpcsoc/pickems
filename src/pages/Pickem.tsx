@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { auth, db } from "../firebase/index";
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
-import { PickemBar } from '../components'; // Import the PickemBar component
+import { PickemComponent } from '../components'; // Import the PickemBar component
 import { Button } from "react-bootstrap";
 
 import './User.css';
@@ -97,12 +97,11 @@ const Pickem = () => {
     <div style={{ width: "100vw", margin: "auto" }}>
       <br/>
       <div style={{ outline: "1px solid grey", paddingTop: "4px", paddingBottom: "4px", marginBottom: "24px", display: "flex", justifyContent: "space-between" }}>
-        <div>
-          <h2 style={{ marginLeft: "20px" }}>Pick'em Matches</h2>
+        <div style={{ display: "flex", gap: "10px", textAlign: "right", marginLeft:"20px", alignItems: "center" }}>
+          <h2>Pick'em Matches</h2>
         </div>
-        <div style={{ display: "flex", gap: "10px", textAlign: "right", marginRight:"20px" }}>
-          <div>Info</div>
-          <div>Prizes</div>
+        <div style={{ display: "flex", gap: "10px", textAlign: "right", marginRight:"20px", alignItems: "center" }}>
+          <a href="/InfoAndPrize" rel="noopener noreferrer">Info and Prizes</a>
           <div><Button variant="outline-info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>
@@ -110,7 +109,7 @@ const Pickem = () => {
         <p>No matches available.</p>
       ) : (
         activeMatches.map((match) => (
-          <PickemBar
+          <PickemComponent
             key={match.matchId}
             match={match}
             userPick={userPicks[match.matchId] || ''}
