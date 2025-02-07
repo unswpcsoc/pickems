@@ -11,8 +11,8 @@ const EmailVerificationAlert = ({ verified }: VerifiedProp) => {
         <Alert variant = "primary" dismissible>
           <Alert.Heading>You haven't verified your email!</Alert.Heading>
           <p>
-          Go to the email you registerd with and click the verification link to gain access to see the leaderboard and 
-          choose your pickems!
+            Check the inbox of the email you registered with and click the verification link to gain access to the leaderboard and pickems!
+            Note: It may take a few minutes for the verification email to be sent. 
           </p>
         </Alert>
       </div>

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b --noCheck && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "host" : "tsc -b --noCheck && vite build && firebase deploy"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",

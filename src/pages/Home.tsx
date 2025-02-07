@@ -1,3 +1,5 @@
+import { Button } from "react-bootstrap";
+
 const HomePage = () => {
   return (
     <div style={{ width: '95vw', margin: 'auto' }}>
@@ -35,10 +37,9 @@ const HomePage = () => {
         {/* Right side: General info */}
         <div style={{ flex: 1, backgroundColor: 'rgb(108,117,125)', padding: '16px', color: 'black' }}>
           <h2>General Information</h2>
-          <p>Todo!</p>
-          <p>Talk about the tournament + rules + prize</p>
+          <p>The Oceanic Prodigies: Valorant tournament is a thrilling competition designed to bring together the best university esports players across Australia. Taking place at the Tyree Technology Building (ETB), UNSW Kensington, on the 22nd-23rd of February, 2025, the tournament promises intense matches and exciting moments for players and fans alike.</p>
+          <Button variant="dark" href="/InfoAndPrize">More Information</Button>
         </div>
-
       </div>
     </div>
   );
