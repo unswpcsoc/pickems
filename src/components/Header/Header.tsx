@@ -6,9 +6,10 @@ import pcsocLogo from "../../assets/pcsoc.png";
 
 interface NavbarProps {
   user: any;
+  isAdmin: boolean;
 }
 
-const Header: React.FC<NavbarProps> = ({ user }) => {
+const Header: React.FC<NavbarProps> = ({ user, isAdmin }) => {
   return (
     <Navbar bg="secondary" expand="lg" className="bg-body-tertiary">
       <Container style={{ minWidth: '98%' }}>
@@ -34,16 +35,26 @@ const Header: React.FC<NavbarProps> = ({ user }) => {
             {/* Conditional links for authenticated users */}
             {user ? (
               <>
-                {user.emailVerified ? (
+              {user.emailVerified ? (
+                <>
+                {isAdmin   ? (
                   <>
-                    <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
-                    <Nav.Link href="/pickems">Pickems</Nav.Link>
-                    <Nav.Link href="/admin">Admin</Nav.Link>
-                    <Nav.Link href="/user">User</Nav.Link>
+                  <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
+                  <Nav.Link href="/pickems">Pickems</Nav.Link>
+                  <Nav.Link href="/admin">Admin</Nav.Link>
+                  <Nav.Link href="/user">User</Nav.Link>
                   </>
                 ) : (
+                  <>
+                  <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
+                  <Nav.Link href="/pickems">Pickems</Nav.Link>
                   <Nav.Link href="/user">User</Nav.Link>
+                  </>
                 )}
+                </>
+              ) : (
+                <Nav.Link href="/user">User</Nav.Link>
+              )}
               </>
             ) : (
               <>

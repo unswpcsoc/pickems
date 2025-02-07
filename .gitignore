@@ -31,3 +31,7 @@ dist-ssr
 .firebase/
 .firebaserc
 firebase.json
+
+# ADMIN SDK
+*AdminSDK.tsx
+*serviceAccountKey.json
