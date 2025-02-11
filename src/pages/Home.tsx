@@ -1,10 +1,70 @@
+import { useState } from 'react';
+import Carousel from 'react-bootstrap/Carousel';
 import { Button } from "react-bootstrap";
+import oceanProdigies from "../assets/HomePage/oceanProdigiesWide.jpg";
+import megalan from "../assets/HomePage/megalanWide.jpg";
 
 const HomePage = () => {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex) => {
+    setIndex(selectedIndex);
+  };
+
   return (
-    <div style={{ width: '95vw', margin: 'auto' }}>
+    <div style={{ maxWidth: '85vw', margin: 'auto' }}>
       <br />
-      {/* <h1>Oceanic Prodigies : Valorant</h1> */}
+
+      {/* Carousel with smaller image and borders on left and right */}
+      <Carousel activeIndex={index} variant="light" indicators={true} onSelect={handleSelect} style={{ maxHeight: "600px", overflow: "hidden" }}>
+        <Carousel.Item>
+          <div style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "black", 
+            padding: "0 10%"
+          }}>
+            <a href="/InfoAndPrize"><img
+              src={oceanProdigies} 
+              alt="First slide" 
+              style={{ 
+                width: "100%",
+                height: "100%", 
+                maxHeight: "600px",
+                objectFit: "contain",
+                objectPosition: "center"
+              }}
+            /></a>
+          </div>
+        </Carousel.Item>
+        <Carousel.Item>
+          <div style={{
+            width: "100%",
+            height: "auto",
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "black",
+            padding: "0 10%"
+          }}>
+            <a href="https://events.humanitix.com/megalan" target="_blank" rel="noopener noreferrer"><img
+              src={megalan} 
+              alt="Second slide" 
+              style={{ 
+                width: "100%",
+                height: "100%", 
+                maxHeight: "600px",
+                objectFit: "contain",
+                objectPosition: "center"
+              }}
+            /></a>
+          </div>
+
+        </Carousel.Item>
+      </Carousel>
+
+      <br/><br/>
 
       {/* Flex container for Twitch + right div */}
       <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '24px' }}>
@@ -41,6 +101,18 @@ const HomePage = () => {
           <Button variant="dark" href="/InfoAndPrize">More Information</Button>
         </div>
       </div>
+      <br/>
+
+      {/* Style for Carousel Buttons */}
+      <style>
+        {`
+          .carousel-control-next-icon,
+          .carousel-control-prev-icon {
+            color: white;
+          }
+        `}
+      </style>
+
     </div>
   );
 };

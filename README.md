@@ -41,7 +41,7 @@ Pickem (admin)
 - [X] Create a match
 - [X] Pick a winner
 - [X] Update all user scores after a winner is chosen
-- [ ] Edit team features
+- [X] Edit team features
 - [ ] Edit match features
 - [ ] Option to update leaderboard
 

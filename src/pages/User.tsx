@@ -9,6 +9,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
+import DiscordAlert from "../components/DiscordAlert/DiscordAlert";
 
 const User = () => {
   const navigate = useNavigate();
@@ -108,6 +109,8 @@ const User = () => {
   }
 
   return (
+    <>
+    <DiscordAlert discordId={discordName} />
     <div style={{ width: "95vw", margin: "auto"}}>
       <br />
       <Card style={{ width: '18rem' }}>
@@ -146,6 +149,7 @@ const User = () => {
     <br />
     <Button variant="primary" onClick = {handleSignOut} >Sign Out</Button>
     </div>
+    </>
   );
 };
 

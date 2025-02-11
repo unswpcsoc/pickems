@@ -5,6 +5,7 @@ import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import { PickemComponent } from '../components'; // Import the PickemBar component
 import { Button } from "react-bootstrap";
+import DiscordAlert from "../components/DiscordAlert/DiscordAlert";
 
 import './User.css';
 
@@ -19,6 +20,7 @@ const Pickem = () => {
   const [userScore, setUserScore] = useState<number>(0)
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
   const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogo: string }}>({});
+  const [userDiscordId, setDiscordId] = useState<string | null>(null);
 
   useEffect(() => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
@@ -51,6 +53,9 @@ const Pickem = () => {
         const picks = docSnapshot.data().picks;
         setUserPicks(picks);
         setUserScore(docSnapshot.data().score);
+
+        const discordId = docSnapshot.data().discordName;
+        discordId === "" ? setDiscordId(null) : setDiscordId(discordId);
       }
     });
 
@@ -95,6 +100,7 @@ const Pickem = () => {
 
   return (
     <div style={{ width: "100vw", margin: "auto" }}>
+      <DiscordAlert discordId={userDiscordId} />
       <br/>
       <div style={{ outline: "1px solid grey", paddingTop: "4px", paddingBottom: "4px", marginBottom: "24px", display: "flex", justifyContent: "space-between" }}>
         <div style={{ display: "flex", gap: "10px", textAlign: "right", marginLeft:"20px", alignItems: "center" }}>
