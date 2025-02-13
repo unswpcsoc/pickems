@@ -108,9 +108,11 @@ const User = () => {
     verified = "Verified";
   }
 
+  console.log(userData)
+
   return (
     <>
-    <DiscordAlert discordId={discordName} />
+    <DiscordAlert discordId={userData.discordUsername} />
     <div style={{ width: "95vw", margin: "auto"}}>
       <br />
       <Card style={{ width: '18rem' }}>

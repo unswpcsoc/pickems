@@ -1,22 +1,32 @@
-import fullBanner from "../assets/InfoPage/full_banner.png";
-import teams from "../assets/InfoPage/teams.png";
-import monitor from "../assets/InfoPage/monitor.jpg";
-import brackets from "../assets/InfoPage/brackets.jpg";
+// Legacy images
+// import fullBanner from "../assets/InfoPage/full_banner.png";
+// import teams from "../assets/InfoPage/teams.png";
+// import monitor from "../assets/InfoPage/monitor.jpg";
+// import brackets from "../assets/InfoPage/brackets.jpg";
+
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+const fullBanner = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Ffull_banner-min.jpg?alt=media&token=d9568a06-17da-45c2-a6ca-9db0f9cf1972";
+const teams = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fteams.png?alt=media&token=e673fb0c-392c-42e4-983a-6392c5bc4a75";
+const monitor = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fmonitor.jpg?alt=media&token=b2bffdf0-568a-430e-8e7d-4027edc8c3b1";
+const brackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fbrackets.jpg?alt=media&token=f97a94c8-a512-4868-8ff9-dc7855c0e349";
 
 const InfoAndPrize = () => {
   return (
-    <div style={{ maxWidth: '900px', width:"100%", margin: 'auto' }}>
+    <div style={{ maxWidth: '1400px', width:"100%", margin: 'auto' }}>
       <br />
       <div>
-        <img src={fullBanner} style={{ maxWidth: '900px', width:"100%", height:"auto"}}></img>
+        {/* <img src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
+        <LazyLoadImage  src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <h1>How the Tournament Works</h1>
         <p>
-        The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory. Hosted in the Tyree Technology Building (TETB) at UNSW Kensington, the event spans two days, 22nd-23rd of February 2025. Matches are played in a knockout format, with the best teams advancing toward the Grand Finals. Attendees can enjoy live-action gameplay, interact with fellow fans, and witness the ultimate clash of skills.
+        The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory. Hosted in the Tyree Energy Technology Building (TETB) at UNSW Kensington, the event spans two days, 22nd-23rd of February 2025. Matches are played in a knockout format, with the best teams advancing toward the Grand Finals. Attendees can enjoy live-action gameplay, interact with fellow fans, and witness the ultimate clash of skills.
         </p>
 
         <h1>Tournament Formats and Rules</h1>
         <p>The tournament follows a double-elimination format, with teams battling it out in a best-of-1 series for each round. </p>
-        <img src={brackets} style={{ maxWidth: '900px', width:"100%", height:"auto"}}></img>
+        {/* <img src={brackets} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
+        <LazyLoadImage  src={brackets} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         
         <br/> <br/>
         <h1>What are Pickems?</h1>
@@ -28,7 +38,8 @@ const InfoAndPrize = () => {
       <div>
       <br/>
         <h1>The Teams</h1>
-        <img src={teams} style={{ maxWidth: '900px', width:"100%", height:"auto"}}></img>
+        {/* <img src={teams} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
+        <LazyLoadImage  src={teams} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <p>
           The competition features talented players representing their universities:
         </p>
@@ -47,7 +58,8 @@ const InfoAndPrize = () => {
       <div>
         <br/>
         <h1>What are the Prizes?</h1>
-        <img src={monitor} style={{ maxWidth: '900px', width:"100%", height:"auto"}}></img>
+        {/* <img src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
+        <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <p>
           The tournament offers both in-person and online rewards:
         </p>

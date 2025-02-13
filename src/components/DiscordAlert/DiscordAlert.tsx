@@ -2,12 +2,11 @@
 import Alert from 'react-bootstrap/Alert';
 
 type DiscordAlertProp = {
-  discordId: string | null;
+  discordId: string | null | undefined;
 };
 
 function DiscordAlert({ discordId }: DiscordAlertProp) {
-
-  if (discordId !== null || discordId !== "") {
+  if (discordId === null || discordId === undefined|| discordId === "") {
     return (
       <>
         <Alert variant = "primary" dismissible>
