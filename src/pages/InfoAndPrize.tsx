@@ -61,18 +61,26 @@ const InfoAndPrize = () => {
         {/* <img src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
         <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <p>
-          The pickems leaderboard offers both in-person and online rewards:
+          The pickems leaderboard offers both in person (Attending Megalan on Sunday) and online rewards:
         </p>
+
+        <p>The in person rewards are as followed:</p>
 
         <ul>
           <li>1st Place (In-Person): 1 GS27QCA 27" 1440p 180hz Curved IPS Gaming Monitor</li>
-          <li>1st Place (Remote): 1 Aorus Jacket</li>
           <li>2nd to 4th Place: Aorus RGB Mousemat</li>
           <li>5th to 16th Place: Aorus Chibi Figurine</li>
         </ul>
 
-        <p>Prizes will be awarded based on the final leaderboard standings. The top scorers will receive their rewards at the event, while remote participants will have their prizes given to them at a later date.</p>
+        <p>The online rewards are as followed:</p>
+        <ul>
+          <li>1st Place (Remote): 1 Aorus Jacket</li>
+        </ul>
+
+        <p>Prizes will be awarded based on the final leaderboard standings. The top scorers will receive their rewards at the event, while the top remote participant will have their Aorus Jacket given to them at a later date (contact via Discord).</p>
+        <p>To check and edit your in person status for Sunday go to the user page and click the edit button to change it.</p>
         <p>Note: To be prize eligible you must have your discord ID on your account (Go the the user page to add or change it if necessary)</p>
+        <p>Warning: If your discord ID or in person status is incorrect you will automatically forfeit your prize.</p>
       </div>
     </div>
   );

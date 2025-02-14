@@ -15,6 +15,7 @@ export const registerUser = async (
   email: string, 
   password: string,
   discordName: string,
+  inPersonBool: boolean
 ) => {
   // if (!email && !password) return;  
 
@@ -37,7 +38,8 @@ export const registerUser = async (
         picks: picksObject,
         score: 0,
         rank: -1, // Default rank is nothing until first pickem
-        lastEdited: Timestamp.now()
+        lastEdited: Timestamp.now(),
+        inPerson: inPersonBool
       });
     } catch (error) {
       console.log(error)

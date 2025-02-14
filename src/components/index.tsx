@@ -9,4 +9,5 @@ export {default as ImageUpload} from "./TeamBuilder/ImageUpload";
 export {default as MatchBuilder} from "./MatchBuilder/MatchBuilder";
 
 export {default as DiscordAlert} from "./DiscordAlert/DiscordAlert";
+export {default as InPersonAlert} from "./InPersonAlert/InPersonAlert";
 export {default as EmailVerificationAlert} from "./EmailVerificationAlert/EmailVerificationAlert";

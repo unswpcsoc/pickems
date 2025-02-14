@@ -16,7 +16,8 @@ const Signup = () => {
     email: '',
     discordUsername: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    inPersonBool: false,
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const Signup = () => {
       }
 
       // Register user
-      await registerUser(formData.name, formData.email, formData.password, formData.discordUsername);
+      await registerUser(formData.name, formData.email, formData.password, formData.discordUsername, formData.inPersonBool);
       navigate("/");
     } catch (error: any) {
       if (error.code === "auth/weak-password") {
@@ -81,7 +82,7 @@ const Signup = () => {
             picks: {},
             score: 0,
             rank: -1, // Default rank is nothing until first pickem
-            lastEdited: Timestamp.now()
+            lastEdited: Timestamp.now(),
           });
           navigate("/");
         }
@@ -170,6 +171,19 @@ const Signup = () => {
               onChange={handleChange}
             />
           </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check
+            type="checkbox"
+            checked={formData.inPersonBool}
+            onChange={(e) => setFormData({...formData, inPersonBool: e.target.checked})}
+            label="Will you be attending Megalan inperson on Sunday the 23rd of Feburary?"
+            />
+            <Form.Text className="text-muted">
+              Note: If you are not attending Megalan inperson on Sunday, you will only be eligible for the online pickems prize pool (Only the 1st place Aorus Jacket). Other prizes will only be available for inperson attendeess.
+            </Form.Text>
+          </Form.Group>
+
           {error && <p>Error: {error}</p>}
           <Button variant="primary" type="submit">
             Submit

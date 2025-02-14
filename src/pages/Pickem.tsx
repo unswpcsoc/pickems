@@ -6,6 +6,7 @@ import { User } from 'firebase/auth';
 import { PickemComponent } from '../components'; // Import the PickemBar component
 import { Button } from "react-bootstrap";
 import DiscordAlert from "../components/DiscordAlert/DiscordAlert";
+import InPersonAlert from "../components/InPersonAlert/InPersonAlert";
 
 import './User.css';
 
@@ -21,6 +22,7 @@ const Pickem = () => {
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
   const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogo: string }}>({});
   const [userDiscordId, setDiscordId] = useState<string | null>(null);
+  const [userInPerson, setInPerson] = useState<boolean | null>(null);
 
   useEffect(() => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
@@ -56,6 +58,9 @@ const Pickem = () => {
 
         const discordId = docSnapshot.data().discordName;
         discordId === "" ? setDiscordId(null) : setDiscordId(discordId);
+
+        const inPerson = docSnapshot.data().inPerson;
+        inPerson === "" ? setInPerson(null) : setInPerson(inPerson);
       }
     });
 
@@ -101,6 +106,7 @@ const Pickem = () => {
   return (
     <div style={{ width: "100vw", margin: "auto" }}>
       <DiscordAlert discordId={userDiscordId} />
+      <InPersonAlert attendanceStatus={userInPerson}/>
       <br/>
       <div style={{ outline: "1px solid grey", paddingTop: "4px", paddingBottom: "4px", marginBottom: "24px", display: "flex", justifyContent: "space-between" }}>
         <div style={{ display: "flex", gap: "10px", textAlign: "right", marginLeft:"20px", alignItems: "center" }}>
