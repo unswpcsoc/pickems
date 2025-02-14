@@ -20,11 +20,11 @@ const InfoAndPrize = () => {
         <LazyLoadImage  src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <h1>How the Tournament Works</h1>
         <p>
-        The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory. Hosted in the Tyree Energy Technology Building (TETB) at UNSW Kensington, the event spans two days, 22nd-23rd of February 2025. Matches are played in a knockout format, with the best teams advancing toward the Grand Finals. Attendees can enjoy live-action gameplay, interact with fellow fans, and witness the ultimate clash of skills.
+        The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory. Hosted in the Tyree Energy Technology Building (TETB) at UNSW Kensington, the event spans two days, 22nd-23rd of February 2025. Matches are played in a knockout format, with the best teams advancing toward the Grand Finals. Attendees can enjoy live action-packed gameplay, interact with fellow fans, and witness the ultimate clash of skills.
         </p>
 
         <h1>Tournament Formats and Rules</h1>
-        <p>The tournament follows a double-elimination format, with teams battling it out in a best-of-1 series for each round. </p>
+        <p>The tournament follows a double-elimination format, with teams battling it out in a Best-of-One series for each round culminating in a Best-of-Three Grand Final. </p>
         {/* <img src={brackets} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
         <LazyLoadImage  src={brackets} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         
@@ -61,7 +61,7 @@ const InfoAndPrize = () => {
         {/* <img src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
         <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <p>
-          The tournament offers both in-person and online rewards:
+          The pickems leaderboard offers both in-person and online rewards:
         </p>
 
         <ul>
