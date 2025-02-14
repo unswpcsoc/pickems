@@ -20,7 +20,7 @@ const InfoAndPrize = () => {
         <LazyLoadImage  src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <h1>How the Tournament Works</h1>
         <p>
-        The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory. Hosted in the Tyree Energy Technology Building (TETB) at UNSW Kensington, the event spans two days from the 22nd to the 23rd of February 2025 where 8 Universities battle it out to see who has the best Valorant team. Matches are played in a knockout format, with the best teams advancing toward the Grand Finals. Attendees can enjoy live action-packed gameplay, interact with fellow fans, and witness the ultimate clash of skills.
+        The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory. Hosted in the Tyree Energy Technology Building (TETB) at UNSW Kensington, the event spans two days from the 22nd to the 23rd of February 2025 where 8 Universities battle it out to see who has the best Valorant team. Matches are played in a double elimination format, with the best teams advancing toward the Grand Finals. Attendees can enjoy live action-packed gameplay, interact with fellow fans, and witness the ultimate clash of skills.
         </p>
 
         <h1>Tournament Formats and Rules</h1>
