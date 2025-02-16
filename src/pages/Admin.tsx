@@ -9,6 +9,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import { teamCard, TeamBuilder, MatchBuilder } from "../components"
 import DataTable from 'react-data-table-component';
 import { createTheme } from 'react-data-table-component';
+import { Button } from 'react-bootstrap';
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
@@ -135,41 +136,8 @@ const Admin = () => {
           }
         });
 
-        // Make leaderboard
-        const leaderboardQuery = query(usersCollectionRef, orderBy("score", "desc"));
-        const leaderboardDocsSnap = await getDocs(leaderboardQuery);
-        if (!leaderboardDocsSnap.empty) {
-          const matchesData = leaderboardDocsSnap.docs.map((doc) => {
-            const data = doc.data();
-            return {
-              userId: doc.id,
-              name: data.name,
-              score: data.score,
-              rank: data.rank,
-            }
-          });
-
-          // Algo for ties
-          rank_users(matchesData);
-
-          matchesData.forEach(async (user) => {
-            const userDocRef = doc(db, "users", user.userId);
-            await updateDoc(userDocRef, {
-              rank: user.rank,
-            });
-          });
-
-          // Updating leaderboard
-          const leaderboardCollection = matchesData.map((user) => {
-            return {
-              name: user.name,
-              rank: user.rank,
-              score: user.score
-            }
-          })
-          const userDocRef = doc(db, "leaderboard", "leaderboardStatus");
-          await setDoc(userDocRef, { leaderboard: leaderboardCollection});
-        }
+        // New leaderboard based on new scores
+        updateLeaderboard();
 
       } else {
         console.error("Match data not found.");
@@ -178,6 +146,48 @@ const Admin = () => {
       console.error("Error setting winner:", error);
     }
   };
+
+  const updateLeaderboard = async () => {
+    const usersCollectionRef = collection(db, "users");
+    // Make leaderboard
+    const leaderboardQuery = query(usersCollectionRef, orderBy("score", "desc"));
+    const leaderboardDocsSnap = await getDocs(leaderboardQuery);
+    if (!leaderboardDocsSnap.empty) {
+      const matchesData = leaderboardDocsSnap.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          userId: doc.id,
+          name: data.name,
+          score: data.score,
+          rank: data.rank,
+          inPerson: (data.inPerson === undefined) ? false : data.inPerson,  // Default to false if inPerson is not set (google login)
+        }
+      });
+
+      // Algo for ties
+      rank_users(matchesData);
+
+      matchesData.forEach(async (user) => {
+        const userDocRef = doc(db, "users", user.userId);
+        await updateDoc(userDocRef, {
+          rank: user.rank,
+        });
+      });
+
+      // Updating leaderboard
+      const leaderboardCollection = matchesData.map((user) => {
+        return {
+          name: user.name,
+          rank: user.rank,
+          score: user.score,
+          inPerson: user.inPerson,
+        }
+      })
+
+      const userDocRef = doc(db, "leaderboard", "leaderboardStatus");
+      await setDoc(userDocRef, { leaderboard: leaderboardCollection});
+    }
+  }
 
   const columns = [
     {
@@ -283,6 +293,12 @@ const Admin = () => {
               </div>
             ))}
           </div>
+        </Tab>
+
+        <Tab eventKey="leaderboard" title="Leaderboard">
+          <h3>Update Leaderboard</h3>
+          <p>Leaderboard is updated automatically when a match is closed. However, you can manually update the leaderboard with the button below (Note this could affect the firestore bill by a lot based on the number of users).</p>
+          <Button onClick={updateLeaderboard}>Update Leaderboard</Button>
         </Tab>
       </Tabs>
     </div>

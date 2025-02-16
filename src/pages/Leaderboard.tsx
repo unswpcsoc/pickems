@@ -45,7 +45,7 @@ const Leaderboard = () => {
     },
     {
       name: "Name",
-      selector: user => user.name,
+      selector: user => (user.name + (user.inPerson ? "" : "*")),
       sortable: true,
     },
     {
@@ -60,6 +60,7 @@ const Leaderboard = () => {
     <div style={{ width: "95vw", margin: "auto"}}>
       <br />
       <h1>Leaderboard</h1>
+      <p>Note: All names with (*) at the end of their names are remote users and are only eligible for the remote prize pool.</p>
       <DataTable
         title="Matches"
         columns={columns}
