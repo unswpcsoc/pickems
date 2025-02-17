@@ -85,7 +85,7 @@ const HomePage = () => {
           }}
         >
           <iframe
-            src="https://player.twitch.tv/?channel=unswpcsoc&parent=localhost&parent=alexgao.au&parent=pickems.unswpcsoc.com"
+            src="https://player.twitch.tv/?channel=unswpcsoc&parent=localhost&parent=alexgao.au&parent=pickems.unswpcsoc.com&parent=pickems.megalan.com.au"
             style={{
               position: 'absolute',
               top: 0,
