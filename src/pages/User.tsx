@@ -134,7 +134,7 @@ const User = () => {
     <InPersonAlert attendanceStatus={userData.inPerson}/>
     <div style={{ width: "95vw", margin: "auto"}}>
       <br />
-      <Card style={{ width: '20vw' }}>
+      <Card style={{ width: '20vw', minWidth: "400px" }}>
       <Card.Body>
         <Card.Title>User Panel</Card.Title>
         <Card.Text>Name: {userData.name}</Card.Text>
