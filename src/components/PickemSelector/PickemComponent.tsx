@@ -50,7 +50,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
             }}
           >
             <div className="team-content">
-              {/* Points earned from pickem */}
+              {/* Points earned from pickem */} 
               {match.team1Id === userPick || noUserPickTeam1 ?  (pickemResult(match, userPick)) : ""}
 
               <div className="team-center">
