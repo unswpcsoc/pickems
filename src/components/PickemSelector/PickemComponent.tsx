@@ -17,10 +17,11 @@ function isOpen(match: { matchId: number; team1Id: string; team2Id: string; cate
 
 const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, handlePick }) => {
   // Const for when pickems are not done by user
-  const noUserPickTeam1 :boolean = (userPick === "" && match.winner === match.team1Id);
-  const noUserPickTeam2 :boolean = (userPick === "" && match.winner === match.team2Id);
+  const noPick: boolean = (userPick === "");
+  const noUserPickTeam1 :boolean = (noPick && match.winner === match.team1Id);
+  const noUserPickTeam2 :boolean = (noPick && match.winner === match.team2Id);
 
-  console.log(match.team1Id, match.team2Id , match.winner,"||", userPick)
+  // console.log(match.team1Id, match.team2Id , match.winner,"||", userPick)
   return (
     <>
     <div className="match-header" style={{ marginLeft:"30px" }}>
@@ -49,16 +50,15 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
             }}
           >
             <div className="team-content">
-              <div className="points">
-                {match.team1Id === userPick || noUserPickTeam1 ? (pickemResult(match, userPick)) : ("")}
-              </div>
+              {/* Points earned from pickem */}
+              {match.team1Id === userPick || noUserPickTeam1 ?  (pickemResult(match, userPick)) : ""}
 
               <div className="team-center">
                 <div className="team-image">
                   <img src={teams[match.team1Id]?.teamLogo || imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
                 </div>
                 <div className="team-name" style={{ color:"white" }}>
-                  {teams[match.team1Id]?.name}
+                  {(userPick === match.team1Id || noPick) ? teams[match.team1Id]?.name : ""}
                 </div>
               </div>
             </div>
@@ -85,16 +85,15 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
             }}
           >
             <div className="team-content">
-              <div className="points">
-                {match.team2Id === userPick || noUserPickTeam2 ? (pickemResult(match, userPick)) : ("")}
-              </div>
+              {/* Points earned from pickem */}
+              {match.team2Id === userPick || noUserPickTeam2 ?  (pickemResult(match, userPick)) : ""}
 
               <div className="team-center">
                 <div className="team-image">
                   <img src={teams[match.team2Id]?.teamLogo ||  imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
                 </div>
                 <div className="team-name" style={{ color:"white" }}>
-                  {teams[match.team2Id]?.name}
+                  {(userPick === match.team2Id || noPick) ? teams[match.team2Id]?.name : ""}
                 </div>
               </div>
             </div>
