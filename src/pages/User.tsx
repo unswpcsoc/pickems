@@ -142,7 +142,7 @@ const User = () => {
         <Card.Text>Email Verification: {verified}</Card.Text>
         <Card.Text>Discord Username: {userData?.discordUsername || "n/a"}</Card.Text>
         <Card.Text>Score: {userData.score}</Card.Text>
-        <Card.Text>Rank: {displayRank}</Card.Text>
+        {/* <Card.Text>Rank: {displayRank}</Card.Text> */}
         <Card.Text>Is attending Inperson on Sunday? {userData?.inPerson === undefined ? "n/a" : userData?.inPerson ? "Yes" : "No"}</Card.Text>
         <Button variant="primary" onClick = {handleShowDiscord} >Update Discord Username</Button>
         <Button variant="primary" onClick = {handleShowInPerson} >Update Sunday Inperson Attendance Status</Button>
