@@ -36,14 +36,29 @@ const MatchEditor = ({ db, teamOptions, matchId, matches }: MatchEditorProp) => 
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (matchData) {
-      setMatchData(prev => {
-        if (prev === null) return null;
-        return {
-          ...prev,
-          [name]: value
-        };
-      });
+    
+    if (name === "closeTime" && value) {
+      // Parse the value as a datetime string and convert it to a Timestamp
+      const timestampValue = Timestamp.fromDate(new Date(value));
+      if (matchData) {
+        setMatchData(prev => {
+          if (prev === null) return null;
+          return {
+            ...prev,
+            [name]: timestampValue
+          };
+        });
+      }
+    } else {
+      if (matchData) {
+        setMatchData(prev => {
+          if (prev === null) return null;
+          return {
+            ...prev,
+            [name]: value
+          };
+        });
+      }
     }
   };
 
@@ -62,7 +77,7 @@ const MatchEditor = ({ db, teamOptions, matchId, matches }: MatchEditorProp) => 
         closeTime: matchData.closeTime,
         open: matchData.open,
         winner: matchData.winner,
-        votes: {team1Vote: matchData.votes.team1Vote, totalVote: matchData.votes.totalVote}
+        votes: (matchData.votes === undefined ? {team1Vote: 0, totalVote: 0} : matchData.votes)
       }, 
     };
     console.log(updatedMatchData)
@@ -135,7 +150,17 @@ const MatchEditor = ({ db, teamOptions, matchId, matches }: MatchEditorProp) => 
                 <Form.Control
                   type="datetime-local"
                   name="closeTime"
-                  value={matchData.closeTime?.toDate().toISOString().slice(0, 16) || ""}
+                  value={matchData.closeTime
+                    ? new Date(matchData.closeTime.toDate()).toLocaleString('en-US', { 
+                        timeZone: 'Australia/Sydney', 
+                        hour12: false, 
+                        year: 'numeric', 
+                        month: '2-digit', 
+                        day: '2-digit', 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })
+                    : ""} 
                   onChange={handleChange}
                 />
               </>
