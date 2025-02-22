@@ -25,7 +25,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
   return (
     <>
     <div className="match-header" style={{ marginLeft:"30px" }}>
-      <h4>{`${match.closeTime.toDate().toLocaleTimeString()} ${match.closeTime.toDate().toDateString()}`}</h4>
+      <h4>{`${match.closeTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true})} ${match.closeTime.toDate().toLocaleDateString([], { weekday: "long", month: "long", day: "numeric"})}`}</h4>
     </div>
 
     <div key={match.matchId} className="match-container" style={{ backgroundColor:"#212529" }}>

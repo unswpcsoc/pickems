@@ -42,6 +42,7 @@ const Pickem = () => {
           votes: (matchesData[id].votes === undefined ? {team1Vote: 0, totalVote: 0} : matchesData[id].votes)
         }));
 
+        matchList = matchList.sort((a, b) => a.matchId - b.matchId);
         matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
         // matchList = matchList.filter(isOpen);
 

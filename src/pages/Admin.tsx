@@ -6,7 +6,7 @@ import { collection, query, getDocs, Timestamp, doc, getDoc, updateDoc, setDoc, 
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { teamCard, TeamBuilder, MatchBuilder } from "../components"
+import { teamCard, TeamBuilder, MatchBuilder, MatchEditor } from "../components"
 import DataTable from 'react-data-table-component';
 import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
@@ -240,7 +240,7 @@ const Admin = () => {
       sortable: true,
     },
     {
-      name: 'open',
+      name: 'Press to Close Pickems',
       cell:(match) => {
         if (isOpen(match)) {
           return <button onClick={() => closePickem(match.matchId)}>Close</button>
@@ -252,7 +252,7 @@ const Admin = () => {
       sortFunction: (a, b) => a.open - b.open
     },
     {
-      name: 'team1',
+      name: 'Click for winner',
       selector: match => graphTeams.get(match.team1Id),
       cell: (match) => {
         if (match.winner === "-1") {
@@ -263,7 +263,7 @@ const Admin = () => {
       }
     },
     {
-      name: 'team2',
+      name: 'Click for winner',
       cell: (match) => {
         if (match.winner === "-1") {
           return <button onClick={() => setWinner(match.matchId, match.team2Id)}>{graphTeams.get(match.team2Id)}</button>
@@ -283,6 +283,16 @@ const Admin = () => {
       sortable: true,
       sortFunction : (a, b) => a.points - b.points
     },
+    {
+      name: 'Edit Match',
+      cell: (match) => {
+        if (match.winner === "-1") {
+          return <MatchEditor db={db} teamOptions={teams} matchId = {match.matchId} matches={matches}/>
+        } else {
+          return "Can no longer edit";
+        }
+      },
+    }
   ];
   
   return (
