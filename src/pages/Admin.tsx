@@ -10,6 +10,9 @@ import { teamCard, TeamBuilder, MatchBuilder } from "../components"
 import DataTable from 'react-data-table-component';
 import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
+
+import { addVoteDataToMatch } from "../firebase/database"
+
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
@@ -24,7 +27,7 @@ createTheme('dark', {
 const Admin = () => {
   // States for team and match display
   const [teams, setTeams] = useState<Map<string, {name: string, teamColour: string, teamLogo: string}>>(new Map());
-  const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number }[]>([]); // Matches state
+  const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
   const [graphTeams, setGraphTeams] = useState<Map<string, string>>(new Map());
 
   // Using snapshot to update both teams and matches on server update
@@ -61,6 +64,7 @@ const Admin = () => {
           closeTime: matchesData[id].closeTime,
           open: matchesData[id].open,
           winner: matchesData[id].winner,
+          votes: (matchesData[id].votes === undefined ? {team1Vote: 0, totalVote: 0} : matchesData[id].votes)
         }));
 
         matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
@@ -189,6 +193,40 @@ const Admin = () => {
     }
   }
 
+  const updateVoteStats = async () => {
+    const usersCollectionQuery = query(collection(db, "users"));
+    const usersCollectionDocsSnap = await getDocs(usersCollectionQuery);
+    if (!usersCollectionDocsSnap.empty) {
+      const users = usersCollectionDocsSnap.docs.map((userData) => {
+        const data = userData.data();
+        return {
+          picks: data.picks,
+        }
+      })
+
+      for (const match of matches) {
+        match.votes.team1Vote = 0;
+        match.votes.totalVote = 0;
+      }
+
+      for (const user of users) {
+        if (user.picks !== undefined) {
+          for (const userPick of Object.entries(user.picks)) {
+            for (const match of matches) {
+              if (match.matchId === userPick[0] && match.team1Id === userPick[1]) {
+                match.votes.team1Vote++;
+                match.votes.totalVote++;
+              } else if (match.matchId === userPick[0]) {
+                match.votes.totalVote++;
+              }
+            }
+          }
+        }
+      }
+      addVoteDataToMatch(db, matches);
+    }
+  }
+
   const columns = [
     {
       name: 'closeTime',
@@ -295,7 +333,11 @@ const Admin = () => {
           </div>
         </Tab>
 
-        <Tab eventKey="leaderboard" title="Leaderboard">
+        <Tab eventKey="miscellaneous" title="Miscellaneous Commands">
+          <h3>Update Vote Stats</h3>
+          <p>This is a manual command, and will update the data on the percentage of votes of each pickems.</p>
+          <Button onClick={updateVoteStats}>Update Stats</Button>
+
           <h3>Update Leaderboard</h3>
           <p>Leaderboard is updated automatically when a match is closed. However, you can manually update the leaderboard with the button below (Note this could affect the firestore bill by a lot based on the number of users).</p>
           <Button onClick={updateLeaderboard}>Update Leaderboard</Button>

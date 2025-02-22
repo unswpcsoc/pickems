@@ -16,7 +16,7 @@ function isOpen(match: any) {
 
 const Pickem = () => {
   const [activeMatches, setActiveMatches] = useState<
-    { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }[]
+    { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} }[]
   >([]);
   const [userScore, setUserScore] = useState<number>(0)
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
@@ -39,6 +39,7 @@ const Pickem = () => {
           closeTime: matchesData[id].closeTime,
           open: matchesData[id].open,
           winner: matchesData[id].winner,
+          votes: (matchesData[id].votes === undefined ? {team1Vote: 0, totalVote: 0} : matchesData[id].votes)
         }));
 
         matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);

@@ -5,13 +5,13 @@ import { pickemResult } from "..";
 import imagea from "../../assets/faker.png"; // Correct image path
 
 interface PickemBarProps {
-  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string };
+  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} };
   userPick: string;
   teams: { [key: string]: { name: string, colour: string, teamLogo: string } };
   handlePick: (matchId: number, teamId: string) => void;
 }
 
-function isOpen(match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string }) {
+function isOpen(match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} }) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
 
@@ -57,9 +57,16 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
                 <div className="team-image">
                   <img src={teams[match.team1Id]?.teamLogo || imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
                 </div>
-                <div className="team-name" style={{ color:"white" }}>
-                  {(userPick === match.team1Id || noPick) ? teams[match.team1Id]?.name : ""}
+                <div>
+                  <div className="team-name" style={{ color: "white" }}>
+                    {(userPick === match.team1Id || noPick) ? teams[match.team1Id]?.name : ""}
+                  </div>
+
+                  <div className="team-name" style={{ color: "white" }}>
+                    {(userPick === match.team1Id) ? `${(match.votes.team1Vote/match.votes.totalVote * 100).toFixed(2)}% PICKED ` : ""}
+                  </div>
                 </div>
+                
               </div>
             </div>
           </Button>
@@ -92,8 +99,15 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
                 <div className="team-image">
                   <img src={teams[match.team2Id]?.teamLogo ||  imagea} alt="Team logo" style={{ maxWidth: '50px' }} />
                 </div>
-                <div className="team-name" style={{ color:"white" }}>
-                  {(userPick === match.team2Id || noPick) ? teams[match.team2Id]?.name : ""}
+
+                <div>
+                  <div className="team-name" style={{ color:"white" }}>
+                    {(userPick === match.team2Id || noPick) ? teams[match.team2Id]?.name : ""}
+                  </div>
+
+                  <div className="team-name" style={{ color: "white" }}>
+                    {(userPick === match.team2Id) ? `${((match.votes.totalVote - match.votes.team1Vote)/match.votes.totalVote * 100).toFixed(2)}% PICKED ` : ""}
+                  </div>
                 </div>
               </div>
             </div>

@@ -91,10 +91,50 @@ export const addMatchToDatabase = async (
       closeTime: closeTimestamp,
       open: true, // Boolean which lets user figure out if the match is still open for pickems.
       winner: "-1", // Either 1 or 2 (based on team 1/2)
+      votes: {team1Votes: 0, totalVotes: 0}
     };
 
     await setDoc(matchesDocRef, matchesData);  // Update the entire document with the new match
     console.log('Match added to Firestore successfully!');
+    return true;
+  } catch (error) {
+    console.log('Error adding match/pickem:', error);
+    return false;
+  }
+};
+
+// Function to add a vote data for all matches to the Firestore database
+export const addVoteDataToMatch = async (
+  db: Firestore,
+  formData: {
+  matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number}}[]
+) => {
+  try {
+    const matchesDocRef = doc(db, "matches", "matchData"); // Document holding all matches
+    const matchesDocSnap = await getDoc(matchesDocRef);
+
+    let matchesData = {};
+    if (matchesDocSnap.exists()) {
+      matchesData = matchesDocSnap.data();
+    }
+
+    for (const match of formData) {
+      matchesData[match.matchId] = {
+        matchId: match.matchId,
+        team1Id: match.team1Id,
+        team2Id: match.team2Id,
+        category: match.category,
+        points: match.points,
+        closeTime: match.closeTime,
+        open: match.open, // Boolean which lets user figure out if the match is still open for pickems.
+        winner: match.winner, // Either 1 or 2 (based on team 1/2)
+        votes: match.votes
+      };
+    }
+    // console.log(matchesData)
+
+    await setDoc(matchesDocRef, matchesData);  // Update the entire document with the new match
+    // console.log('Match added to Firestore successfully!');
     return true;
   } catch (error) {
     console.log('Error adding match/pickem:', error);
