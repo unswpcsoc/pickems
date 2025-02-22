@@ -1,5 +1,6 @@
 // src/components/AdminPanel.tsx
 import { useState, useEffect } from 'react';
+import { getOrdinalSuffix } from "../utils";
 import { db } from "../firebase/index";
 import { rank_users } from "../utils";
 import { collection, query, getDocs, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
@@ -29,6 +30,10 @@ const Admin = () => {
   const [teams, setTeams] = useState<Map<string, {name: string, teamColour: string, teamLogo: string}>>(new Map());
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
   const [graphTeams, setGraphTeams] = useState<Map<string, string>>(new Map());
+
+  // Leaderboard states for admin
+  const [inPersonLeaderboard, setInPersonleaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
+  const [remoteLeaderboard, setRemoteLeaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
 
   // Using snapshot to update both teams and matches on server update
   useEffect(() => {
@@ -85,11 +90,39 @@ const Admin = () => {
       }
     });
 
+    const inPersonUnsubscribe = onSnapshot(doc(db, "leaderboard", "inPersonLeaderboard"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        if (data && data.leaderboard) {
+          // Sort the leaderboard by rank
+          const sortedLeaderboard = data.leaderboard.sort((a: any, b: any) => a.rank - b.rank);
+          setInPersonleaderboard(sortedLeaderboard);
+        }
+      }
+    }, (error) => {
+      console.error("Error fetching leaderboard:", error);
+    });
+
+    const remoteUnsubscribe = onSnapshot(doc(db, "leaderboard", "remoteLeaderboard"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        if (data && data.leaderboard) {
+          // Sort the leaderboard by rank
+          const sortedLeaderboard = data.leaderboard.sort((a: any, b: any) => a.rank - b.rank);
+          setRemoteLeaderboard(sortedLeaderboard);
+        }
+      }
+    }, (error) => {
+      console.error("Error fetching leaderboard:", error);
+    });
+
     // Clean up the listener when the component unmounts
     return () => {
       fetchTeams();
       fetchMatches();
       unsubscribeTeams();
+      inPersonUnsubscribe();
+      remoteUnsubscribe();
     };
   }, [db]);
 
@@ -164,7 +197,9 @@ const Admin = () => {
           name: data.name,
           score: data.score,
           rank: data.rank,
+          email: data.email,
           inPerson: (data.inPerson === undefined) ? false : data.inPerson,  // Default to false if inPerson is not set (google login)
+          discordUsername: (data.discordUsername === undefined) ? "" : data.discordUsername,
         }
       });
 
@@ -187,9 +222,40 @@ const Admin = () => {
           inPerson: user.inPerson,
         }
       })
-
       const userDocRef = doc(db, "leaderboard", "leaderboardStatus");
       await setDoc(userDocRef, { leaderboard: leaderboardCollection});
+
+      // Separate inPerson and remote users
+      const inPersonUsers = matchesData.filter((user) => user.inPerson);
+      rank_users(inPersonUsers);
+      const remoteUsers = matchesData.filter((user) => !user.inPerson);
+      rank_users(remoteUsers);
+
+      // Updating admin inperson leaderboard
+      const inPersonLeaderboardCollection = inPersonUsers.map((user) => {
+        return {
+          name: user.name,
+          rank: user.rank,
+          score: user.score,
+          discordUsername: user.discordUsername,
+          email: user.email,
+        }
+      })
+      const inPersonRef = doc(db, "leaderboard", "inPersonLeaderboard");
+      await setDoc(inPersonRef, { leaderboard: inPersonLeaderboardCollection});
+
+      // Updating admin remote leaderboard
+      const remoteLeaderboardCollection = remoteUsers.map((user) => {
+        return {
+          name: user.name,
+          rank: user.rank,
+          score: user.score,
+          discordUsername: user.discordUsername,
+          email: user.email,
+        }
+      })
+      const remoteRef = doc(db, "leaderboard", "remoteLeaderboard");
+      await setDoc(remoteRef, { leaderboard: remoteLeaderboardCollection});
     }
   }
 
@@ -295,6 +361,36 @@ const Admin = () => {
     }
   ];
   
+  const specificLeaderboardCol = [
+      {
+        name: "Rank",
+        selector: user => getOrdinalSuffix(user.rank),
+        sortable: true,
+        sortFunction: (a: any, b: any) => a.rank - b.rank,
+      },
+      {
+        name: "Name",
+        selector: user => (user.name),
+        sortable: true,
+      },
+      {
+        name: "Score",
+        selector: user => user.score,
+        sortable: true,
+        sortFunction: (a: any, b: any) => a.score - b.score,
+      },
+      {
+        name: "Discord",
+        selector: user => user.discordUsername,
+        sortable: true,
+      },
+      {
+        name: "Email",
+        selector: user => user.email,
+        sortable: true,
+      },
+    ]
+
   return (
     <div style={{ width: "95vw", margin: "auto"}}>
       <br />
@@ -351,6 +447,28 @@ const Admin = () => {
           <h3>Update Leaderboard</h3>
           <p>Leaderboard is updated automatically when a match is closed. However, you can manually update the leaderboard with the button below (Note this could affect the firestore bill by a lot based on the number of users).</p>
           <Button onClick={updateLeaderboard}>Update Leaderboard</Button>
+        </Tab>
+        <Tab eventKey="leaderboards" title="Prize Leaderboards">
+          <Tabs>
+            <Tab eventKey="inPerson-leaderboard" title="InPerson Leaderboard">
+              <DataTable
+                title="InPerson Leaderboard"
+                columns={specificLeaderboardCol}
+                data={inPersonLeaderboard}
+                defaultSortFieldId={1}
+                theme='dark'
+              />
+            </Tab>
+            <Tab eventKey="remote-leaderboard" title="Remote Leaderboard">
+              <DataTable
+                title="Remote Leaderboard"
+                columns={specificLeaderboardCol}
+                data={remoteLeaderboard}
+                defaultSortFieldId={1}
+                theme='dark'
+              />
+            </Tab>
+          </Tabs>
         </Tab>
       </Tabs>
     </div>
