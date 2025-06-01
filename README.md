@@ -1,7 +1,8 @@
 # Pickems
 
-This is the active branch for the project. Refer to the todos at the bottom for current progress.
+This is an inactive branch of the pickems for PCSoc. We are currently working on the T2 version with crystal ball on the [2025T2/OP2](https://github.com/unswpcsoc/pickems/tree/2025T2/OP2) branch.
 
+_Note this is the codebase for the T1 OP1/Megalan pickems, feel free  to take a look if you want!_
 
 # How to run it
 1) To run it on your own machine make a .env file in the root directory with the following
@@ -16,42 +17,3 @@ This is the active branch for the project. Refer to the todos at the bottom for 
 ```
 2) Make sure that you have firebase set up with a firestore database with rules allowing reads and writes.
 3) Use (npm install) to download all necessary modules/libraries.
-
-## Todos
-Authentication (user)
-- [X] Email register/login
-- [X] Email password reset
-- [X] Email account verification (verify account)
-- [ ] Email restrict accounts to "edu.au" accounts.
-- [ ] Check to see if the name has already been used
-
-Database
-- [X] Set up database (with how data is stored)
-- [ ] Configure read/write perms
-- [X] Store pickems
-
-Storage
-- [X] Set up storage db for team images
-- [ ] Method to delete images that are no longer in use
-
-Pickem (admin)
-- [X] Create a teams
-- [X] Store a team's image
-- [X] Colour picker to choose a team's colour accent in pickems.
-- [X] Create a match
-- [X] Pick a winner
-- [X] Update all user scores after a winner is chosen
-- [X] Edit team features
-- [ ] Edit match features
-- [ ] Option to update leaderboard
-
-Pickem (user)
-- [X] Choose a team for each pickem
-- [X] Rechoose pickems
-- [X] See current score
-
-UI work
-- [ ] Pickem (concise and descriptive)
-- [ ] Leaderboard (cleaner akin to league 2024 pickems or CR leaderboard)
-- [ ] Home page (content + UI)
-- [ ] Colour scheme (dark mode !!!)
