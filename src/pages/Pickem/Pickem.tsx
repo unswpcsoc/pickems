@@ -1,12 +1,12 @@
 // src/components/Pickem.tsx
 import { useState, useEffect } from 'react';
-import { auth, db } from "../firebase/index";
+import { auth, db } from "../../firebase/index";
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
-import { PickemComponent } from '../components'; // Import the PickemBar component
+import { PickemComponent } from '../../components'; // Import the PickemBar component
 import { Button } from "react-bootstrap";
-import DiscordAlert from "../components/DiscordAlert/DiscordAlert";
-import InPersonAlert from "../components/InPersonAlert/InPersonAlert";
+import DiscordAlert from "../../components/DiscordAlert/DiscordAlert";
+import InPersonAlert from "../../components/InPersonAlert/InPersonAlert";
 
 import './User.css';
 

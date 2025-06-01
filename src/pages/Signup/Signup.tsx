@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { auth, db } from "../firebase/index";
+import { auth, db } from "../../firebase/index";
 
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup, GoogleAuthProvider, User  } from "firebase/auth";
-import { registerUser } from "../firebase/authentication";
+import { registerUser } from "../../firebase/authentication";
 import { doc, setDoc, getDoc, Timestamp  } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';

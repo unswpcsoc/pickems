@@ -1,18 +1,18 @@
 // src/components/AdminPanel.tsx
 import { useState, useEffect } from 'react';
-import { getOrdinalSuffix } from "../utils";
-import { db } from "../firebase/index";
-import { rank_users } from "../utils";
+import { getOrdinalSuffix } from "../../utils";
+import { db } from "../../firebase/index";
+import { rank_users } from "../../utils";
 import { collection, query, getDocs, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { teamCard, TeamBuilder, MatchBuilder, MatchEditor } from "../components"
+import { teamCard, TeamBuilder, MatchBuilder, MatchEditor } from "../../components"
 import DataTable from 'react-data-table-component';
 import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 
-import { addVoteDataToMatch } from "../firebase/database"
+import { addVoteDataToMatch } from "../../firebase/database"
 
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;

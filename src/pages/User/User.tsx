@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from "../firebase/index";
+import { auth, db } from "../../firebase/index";
 import { useNavigate } from 'react-router-dom';
-import { getOrdinalSuffix } from "../utils";
+import { getOrdinalSuffix } from "../../utils";
 import { getDoc, doc, updateDoc } from "firebase/firestore";  // For fetching data from Firestore
 import { signOut } from "firebase/auth";  // For logging out the user
 import Button from 'react-bootstrap/Button';
@@ -9,8 +9,8 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
-import DiscordAlert from "../components/DiscordAlert/DiscordAlert";
-import InPersonAlert from "../components/InPersonAlert/InPersonAlert";
+import DiscordAlert from "../../components/DiscordAlert/DiscordAlert";
+import InPersonAlert from "../../components/InPersonAlert/InPersonAlert";
 
 const User = () => {
   const navigate = useNavigate();

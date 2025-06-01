@@ -1,7 +1,7 @@
 
 import { ChangeEvent, FormEvent, useState } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
-import { confirmThePasswordReset } from "../firebase/authentication"
+import { confirmThePasswordReset } from "../../firebase/authentication"
 
 const defaultFormFields = {
   password: '',

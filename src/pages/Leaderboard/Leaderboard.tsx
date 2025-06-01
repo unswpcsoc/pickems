@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getOrdinalSuffix } from "../utils";
-import { db } from "../firebase/index";
+import { getOrdinalSuffix } from "../../utils";
+import { db } from "../../firebase/index";
 import { doc, onSnapshot } from 'firebase/firestore';
 import './User.css';
 
