@@ -1,23 +1,15 @@
 import { useState, useEffect } from 'react';
-import { getOrdinalSuffix } from "../../utils";
 import { db } from "../../firebase/index";
 import { doc, onSnapshot } from 'firebase/firestore';
 import './User.css';
-
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import DataTable from 'react-data-table-component';
-import { createTheme } from 'react-data-table-component';
-createTheme('dark', {
-  background: {
-    default: 'transparent',
-  },
-});
+import { FullLeaderboard, InpersonLeaderboard, RemoteLeaderboard } from '../../components';
 
 const Leaderboard = () => {
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
-  const [inPersonleaderboard, setInPersonleaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
-  const [remoteLeaderboard, setRemoteLeaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [inPersonleaderboard, setInPersonleaderboard] = useState<any[]>([]);
+  const [remoteLeaderboard, setRemoteLeaderboard] = useState<any[]>([]);
 
   useEffect(() => {
     // Listen for changes to the leaderboard status document in Firestore
@@ -72,46 +64,6 @@ const Leaderboard = () => {
     }
   }, [db]);
 
-  const columns = [
-    {
-      name: "Rank",
-      selector: user => getOrdinalSuffix(user.rank),
-      sortable: true,
-      sortFunction: (a: any, b: any) => a.rank - b.rank,
-    },
-    {
-      name: "Name",
-      selector: user => (user.name + (user.inPerson ? "" : "*")),
-      sortable: true,
-    },
-    {
-      name: "Score",
-      selector: user => user.score,
-      sortable: true,
-      sortFunction: (a: any, b: any) => a.score - b.score,
-    },
-  ]
-
-  const specificLeaderboardCol = [
-    {
-      name: "Rank",
-      selector: user => getOrdinalSuffix(user.rank),
-      sortable: true,
-      sortFunction: (a: any, b: any) => a.rank - b.rank,
-    },
-    {
-      name: "Name",
-      selector: user => (user.name),
-      sortable: true,
-    },
-    {
-      name: "Score",
-      selector: user => user.score,
-      sortable: true,
-      sortFunction: (a: any, b: any) => a.score - b.score,
-    },
-  ]
-
   return (
     <div style={{ width: "95vw", margin: "auto"}}>
       <br />
@@ -125,31 +77,14 @@ const Leaderboard = () => {
       >
         <Tab eventKey="total-leaderboard" title="Total Leaderboard">
           <p>Note: All names with (*) at the end of their names are remote users and are only eligible for the remote prize pool.</p>
-          <DataTable
-            title="Matches"
-            columns={columns}
-            data={leaderboard}
-            defaultSortFieldId={1}
-            theme='dark'
-          />
+          <FullLeaderboard leaderboard={leaderboard}></FullLeaderboard>
+          {/* </FullLeaderboard leaderboard = {}></Tabs> */}
         </Tab>
         <Tab eventKey="inperson-leaderboard" title="In Person Leaderboard">
-        <DataTable
-            title="Matches"
-            columns={specificLeaderboardCol}
-            data={inPersonleaderboard}
-            defaultSortFieldId={1}
-            theme='dark'
-          />
+          <InpersonLeaderboard leaderboard={inPersonleaderboard}></InpersonLeaderboard>
         </Tab>
         <Tab eventKey="remote-leaderboard" title="Remote Leaderboard">
-        <DataTable
-            title="Matches"
-            columns={specificLeaderboardCol}
-            data={remoteLeaderboard}
-            defaultSortFieldId={1}
-            theme='dark'
-          />
+          <RemoteLeaderboard leaderboard={remoteLeaderboard}></RemoteLeaderboard>
         </Tab>
       </Tabs>
     </div>

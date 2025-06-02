@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from "../../firebase/index";
-import { collection, query, getDocs, Firestore, Timestamp, doc, getDoc, updateDoc, setDoc, onSnapshot, orderBy } from "firebase/firestore";  
+import { auth } from "../../firebase/index";
+import { Firestore, Timestamp, doc, updateDoc } from "firebase/firestore";  
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 
 interface MatchEditorProp {
