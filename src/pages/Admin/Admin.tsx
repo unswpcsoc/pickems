@@ -10,6 +10,7 @@ import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 
 import { addVoteDataToMatch } from "../../firebase/database"
+import { CategoryCreator } from "../../components/index";
 import { MatchDisplay } from "../../components/index";
 import { InpersonLeaderboard, RemoteLeaderboard } from "../../components/index";
 import { updateLeaderboard } from "../../firebase/leaderboard";
@@ -152,36 +153,60 @@ const Admin = () => {
         id="uncontrolled-tab-example"
         className="mb-3"
       >
-        <Tab eventKey="match" title="Matches">
-          <MatchBuilder db={db} teamOptions={teams}/>
-
-          <MatchDisplay teams={teams} matches={matches} />
-        </Tab>
-
-        <Tab eventKey="teams" title="Teams">
-          <TeamBuilder db={db} />
-
-          <h3>Teams</h3>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap', // Cards wrap to next row when no more space in the row
-              gap: '20px',
-              justifyContent: 'flex-start', // Aligns cards to the left
-            }}
+        <Tab eventKey="crystalBall" title="Crystal Ball">
+          <p>Tutorial: First make a category (e.g. champions, dragons, objectives), then using these categories you can make crystal ball pickems. Note if they are discrete crystal balls (e.g. most kills, most deaths) without it pertaining to a particular category/subject, then the crystal ball can be made without a category.</p>
+          <Tabs
+            defaultActiveKey="match"
+            id="uncontrolled-tab-example"
+            className="mb-3"
           >
-            {Array.from(teams.entries()).map(([id, team]) => (
+            <Tab eventKey="createCrystalBalls" title="Create Crystal Balls">
+              {/* add create ball creator here */}
+            </Tab>
+            <Tab eventKey="category" title="Categories">
+              {/* add create ball creator here */}
+              <CategoryCreator db={db} />
+            </Tab>
+          </Tabs>
+        </Tab>
+        <Tab eventKey="brackets" title="Brackets">
+          <Tabs
+            defaultActiveKey="match"
+            id="uncontrolled-tab-example"
+            className="mb-3"
+          >
+            <Tab eventKey="match" title="Matches">
+              <MatchBuilder db={db} teamOptions={teams}/>
+
+              <MatchDisplay teams={teams} matches={matches} />
+            </Tab>
+
+            <Tab eventKey="teams" title="Teams">
+              <TeamBuilder db={db} />
+
+              <h3>Teams</h3>
               <div
                 style={{
-                  flex: '0 0 286px', // Fixed box width
-                  boxSizing: 'border-box',
+                  display: 'flex',
+                  flexWrap: 'wrap', // Cards wrap to next row when no more space in the row
+                  gap: '20px',
+                  justifyContent: 'flex-start', // Aligns cards to the left
                 }}
               >
-                {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
-                {teamCard(id, team)} 
+                {Array.from(teams.entries()).map(([id, team]) => (
+                  <div
+                    style={{
+                      flex: '0 0 286px', // Fixed box width
+                      boxSizing: 'border-box',
+                    }}
+                  >
+                    {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
+                    {teamCard(id, team)} 
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </Tab>
+          </Tabs>
         </Tab>
 
         <Tab eventKey="miscellaneous" title="Miscellaneous Commands">

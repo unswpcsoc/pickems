@@ -141,3 +141,83 @@ export const addVoteDataToMatch = async (
     return false;
   }
 };
+
+// Function to add a category to the Firestore database
+export const addCategoryToDatabase = async (db: Firestore, categoryName: string) => {
+  if (!categoryName) {
+    console.log('No category name provided');
+    return false;
+  }
+
+  try {
+    const categoryDocRef = doc(db, "crystalBall", "categories"); // Document holding all category
+    const categoryDocSnap = await getDoc(categoryDocRef);
+
+    let categoryData = {};
+    if (categoryDocSnap.exists()) {
+      categoryData = categoryDocSnap.data();
+    }
+
+    const categoryId = uuidv4();
+    categoryData[categoryId] = {
+      name: categoryName,
+    };
+
+    await setDoc(categoryDocRef, categoryData);  // Update the entire document with the new map
+    console.log('Team added successfully');
+    return true;
+  } catch (error) {
+    console.error('Error adding team: ', error);
+    return false;
+  }
+};
+
+// TODO!
+// Function to add a crystalBall Pickem to the Firestore database
+export const addCrystalBallPickemToDatabase = async (
+  db: Firestore,
+  formData: {
+    category: string;
+    title: string;
+    points: string;
+    closeTime: string;
+  }
+) => {
+  const { category, title, points, closeTime } = formData;
+  if (!category || !title || !points || !closeTime) {
+    console.log('Please fill out all fields');
+    return false;
+  }
+
+  try {
+    const categoryPickemDocRef = doc(db, "crystalBall", category); // Document holding crystal ball for this category
+    const categoryPickemDocSnap = await getDoc(categoryPickemDocRef);
+
+    let pickemData = {};
+    if (categoryPickemDocSnap.exists()) {
+      pickemData = categoryPickemDocSnap.data();
+    }
+
+    const pickemId = uuidv4();
+    const closeTimestamp = Timestamp.fromDate(new Date(closeTime));
+
+    pickemData[pickemId] = {
+      matchId: matchId,
+      team1Id: matchTeam1,
+      team2Id: matchTeam2,
+      category: category,
+      points: points,
+      closeTime: closeTimestamp,
+      open: true, // Boolean which lets user figure out if the match is still open for pickems.
+      winner: "-1", // Either 1 or 2 (based on team 1/2)
+      votes: {team1Votes: 0, totalVotes: 0}
+    };
+
+    await setDoc(categoryPickemDocRef, pickemData);  // Update the entire document with the new match
+    console.log('Match added to Firestore successfully!');
+    return true;
+  } catch (error) {
+    console.log('Error adding match/pickem:', error);
+    return false;
+  }
+};

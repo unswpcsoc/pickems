@@ -8,6 +8,9 @@ export {default as TeamBuilder} from "./TeamBuilder/TeamBuilder";
 export {default as ImageUpload} from "./TeamBuilder/ImageUpload";
 export {default as MatchBuilder} from "./MatchBuilder/MatchBuilder";
 export {default as MatchEditor} from "./MatchEditor/MatchEditor";
+export {default as CategoryCreator} from "./CategoryCreator/CategoryCreator";
+export {default as CrystalBallCreator} from "./CrystalBallCreator/CrystalBallCreator";
+
 export {default as FullLeaderboard} from "./Leaderboard/FullLeaderboard";
 export {default as RemoteLeaderboard} from "./Leaderboard/RemoteLeaderboard";
 export {default as InpersonLeaderboard} from "./Leaderboard/InpersonLeaderboard";
