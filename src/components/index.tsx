@@ -9,6 +9,7 @@ export {default as ImageUpload} from "./TeamBuilder/ImageUpload";
 export {default as MatchBuilder} from "./MatchBuilder/MatchBuilder";
 export {default as MatchEditor} from "./MatchEditor/MatchEditor";
 export {default as CategoryCreator} from "./CategoryCreator/CategoryCreator";
+export {default as CategoryDisplay} from "./CategoryDisplay/CategoryDisplay";
 export {default as CrystalBallCreator} from "./CrystalBallCreator/CrystalBallCreator";
 
 export {default as FullLeaderboard} from "./Leaderboard/FullLeaderboard";

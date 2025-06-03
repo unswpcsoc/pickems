@@ -190,18 +190,20 @@ export const addCrystalBallPickemToDatabase = async (
   }
 
   try {
+    // Get the category pickem doc
+    // Add extra array of category into pickem doc (pickemId -> name: blah, points: blah, closeTime: blah, array of map<str, int> of category)
     const categoryPickemDocRef = doc(db, "crystalBall", category); // Document holding crystal ball for this category
     const categoryPickemDocSnap = await getDoc(categoryPickemDocRef);
 
-    let pickemData = {};
+    let categoryPickemData = {};
     if (categoryPickemDocSnap.exists()) {
-      pickemData = categoryPickemDocSnap.data();
+      categoryPickemData = categoryPickemDocSnap.data();
     }
 
     const pickemId = uuidv4();
     const closeTimestamp = Timestamp.fromDate(new Date(closeTime));
 
-    pickemData[pickemId] = {
+    categoryPickemData[pickemId] = {
       matchId: matchId,
       team1Id: matchTeam1,
       team2Id: matchTeam2,
@@ -213,7 +215,7 @@ export const addCrystalBallPickemToDatabase = async (
       votes: {team1Votes: 0, totalVotes: 0}
     };
 
-    await setDoc(categoryPickemDocRef, pickemData);  // Update the entire document with the new match
+    await setDoc(categoryPickemDocRef, categoryPickemData);  // Update the entire document with the new match
     console.log('Match added to Firestore successfully!');
     return true;
   } catch (error) {

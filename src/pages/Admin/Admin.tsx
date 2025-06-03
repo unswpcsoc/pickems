@@ -10,7 +10,7 @@ import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 
 import { addVoteDataToMatch } from "../../firebase/database"
-import { CategoryCreator } from "../../components/index";
+import { CategoryCreator, CategoryDisplay } from "../../components/index";
 import { MatchDisplay } from "../../components/index";
 import { InpersonLeaderboard, RemoteLeaderboard } from "../../components/index";
 import { updateLeaderboard } from "../../firebase/leaderboard";
@@ -26,6 +26,12 @@ const Admin = () => {
   // States for team and match display
   const [teams, setTeams] = useState<Map<string, {name: string, teamColour: string, teamLogo: string}>>(new Map());
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
+
+    // States for categories and category pickems
+  const [categories, setCategories] = useState<Map<string, { name: string, items: Map<string,string> }>>(new Map());
+  // const [crystalPickems, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
+  // First get categories, from each category get their respecitve pickems (multiple files 0 -> n).
+  // all these pickems should be in crystalPickems.
 
   // Leaderboard states for admin
   const [inPersonLeaderboard, setInPersonleaderboard] = useState<any[]>([]);  // State to hold the leaderboard data
@@ -75,6 +81,24 @@ const Admin = () => {
       console.error("Error listening to matches: ", error);
     });
 
+    const fetchCategories = onSnapshot(doc(db, "crystalBall", "categories"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const categoryData = docSnapshot.data();
+        console.log(categoryData);
+        const categories =  new Map<string, { name: string, items: Map<string,string> }>();
+        Object.keys(categoryData).forEach((id) => {
+          categories.set(id, {
+            name: categoryData[id].name, 
+            items: categoryData[id].items
+          })
+        })
+
+        setCategories(categories);
+      }
+    }, (error) => {
+      console.error("Error fetching categories: ", error);
+    });
+
     const inPersonUnsubscribe = onSnapshot(doc(db, "leaderboard", "inPersonLeaderboard"), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
@@ -105,6 +129,7 @@ const Admin = () => {
     return () => {
       fetchTeams();
       fetchMatches();
+      fetchCategories();
       inPersonUnsubscribe();
       remoteUnsubscribe();
     };
@@ -166,6 +191,8 @@ const Admin = () => {
             <Tab eventKey="category" title="Categories">
               {/* add create ball creator here */}
               <CategoryCreator db={db} />
+              <h3>Categories</h3>
+              <CategoryDisplay categories={categories} />
             </Tab>
           </Tabs>
         </Tab>
