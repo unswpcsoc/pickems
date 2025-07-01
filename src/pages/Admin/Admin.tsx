@@ -189,7 +189,6 @@ const Admin = () => {
               {/* add create ball creator here */}
             </Tab>
             <Tab eventKey="category" title="Categories">
-              {/* add create ball creator here */}
               <CategoryCreator db={db} />
               <h3>Categories</h3>
               <CategoryDisplay categories={categories} />

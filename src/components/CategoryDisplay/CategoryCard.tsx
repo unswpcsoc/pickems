@@ -1,6 +1,7 @@
 import CategoryChangeName from './CategoryChangeName';
 import Card from 'react-bootstrap/Card';
 import defaultImage from "../../assets/default.svg";
+import CategoryAddItems from './CategoryAddItems';
 
 const CategoryCard = (id: string, category: {name: string, items: Map<string,string> }) => {
   return (
@@ -10,7 +11,9 @@ const CategoryCard = (id: string, category: {name: string, items: Map<string,str
       </div>
       <Card.Body>
         <Card.Title>{category.name}</Card.Title>
+        <CategoryViewItems id={id} category={category}/>
         <CategoryChangeName id={id} category={category}/>
+        <CategoryAddItems id={id} category={category}/>
       </Card.Body>
     </Card>
   );

@@ -13,8 +13,8 @@ interface ChangeTeamNameProps {
   category: {name: string, items: Map<string,string> };
 }
 
-const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {
-  const [itemName, setItemName] = useState("");
+const CategoryViewItems = ({ id, category }: ChangeTeamNameProps) => {
+  const [categoryName, setCategoryName] = useState("");
   const [show, setShow] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [imageURL, setImageUrl] = useState<string>('');
@@ -22,14 +22,14 @@ const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {
   const handleClose = () => {setShow(false)}
   const handleShow = () => setShow(true);
 
-  const addItem = async () => {
-    if (itemName == "" || auth.currentUser == null) {
+  const editCategoryName = async () => {
+    if (categoryName == "" || auth.currentUser == null) {
       return;
     }
 
     try {
       const updatedCategoryData = {
-        [id]: { ...category, name: itemName }, 
+        [id]: { ...category, name: categoryName }, 
       };
       await updateDoc(doc(db, "crystalBall", "categories"), updatedCategoryData);
       handleClose();
@@ -50,7 +50,7 @@ const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {
           <Modal.Body>
             <Form.Label htmlFor="basic-url">Item Name</Form.Label>
             <InputGroup className="mb-3">
-              <Form.Control id="teamName" aria-describedby="basic-addon3" onChange={(e) => setItemName(e.target.value)}/>
+              <Form.Control id="teamName" aria-describedby="basic-addon3" onChange={(e) => setCategoryName(e.target.value)}/>
             </InputGroup>
 
             <CategoryImageUpload onFileUpload={setIsImageUploaded} setLogoUrl={setImageUrl} categoryName={category.name} />
@@ -60,7 +60,7 @@ const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={addItem} disabled={!isImageUploaded}>
+            <Button variant="primary" onClick={editCategoryName} disabled={!isImageUploaded}>
               Confirm
             </Button>
           </Modal.Footer>
