@@ -5,7 +5,7 @@ import { collection, query, getDocs, Timestamp, doc, onSnapshot } from "firebase
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { teamCard, TeamBuilder, MatchBuilder } from "../../components"
+import { teamCard, TeamBuilder, MatchBuilder, CrystalBallCreator } from "../../components"
 import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 
@@ -28,7 +28,7 @@ const Admin = () => {
   const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
 
     // States for categories and category pickems
-  const [categories, setCategories] = useState<Map<string, { name: string, items: Map<string,string> }>>(new Map());
+  const [categories, setCategories] = useState<Map<string, { name: string, items: Map<string, {img: string, name: string}> }>>(new Map());
   // const [crystalPickems, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
   // First get categories, from each category get their respecitve pickems (multiple files 0 -> n).
   // all these pickems should be in crystalPickems.
@@ -84,12 +84,18 @@ const Admin = () => {
     const fetchCategories = onSnapshot(doc(db, "crystalBall", "categories"), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const categoryData = docSnapshot.data();
-        console.log(categoryData);
-        const categories =  new Map<string, { name: string, items: Map<string,string> }>();
+        // console.log(categoryData);
+        const categories =  new Map<string, { name: string, items: Map<string, {img: string, name: string}>}>();
+        
         Object.keys(categoryData).forEach((id) => {
+          const rawItems = categoryData[id].items || {};
+          const itemsMap = new Map<string, { img: string; name: string }>(
+            Object.entries(rawItems)
+          );
+
           categories.set(id, {
             name: categoryData[id].name, 
-            items: categoryData[id].items
+            items: itemsMap
           })
         })
 
@@ -187,6 +193,7 @@ const Admin = () => {
           >
             <Tab eventKey="createCrystalBalls" title="Create Crystal Balls">
               {/* add create ball creator here */}
+              <CrystalBallCreator categories={categories} />
             </Tab>
             <Tab eventKey="category" title="Categories">
               <CategoryCreator db={db} />

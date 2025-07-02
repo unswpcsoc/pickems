@@ -7,7 +7,7 @@ import CategoryCard from "./CategoryCard"
 type DisplayProp = {
   categories: Map<string, { 
     name: string, 
-    items: Map<string,string> }>;
+    items: Map<string, {img: string, name: string}> }>;
 };
 
 const CategoryDisplay = ({ categories }: DisplayProp) => {

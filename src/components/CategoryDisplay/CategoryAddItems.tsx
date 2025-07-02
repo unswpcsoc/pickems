@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { auth, db } from "../../firebase/index";
+import { v4 as uuidv4} from 'uuid';
 
 import { doc, updateDoc } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
@@ -7,17 +8,18 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 import CategoryImageUpload from './CategoryImageUpload';
+import { mapToObject } from '../../utils';
 
 interface ChangeTeamNameProps {
   id: string
-  category: {name: string, items: Map<string,string> };
+  category: {name: string, items: Map<string, {img: string, name: string}> };
 }
 
 const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {
   const [itemName, setItemName] = useState("");
   const [show, setShow] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
-  const [imageURL, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>('');
 
   const handleClose = () => {setShow(false)}
   const handleShow = () => setShow(true);
@@ -28,8 +30,10 @@ const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {
     }
 
     try {
+      const teamId = uuidv4();
+      category.items[teamId] = {img: imageUrl, name: itemName};
       const updatedCategoryData = {
-        [id]: { ...category, name: itemName }, 
+        [id]: { ...category, items: category.items }, 
       };
       await updateDoc(doc(db, "crystalBall", "categories"), updatedCategoryData);
       handleClose();

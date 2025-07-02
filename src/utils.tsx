@@ -84,3 +84,18 @@ export function getOrdinalSuffix(num: number): string {
     return num.toString() + "th";
   }
 }
+
+// Function to convert ts maps to objects for firebase
+// Recursively runs through nested maps
+export function mapToObject(map: Map<string, any>) {
+  const obj: { [key:string]: any } = {};
+  map.forEach((v,k) => {
+    if (v instanceof Map) {
+      obj[k] = mapToObject(v);
+    } else {
+      obj[k] = v;
+    }
+  });
+
+  return obj;
+}

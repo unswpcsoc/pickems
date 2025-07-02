@@ -4,11 +4,12 @@ import { auth, db } from "../../firebase/index";
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import { PickemComponent } from '../../components'; // Import the PickemBar component
-import { Button } from "react-bootstrap";
+import { Button, Dropdown, ButtonGroup } from "react-bootstrap";
 import DiscordAlert from "../../components/DiscordAlert/DiscordAlert";
 import InPersonAlert from "../../components/InPersonAlert/InPersonAlert";
 
-import './User.css';
+
+import './pickem.css';
 
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
@@ -110,17 +111,32 @@ const Pickem = () => {
       <DiscordAlert discordId={userDiscordId} />
       <InPersonAlert attendanceStatus={userInPerson}/>
       <br/>
-      <div style={{ outline: "1px solid grey", paddingTop: "4px", paddingBottom: "4px", marginBottom: "24px", display: "flex", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", gap: "10px", textAlign: "right", marginLeft:"20px", alignItems: "center" }}>
-          <h2>Pick'em Matches</h2>
+
+      <div className="flex-container">
+        <div style={{textAlign: "left"}}>
+          <h2>Pick'ems</h2>
         </div>
-        <div style={{ display: "flex", gap: "10px", textAlign: "right", marginRight:"20px", alignItems: "center" }}>
+        <div style={{textAlign: "center"}}>
+          <Dropdown as={ButtonGroup} size="lg">
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Select Pickems
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={}>Crystal Ball</Dropdown.Item>
+              <Dropdown.Item onClick={}>Bracket Stage</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+        <div style={{ display: "flex", gap: "10px"}}>
           <a href="/InfoAndPrize" rel="noopener noreferrer">Info and Prizes</a>
           <div><Button variant="outline-info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>
+
+      {/* TODO: Make it so Crystal ball and Bracket matches appear after selection appropriate dropdown item */}
       {activeMatches.length === 0 ? (
-        <p>No matches available.</p>
+        <p>No matches available. Come back later!</p>
       ) : (
         activeMatches.map((match) => (
           <PickemComponent

@@ -10,7 +10,7 @@ import CategoryImageUpload from './CategoryImageUpload';
 
 interface ChangeTeamNameProps {
   id: string
-  category: {name: string, items: Map<string,string> };
+  category: {name: string, items: Map<string, {img: string, name: string}> };
 }
 
 const CategoryViewItems = ({ id, category }: ChangeTeamNameProps) => {
@@ -40,28 +40,24 @@ const CategoryViewItems = ({ id, category }: ChangeTeamNameProps) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>Add Item</Button>
+      <Button variant="primary" onClick={handleShow}>View Item</Button>
 
       <div style={{ width: "95vw", margin: "auto"}}>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Add Item</Modal.Title>
+            <Modal.Title>View Item</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Label htmlFor="basic-url">Item Name</Form.Label>
-            <InputGroup className="mb-3">
-              <Form.Control id="teamName" aria-describedby="basic-addon3" onChange={(e) => setCategoryName(e.target.value)}/>
-            </InputGroup>
-
-            <CategoryImageUpload onFileUpload={setIsImageUploaded} setLogoUrl={setImageUrl} categoryName={category.name} />
-
+            {Array.from(category.items.entries()).map(([id, item]) => (
+              <>
+                <img src={item.img}/>
+                <p>{item.name}</p>
+              </>
+            ))}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button variant="primary" onClick={editCategoryName} disabled={!isImageUploaded}>
-              Confirm
+              Close
             </Button>
           </Modal.Footer>
         </Modal>
@@ -70,4 +66,4 @@ const CategoryViewItems = ({ id, category }: ChangeTeamNameProps) => {
   )
 };
 
-export default CategoryAddItems;
+export default CategoryViewItems;

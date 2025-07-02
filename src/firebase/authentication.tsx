@@ -30,12 +30,12 @@ export const registerUser = async (
 
       // Add the user to Firestore with their uid as the document name
       const userRef = doc(db, "users", auth.currentUser.uid);  // Create a document reference
-      const picksObject = {};
       await setDoc(userRef, {
         email: auth.currentUser.email,
         name: displayName,
         discordUsername: discordName,
-        picks: picksObject,
+        picks: {},
+        crystalBall: {},
         score: 0,
         rank: -1, // Default rank is nothing until first pickem
         lastEdited: Timestamp.now(),

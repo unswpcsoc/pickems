@@ -2,8 +2,9 @@ import CategoryChangeName from './CategoryChangeName';
 import Card from 'react-bootstrap/Card';
 import defaultImage from "../../assets/default.svg";
 import CategoryAddItems from './CategoryAddItems';
+import CategoryViewItems from "./CategoryViewItems";
 
-const CategoryCard = (id: string, category: {name: string, items: Map<string,string> }) => {
+const CategoryCard = (id: string, category: {name: string, items: Map<string, {img: string, name: string}> }) => {
   return (
     <Card style={{ maxWidth: "286px", maxHeight:"360px" }}>
       <div style={{display: "flex", justifyContent: "center", backgroundColor:"grey"}}>

@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 
 interface ChangeTeamNameProps {
   id: string
-  category: {name: string, items: Map<string,string> };
+  category: {name: string, items: Map<string, {img: string, name: string}> };
 }
 
 const CategoryChangeName = ({ id, category }: ChangeTeamNameProps) => {

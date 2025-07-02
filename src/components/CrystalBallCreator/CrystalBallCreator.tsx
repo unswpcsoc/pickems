@@ -1,22 +1,25 @@
 import { useState } from 'react';
 import { TypesOfMatches } from "../../defines";
 import { Firestore } from "firebase/firestore";
-import { addMatchToDatabase } from "../../firebase/database";
+import { addCrystalBallPickemToDatabase, addMatchToDatabase } from "../../firebase/database";
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { db } from '../../firebase';
 
 type UserPanelProps = {
-  db: Firestore;
-  categories: Map<string, {
-    name: string;
-    objs: Map<string, string>;
+  categories: Map<string, { 
+    name: string, 
+    items: Map<string, {
+      img: string, 
+      name: string
+    }> 
   }>
 };
 
-const CrystalBallCreator = ({ db, categories }: UserPanelProps) => { 
+const CrystalBallCreator = ({ categories }: UserPanelProps) => { 
   // States for forms/input when making teams and matches
   const [formData, setFormData] = useState({
     category: '',
@@ -27,7 +30,13 @@ const CrystalBallCreator = ({ db, categories }: UserPanelProps) => {
 
   // States for team and match display
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Adding numeric pickems (pickems that dont rely on a category but a discrete numeric value)
+  let operableCategories: Map<string, { name: string, items: Map<string, { img: string, name: string}>}> =
+    categories;
+  operableCategories.set("Numeric", {name: "numeric", items: new Map()});
+  console.log(formData)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLInputElement>) => {
       const { name, value } = e.target;
       setFormData(prev => ({
         ...prev,
@@ -36,7 +45,7 @@ const CrystalBallCreator = ({ db, categories }: UserPanelProps) => {
     };
   
   const addCrystalBall = async () => {
-    const success = await addCrystalBallToDatabase(db, formData);
+    const success = await addCrystalBallPickemToDatabase(db, formData);
     if (success) {
       setFormData({
         category: '',
@@ -44,6 +53,8 @@ const CrystalBallCreator = ({ db, categories }: UserPanelProps) => {
         points: '',
         closeTime: '',
       });
+    } else {
+      // Error 
     }
   };
 
@@ -56,12 +67,12 @@ const CrystalBallCreator = ({ db, categories }: UserPanelProps) => {
             <Form.Group controlId="formMatchTeam1">
               <Form.Label>Select Category</Form.Label>
               <Form.Select
-                name="matchTeam1"
+                name="category"
                 value={formData.category}
-                onChange={(e) => handleChange}
+                onChange={(e) => handleChange(e)}
               >
                 <option value="">Select Category</option>
-                {Array.from(categories.entries()).map(([id, category]) => (
+                {Array.from(operableCategories.entries()).map(([id, category]) => (
                   <option key={id} value={id}>{category.name}</option>
                 ))}
               </Form.Select>
@@ -76,9 +87,9 @@ const CrystalBallCreator = ({ db, categories }: UserPanelProps) => {
             <Form.Label>Crystal Ball Pickem Title</Form.Label>
             <Form.Control
               type="text"
-              name="Crystal Ball Pickem Title"
+              name="title"
               placeholder="Pickem Title (e.g. Most Kills, Most Deaths, etc.)"
-              value={formData.category}
+              value={formData.title}
               onChange={handleChange}
             />
             </Form.Group>
