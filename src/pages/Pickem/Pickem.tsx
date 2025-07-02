@@ -10,6 +10,7 @@ import InPersonAlert from "../../components/InPersonAlert/InPersonAlert";
 
 
 import './pickem.css';
+import CrystalBallSelector from '../../components/CrystalBallSelector/CrystalBallSelector';
 
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
@@ -24,6 +25,8 @@ const Pickem = () => {
   const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogo: string }}>({});
   const [userDiscordId, setDiscordId] = useState<string | null>(null);
   const [userInPerson, setInPerson] = useState<boolean | null>(null);
+
+  const [pickemType, setPickemType] = useState<string>('Select Pickems'); // State to manage the selected pickem type
 
   useEffect(() => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
@@ -119,12 +122,12 @@ const Pickem = () => {
         <div style={{textAlign: "center"}}>
           <Dropdown as={ButtonGroup} size="lg">
             <Dropdown.Toggle variant="success" id="dropdown-basic">
-              Select Pickems
+              {pickemType}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item onClick={}>Crystal Ball</Dropdown.Item>
-              <Dropdown.Item onClick={}>Bracket Stage</Dropdown.Item>
+              <Dropdown.Item onClick={() => setPickemType("Crystal Ball")}>Crystal Ball</Dropdown.Item>
+              <Dropdown.Item onClick={() => setPickemType("Bracket Stage")}>Bracket Stage</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -134,10 +137,13 @@ const Pickem = () => {
         </div>
       </div>
 
-      {/* TODO: Make it so Crystal ball and Bracket matches appear after selection appropriate dropdown item */}
       {activeMatches.length === 0 ? (
         <p>No matches available. Come back later!</p>
-      ) : (
+      ) : pickemType === "Crystal Ball" ? (
+        // Add crystal balls
+        <CrystalBallSelector /> 
+        <p>Crystal Ball pick'ems are not available yet. Please check back later!</p>
+      ) : pickemType === "Bracket Stage" ? (
         activeMatches.map((match) => (
           <PickemComponent
             key={match.matchId}
@@ -147,7 +153,7 @@ const Pickem = () => {
             handlePick={handlePick}
           />
         ))
-      )}
+      ) : (<></>)}
     </div>
   );
 };
