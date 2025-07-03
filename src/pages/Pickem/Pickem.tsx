@@ -26,6 +26,10 @@ const Pickem = () => {
   const [userDiscordId, setDiscordId] = useState<string | null>(null);
   const [userInPerson, setInPerson] = useState<boolean | null>(null);
 
+  const [categories, setCategories] = useState<Map<string, { name: string, items: Map<string, {img: string, name: string}> }>>(new Map());
+  const [crystalBallPickems, setCrystalBallPickems] = useState<Map<string, {closeTime: any, img: string, points: string, title: string, winner: string}>>(new Map());
+  const [userCrystalBall, setUserCrystalBall] = useState<{ [key: number]: string }>({});
+
   const [pickemType, setPickemType] = useState<string>('Select Pickems'); // State to manage the selected pickem type
 
   useEffect(() => {
@@ -59,8 +63,10 @@ const Pickem = () => {
     const unsubscribeUserPicks = onSnapshot(doc(db, 'users', (auth.currentUser as User).uid), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const picks = docSnapshot.data().picks;
+        const crystalBall = (docSnapshot.data().crystalBall === null) ? {} : docSnapshot.data().crystalBall;
         setUserPicks(picks);
         setUserScore(docSnapshot.data().score);
+        setUserCrystalBall(crystalBall);
 
         const discordId = docSnapshot.data().discordName;
         discordId === "" ? setDiscordId(null) : setDiscordId(discordId);
@@ -88,10 +94,58 @@ const Pickem = () => {
       }
     });
 
+    const fetchCategories = onSnapshot(doc(db, "crystalBall", "categories"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const categoryData = docSnapshot.data();
+        const categories =  new Map<string, { name: string, items: Map<string, {img: string, name: string}>}>();
+        
+        Object.keys(categoryData).forEach((id) => {
+          const rawItems = categoryData[id].items || {};
+          const itemsMap = new Map<string, { img: string; name: string }>(
+            Object.entries(rawItems)
+          );
+
+          categories.set(id, {
+            name: categoryData[id].name, 
+            items: itemsMap
+          })
+        })
+
+        setCategories(categories);
+      }
+    }, (error) => {
+      console.error("Error fetching categories: ", error);
+    });
+
+    const fetchCrystalBall = onSnapshot(doc(db, "crystalBall", "pickems"), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const pickData = docSnapshot.data();
+        const crystalBallPicks =  new Map<string, {closeTime: any, img: string, points: string, title: string, winner: string}>;
+        
+        Object.keys(pickData).forEach((id) => {
+          crystalBallPicks.set(id, {
+            closeTime: pickData[id].closeTime,
+            img: pickData[id].img,
+            points: pickData[id].points,
+            title: pickData[id].title,
+            winner: pickData[id].winner
+          })
+        })
+
+        setCrystalBallPickems(crystalBallPicks);
+      }
+    }, (error) => {
+      console.error("Error fetching categories: ", error);
+    });
+
     return () => {
       unsubscribeActiveMatches();
       unsubscribeUserPicks();
       unsubscribeTeams();
+      fetchCategories();
+      fetchCrystalBall();
+
+      console.log("refreshing and rereading db!")
     };
   }, [db]);
 
@@ -140,9 +194,7 @@ const Pickem = () => {
       {activeMatches.length === 0 ? (
         <p>No matches available. Come back later!</p>
       ) : pickemType === "Crystal Ball" ? (
-        // Add crystal balls
-        <CrystalBallSelector /> 
-        <p>Crystal Ball pick'ems are not available yet. Please check back later!</p>
+        <CrystalBallSelector categories={categories} crystalBallPickems={crystalBallPickems} userCrystalBall={userCrystalBall}/> 
       ) : pickemType === "Bracket Stage" ? (
         activeMatches.map((match) => (
           <PickemComponent
