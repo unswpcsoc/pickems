@@ -44,7 +44,7 @@ const InpersonLeaderboard = ({ leaderboard }: leaderboardProp) => {
       columns={columns}
       data={leaderboard}
       defaultSortFieldId={1}
-      theme='dark'
+      theme='light'
     />
   );
 };

@@ -166,12 +166,12 @@ const Pickem = () => {
   };
 
   return (
-    <div style={{ width: "100vw", margin: "auto" }}>
+    <div style={{ width: "100vw", margin: "auto" }} className="text-colour">
       <DiscordAlert discordId={userDiscordId} />
       <InPersonAlert attendanceStatus={userInPerson}/>
       <br/>
 
-      <div className="flex-container">
+      <div className="flex-container" style={{ marginLeft: "10vw", marginRight: "10vw" }}>
         <div style={{textAlign: "left"}}>
           <h2>Pick'ems</h2>
         </div>
@@ -187,27 +187,26 @@ const Pickem = () => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
-        <div style={{ display: "flex", gap: "10px"}}>
+        <div style={{ display: "flex", gap: "10px", justifyContent: "right"}}>
           <a href="/InfoAndPrize" rel="noopener noreferrer">Info and Prizes</a>
-          <div><Button variant="outline-info" size="lg" active disabled>Points: {userScore}</Button></div>
+          <div><Button variant="info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>
-
-      {activeMatches.length === 0 ? (
-        <p>No matches available. Come back later!</p>
-      ) : pickemType === "Crystal Ball" ? (
-        <CrystalBallSelector categories={categories} crystalBallPickems={crystalBallPickems} userCrystalBall={userCrystalBall}/> 
-      ) : pickemType === "Bracket Stage" ? (
-        activeMatches.map((match) => (
-          <PickemComponent
-            key={match.matchId}
-            match={match}
-            userPick={userPicks[match.matchId] || ''}
-            teams={teams}
-            handlePick={handlePick}
-          />
-        ))
-      ) : (<></>)}
+      <div style={{ marginLeft: "10vw", marginRight: "10vw" }}>
+        {pickemType === "Crystal Ball" ? (
+          <CrystalBallSelector categories={categories} crystalBallPickems={crystalBallPickems} userCrystalBall={userCrystalBall}/> 
+        ) : pickemType === "Bracket Stage" ? (
+          activeMatches.map((match) => (
+            <PickemComponent
+              key={match.matchId}
+              match={match}
+              userPick={userPicks[match.matchId] || ''}
+              teams={teams}
+              handlePick={handlePick}
+            />
+          ))
+        ) : (<></>)}
+      </div>
     </div>
   );
 };

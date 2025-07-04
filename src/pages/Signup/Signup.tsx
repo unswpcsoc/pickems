@@ -95,15 +95,16 @@ const Signup = () => {
     };
 
   return (
-    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }}>
+    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }} className="text-colour">
       <br />
-      <h1>Sign up</h1>
+      <h1 className="text-colour" >Sign up</h1>
       <Tabs
       defaultActiveKey="email"
       id="uncontrolled-tab-example"
-      className="mb-3"
+      className="mb-3 text-colour"
+      data-bs-theme="light"
     >
-        <Tab eventKey="email" title="Email">
+        <Tab eventKey="email" title="Email" data-bs-theme="light">
           <Form onSubmit={handleSignup}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>Username</Form.Label>

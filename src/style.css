@@ -27,6 +27,7 @@ body, html {
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* Prevent horizontal scroll */
+  background-color: #ffffff;
 }
 
 .container {
@@ -39,4 +40,39 @@ body, html {
   box-sizing: border-box; /* Prevent overflow */
   overflow: hidden; /* Hide overflow */
   border: none;
+}
+
+/* EASY STYLYING FOR COLOUR SCHEME */
+/* WITH HOW our colour scheme changes for every OP this is needed to quickly change the colour scheme */
+.primary-colour {
+  background-color: #81248a; /* Default primary color */
+}
+
+.secondary-colour {
+  background-color: #4e55b6; /* Default secondary color */
+}
+
+.teriary_colour {
+  background-color: #f2b705; /* Default tertiary color, note this is not in use currently but feel free if needed */
+}
+
+.accent_colour {
+  background-color: #a76285; /* Default accent color */
+}
+
+.background_colour {
+  background-color: #f0f0f0; /* Default accent color */
+}
+
+.text-colour {
+  color: #000000 !important; /* Default accent color */
+}
+
+/* Bootstrap specific overrides */
+.navbar-header {
+  background-color: #81248a !important; /* Apply the background color */
+}
+
+.bs-button {
+  background-color: #a76285 !important;
 }

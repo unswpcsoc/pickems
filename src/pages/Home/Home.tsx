@@ -5,8 +5,9 @@ import { Button } from "react-bootstrap";
 // Legacy
 // import oceanProdigies from "../assets/HomePage/oceanProdigiesWide.jpg";
 // import megalan from "../assets/HomePage/megalanWide.jpg";
-const oceanProdigies = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FoceanProdigiesWide-min.jpg?alt=media&token=3100e418-a61f-468f-83b3-44628d15e9bc";
-const megalan = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FmegalanWide-min.jpg?alt=media&token=0d27118f-b9a0-43fb-a977-2fc617d4c583";
+const oceanProdigies = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FOP2_banner(1).jpg?alt=media&token=3382b12d-92af-4d09-a1d6-dadd7685bb48";
+// add more photos for carousel if needed
+// const megalan = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FmegalanWide-min.jpg?alt=media&token=0d27118f-b9a0-43fb-a977-2fc617d4c583";
 
 const HomePage = () => {
   const [index, setIndex] = useState(0);
@@ -43,7 +44,7 @@ const HomePage = () => {
             /></a>
           </div>
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           <div style={{
             width: "100%",
             height: "auto",
@@ -65,7 +66,7 @@ const HomePage = () => {
             /></a>
           </div>
 
-        </Carousel.Item>
+        </Carousel.Item> */}
       </Carousel>
 
       <br/><br/>
@@ -102,10 +103,17 @@ const HomePage = () => {
         </div>
 
         {/* Right side: General info */}
-        <div style={{ flex: 1, backgroundColor: 'rgb(108,117,125)', padding: '16px', color: 'black' }}>
+        <div style={{ flex: 1, padding: '16px', color: 'black' }} className={"secondary-colour"}>
           <h2>General Information</h2>
-          <p>The Oceanic Prodigies: Valorant tournament is a thrilling competition designed to bring together the best university esports players across Australia. Taking place at the Tyree Energy Technologies Building (TETB), UNSW Kensington, on the 22nd-23rd of February, 2025, the tournament promises intense matches and exciting moments for players and fans alike.</p>
-          <Button variant="dark" href="/InfoAndPrize">More Information</Button>
+          <p>🎮 OCEANIC PRODIGIES: ACT II - AN INTER-UNI ESPORTS TOURNAMENT 🎮</p>
+          <p>Prepare for OCEANIC PRODIGIES: ACT II, the most intense inter-university esports battle of the year! 🔥 Six top-tier universities from across NSW and ACT will go head-to-head in a 3-day action-packed event featuring the best of Valorant and League of Legends.</p>
+          <p>This isn’t just another tournament—it’s a clash of esports titans, as students from six prestigious societies battle it out for ultimate glory and a share of the $5,000 AUD cash prize pool! 🏆💰</p>
+          <p>Key Details:</p>
+          <ul>
+            <li>📅 When: 9–11 July 2025</li>
+            <li>📍 Where: Roundhouse UNSW, Kensington Campus, NSW</li>
+          </ul>
+          <a href="https://www.oceanicprodigies.com"><Button className="bs-button">More Information</Button></a>
         </div>
       </div>
       <br/>

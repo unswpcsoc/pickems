@@ -63,15 +63,16 @@ const Login = () => {
     };
 
   return (
-    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }}>
+    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }} className="text-colour">
       <br />
       <h1>Sign in</h1>
       <Tabs
       defaultActiveKey="email"
       id="uncontrolled-tab-example"
       className="mb-3"
+      data-bs-theme="light"
     >
-        <Tab eventKey="email" title="Email">
+        <Tab eventKey="email" title="Email" data-bs-theme="light">
           <Form onSubmit={handleLogin}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>

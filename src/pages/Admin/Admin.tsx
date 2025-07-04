@@ -15,11 +15,11 @@ import { MatchDisplay } from "../../components/index";
 import { InpersonLeaderboard, RemoteLeaderboard } from "../../components/index";
 import { updateLeaderboard } from "../../firebase/leaderboard";
 
-createTheme('dark', {
-  background: {
-    default: 'transparent',
-  },
-});
+// createTheme('light', {
+//   background: {
+//     default: 'transparent',
+//   },
+// });
 
 
 const Admin = () => {
@@ -176,13 +176,14 @@ const Admin = () => {
   }
 
   return (
-    <div style={{ width: "95vw", margin: "auto"}}>
+    <div style={{ width: "95vw", margin: "auto"}} className="text-colour"> 
       <br />
       <h2>Admin Panel</h2>
       <Tabs
         defaultActiveKey="match"
         id="uncontrolled-tab-example"
         className="mb-3"
+        data-bs-theme="light"
       >
         <Tab eventKey="crystalBall" title="Crystal Ball">
           <p>Tutorial: First make a category (e.g. champions, dragons, objectives), then using these categories you can make crystal ball pickems. Note if they are discrete crystal balls (e.g. most kills, most deaths) without it pertaining to a particular category/subject, then the crystal ball can be made without a category.</p>
@@ -190,6 +191,7 @@ const Admin = () => {
             defaultActiveKey="match"
             id="uncontrolled-tab-example"
             className="mb-3"
+            data-bs-theme="light"
           >
             <Tab eventKey="createCrystalBalls" title="Create Crystal Balls">
               {/* add create ball creator here */}
@@ -207,6 +209,7 @@ const Admin = () => {
             defaultActiveKey="match"
             id="uncontrolled-tab-example"
             className="mb-3"
+            data-bs-theme="light"
           >
             <Tab eventKey="match" title="Matches">
               <MatchBuilder db={db} teamOptions={teams}/>
@@ -242,7 +245,7 @@ const Admin = () => {
           </Tabs>
         </Tab>
 
-        <Tab eventKey="miscellaneous" title="Miscellaneous Commands">
+        <Tab eventKey="miscellaneous" title="Miscellaneous Commands" data-bs-theme="light">
           <h3>Update Vote Stats</h3>
           <p>This is a manual command, and will update the data on the percentage of votes of each pickems.</p>
           <Button onClick={updateVoteStats}>Update Stats</Button>
@@ -251,7 +254,7 @@ const Admin = () => {
           <p>Leaderboard is updated automatically when a match is closed. However, you can manually update the leaderboard with the button below (Note this could affect the firestore bill by a lot based on the number of users).</p>
           <Button onClick={updateLeaderboard}>Update Leaderboard</Button>
         </Tab>
-        <Tab eventKey="leaderboards" title="Prize Leaderboards">
+        <Tab eventKey="leaderboards" title="Prize Leaderboards" data-bs-theme="light">
           <Tabs>
             <Tab eventKey="inPerson-leaderboard" title="InPerson Leaderboard">
               <InpersonLeaderboard leaderboard={inPersonLeaderboard} />

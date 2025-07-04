@@ -2,7 +2,7 @@ import './Footer.css';
 
 const Footer = ({ isLargeContent }: { isLargeContent: boolean }) => {
   return (
-    <footer className={`footer ${isLargeContent ? '' : 'footer-large-content'}`}>
+    <footer className={`footer ${isLargeContent ? 'primary-colour' : 'footer-large-content primary-colour'}`}>
       <div className="footer-container">
         {/* <div className="footer-column">
           <ul className="footer-links">

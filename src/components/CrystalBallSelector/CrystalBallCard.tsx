@@ -90,7 +90,7 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
         <Card.Title style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }} >{crystalBallPickem.title}</Card.Title>
         <Dropdown style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         <Dropdown.Toggle as={CustomToggle} id={`dropdown-custom-${pickemId}`} >
-            {categoryItems.get(userCrystalBall[pickemId])!== null ? (categoryItems.get(userCrystalBall[pickemId])?.name) : "Select Pick"}
+            {userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? (categoryItems.get(userCrystalBall[pickemId])?.name) : "Select Pick"}
         </Dropdown.Toggle>
 
         <Dropdown.Menu as={CustomMenu}>

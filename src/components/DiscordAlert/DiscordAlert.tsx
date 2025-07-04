@@ -9,7 +9,7 @@ function DiscordAlert({ discordId }: DiscordAlertProp) {
   if (discordId === null || discordId === undefined|| discordId === "") {
     return (
       <>
-        <Alert variant = "primary" dismissible>
+        <Alert variant = "danger" data-bs-theme="light" dismissible>
           <Alert.Heading>You haven't linked your Discord Account!</Alert.Heading>
           <p>
           Add your Discord account in the User's page to be eligible for prizes from the pickems!

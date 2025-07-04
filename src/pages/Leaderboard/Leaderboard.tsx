@@ -65,7 +65,7 @@ const Leaderboard = () => {
   }, [db]);
 
   return (
-    <div style={{ width: "95vw", margin: "auto"}}>
+    <div style={{ width: "95vw", margin: "auto"}} className="text-colour">
       <br />
       <h1>Leaderboard</h1>
       <p>Click which leaderboard you would like to see!</p>

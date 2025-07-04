@@ -11,7 +11,7 @@ interface NavbarProps {
 
 const Header: React.FC<NavbarProps> = ({ user, isAdmin }) => {
   return (
-    <Navbar bg="secondary" expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="navbar-header bg-body-tertiary primary-colour">
       <Container style={{ minWidth: '98%' }}>
         <Navbar.Brand href="/" className="d-flex align-items-center">
           <img

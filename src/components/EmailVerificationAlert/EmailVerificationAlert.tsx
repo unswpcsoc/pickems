@@ -8,7 +8,7 @@ const EmailVerificationAlert = ({ verified }: VerifiedProp) => {
   if (!verified) {
     return (
       <div>
-        <Alert variant = "primary" dismissible>
+        <Alert variant = "danger" data-bs-theme="light" dismissible>
           <Alert.Heading>You haven't verified your email!</Alert.Heading>
           <p>
             Check the inbox of the email you registered with and click the verification link to gain access to the leaderboard and pickems!

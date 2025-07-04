@@ -43,7 +43,7 @@ const FullLeaderboard = ({ leaderboard }: leaderboardProp) => {
       columns={columns}
       data={leaderboard}
       defaultSortFieldId={1}
-      theme='dark'
+      theme='light'
     />
   );
 };

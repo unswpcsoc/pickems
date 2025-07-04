@@ -134,7 +134,7 @@ const User = () => {
     <InPersonAlert attendanceStatus={userData.inPerson}/>
     <div style={{ width: "95vw", margin: "auto"}}>
       <br />
-      <Card style={{ width: '20vw', minWidth: "400px" }}>
+      <Card style={{ width: '20vw', minWidth: "400px" }} className="secondary-colour text-colour">
       <Card.Body>
         <Card.Title>User Panel</Card.Title>
         <Card.Text>Name: {userData.name}</Card.Text>
@@ -144,8 +144,8 @@ const User = () => {
         <Card.Text>Score: {userData.score}</Card.Text>
         {/* <Card.Text>Rank: {displayRank}</Card.Text> */}
         <Card.Text>Is attending Inperson on Sunday? {userData?.inPerson === undefined ? "n/a" : userData?.inPerson ? "Yes" : "No"}</Card.Text>
-        <Button variant="primary" onClick = {handleShowDiscord} >Update Discord Username</Button>
-        <Button variant="primary" onClick = {handleShowInPerson} >Update Sunday Inperson Attendance Status</Button>
+        <Button className="bs-button" onClick = {handleShowDiscord} >Update Discord Username</Button>
+        <Button className="bs-button" onClick = {handleShowInPerson} >Update Sunday Inperson Attendance Status</Button>
       </Card.Body>
 
       <Modal show={showDiscord} onHide={handleClose}>
