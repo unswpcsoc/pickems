@@ -27,8 +27,8 @@ const Pickem = () => {
   const [userInPerson, setInPerson] = useState<boolean | null>(null);
 
   const [categories, setCategories] = useState<Map<string, { name: string, items: Map<string, {img: string, name: string}> }>>(new Map());
-  const [crystalBallPickems, setCrystalBallPickems] = useState<Map<string, {closeTime: any, img: string, points: string, title: string, winner: string}>>(new Map());
-  const [userCrystalBall, setUserCrystalBall] = useState<{ [key: number]: string }>({});
+  const [crystalBallPickems, setCrystalBallPickems] = useState<Map<string, {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}>>(new Map());
+  const [userCrystalBall, setUserCrystalBall] = useState<{ [key: string]: string }>({});
 
   const [pickemType, setPickemType] = useState<string>('Select Pickems'); // State to manage the selected pickem type
 
@@ -120,15 +120,17 @@ const Pickem = () => {
     const fetchCrystalBall = onSnapshot(doc(db, "crystalBall", "pickems"), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const pickData = docSnapshot.data();
-        const crystalBallPicks =  new Map<string, {closeTime: any, img: string, points: string, title: string, winner: string}>;
+        const crystalBallPicks =  new Map<string, {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}>;
         
         Object.keys(pickData).forEach((id) => {
           crystalBallPicks.set(id, {
+            category: pickData[id].category,
             closeTime: pickData[id].closeTime,
             img: pickData[id].img,
             points: pickData[id].points,
             title: pickData[id].title,
-            winner: pickData[id].winner
+            winner: pickData[id].winner,
+            type: pickData[id].type
           })
         })
 

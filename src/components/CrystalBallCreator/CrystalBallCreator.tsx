@@ -26,6 +26,7 @@ const CrystalBallCreator = ({ categories }: UserPanelProps) => {
     title: '',
     points: '',
     closeTime: '',
+    type: ''
   });
 
   // States for team and match display
@@ -52,6 +53,7 @@ const CrystalBallCreator = ({ categories }: UserPanelProps) => {
         title: '',
         points: '',
         closeTime: '',
+        type: ''
       });
     } else {
       // Error 
@@ -119,6 +121,19 @@ const CrystalBallCreator = ({ categories }: UserPanelProps) => {
                 value={formData.closeTime}
                 onChange={handleChange}
                 placeholder="Time to close pickem"
+              />
+            </Form.Group>
+          </Col>
+
+          <Col md={6}>
+            <Form.Group controlId="formMatchPoints">
+              <Form.Label>Pickem type (will be sorted by the type)</Form.Label>
+              <Form.Control
+                type="text"
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                placeholder="E.g. General, Agents, Series, Objectives, Players"
               />
             </Form.Group>
           </Col>

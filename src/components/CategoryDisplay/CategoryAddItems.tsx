@@ -31,9 +31,10 @@ const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {
 
     try {
       const teamId = uuidv4();
-      category.items[teamId] = {img: imageUrl, name: itemName};
+      const itemsObject = Object.fromEntries(category.items.entries());
+      itemsObject[teamId] = {img: imageUrl, name: itemName};
       const updatedCategoryData = {
-        [id]: { ...category, items: category.items }, 
+        [id]: { ...category, items: itemsObject }, 
       };
       await updateDoc(doc(db, "crystalBall", "categories"), updatedCategoryData);
       handleClose();

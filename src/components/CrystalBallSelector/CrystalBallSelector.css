@@ -1,0 +1,42 @@
+.crystal-ball-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center cards horizontally */
+  gap: 20px; /* Space between cards */
+  padding: 20px; /* Padding around the grid */
+  overflow-x: auto; /* Enable horizontal scrolling if necessary */
+}
+
+.crystal-ball-selector .card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 270px;  /* Limiting max width for each card */
+  flex: 1; /* Allow the cards to shrink/grow with available space */
+}
+
+.crystal-ball-selector .card img {
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+.category-section {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 2px solid #333;  /* Bottom line */
+}
+
+.category-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px;
+  border-top: 2px solid #333;  /* Top line */
+  margin: 0;
+  width: 100%;  /* Make sure the category title spans the full width */
+  text-align: center;  /* Center the title */
+}
+
+.category-section h3 {
+  margin-top: 0;
+}

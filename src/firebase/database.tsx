@@ -182,10 +182,11 @@ export const addCrystalBallPickemToDatabase = async (
     title: string;
     points: string;
     closeTime: string;
+    type: string;
   }
 ) => {
-  const { category, title, points, closeTime } = formData;
-  if (!category || !title || !points || !closeTime) {
+  const { category, title, points, closeTime, type} = formData;
+  if (!category || !title || !points || !closeTime || !type) {
     console.log('Please fill out all fields');
     return false;
   }
@@ -205,11 +206,13 @@ export const addCrystalBallPickemToDatabase = async (
     const closeTimestamp = Timestamp.fromDate(new Date(closeTime));
 
     crystalBallData[pickemId] = {
+      category: category,
       title: title,
       points: points,
       closeTime: closeTimestamp,
       winner: "",
       img: "",
+      type: type,
     };
 
     await setDoc(categoryPickemDocRef, crystalBallData);  // Update the entire document with the new match
