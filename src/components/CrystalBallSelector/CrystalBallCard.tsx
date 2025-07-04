@@ -82,7 +82,7 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
     }
   );
   return (
-    <Card style={{ maxWidth: "286px", maxHeight:"360px" }}>
+    <Card style={{ maxWidth: "286px", maxHeight:"360px" }} data-bs-theme="light">
     <div style={{display: "flex", justifyContent: "center"}}>
         <Card.Img style={{ paddingTop: "10px", paddingBottom: "10px", marginLeft:"auto", marginRight:"auto", width: "auto", maxHeight: "200px" }} variant="top" src={crystalBallPickem.img || defaultImage} />
     </div>

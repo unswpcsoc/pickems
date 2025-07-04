@@ -7,9 +7,9 @@
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const fullBanner = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FOP2_banner.jpg?alt=media&token=67db0976-6602-4fc9-908c-312e617e1c9d";
-const teams = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fteams.png?alt=media&token=e673fb0c-392c-42e4-983a-6392c5bc4a75";
+const teams = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FThe%20teams(1).png?alt=media&token=8d746656-ff32-4580-b99c-ebe5a04d5ecc";
 const monitor = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fmonitor.jpg?alt=media&token=a48ca0fe-85c2-4ca3-ba35-c5fbb0530641";
-const brackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FInterUni_Brackets_Day_1(1).png?alt=media&token=93f45612-51cb-4583-8535-6eaa347b0aad";
+// const brackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FInterUni_Brackets_Day_1(1).png?alt=media&token=93f45612-51cb-4583-8535-6eaa347b0aad";
 
 const InfoAndPrize = () => {
   return (
@@ -18,15 +18,23 @@ const InfoAndPrize = () => {
       <div>
         {/* <img src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
         <LazyLoadImage  src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
-        <h1>How the Tournament Works</h1>
+        <h1>Event Overview</h1>
         <p>
-        The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory. Hosted in the Tyree Energy Technology Building (TETB) at UNSW Kensington, the event spans two days from the 22nd to the 23rd of February 2025 where 8 Universities battle it out to see who has the best Valorant team. Matches are played in a double elimination format, with the best teams advancing toward the Grand Finals. Attendees can enjoy live action-packed gameplay, interact with fellow fans, and witness the ultimate clash of skills.
+          The Oceanic Prodigies: Valorant tournament is a celebration of university esports, where teams from universities across Australia compete for glory.
+          Watch as 6 of the best university esports teams from across the country battle it out in Valorant for a $4,000 AUD cash prize pool and ultimate supremacy.
         </p>
 
-        <h1>Tournament Formats and Rules</h1>
+        <h1>Event Details</h1>
+        <ul>
+          <li>Event Date: 9th–11th July 2025</li>
+          <li>Where: The Roundhouse at UNSW Kensington Campus, Sydney, NSW</li>
+          <li>Tickets: Free Spectator Admission – Come and watch the action live!</li>
+        </ul>
+
+        {/* <h1>Tournament Formats and Rules</h1>
         <p>The tournament follows a double-elimination format, with teams battling it out in a Best-of-One series for each round culminating in a Best-of-Three Grand Final. </p>
         {/* <img src={brackets} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
-        <LazyLoadImage  src={brackets} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
+        {/* <LazyLoadImage  src={brackets} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         
         <br/> <br/>
         <h1>What are Pickems?</h1>
@@ -38,7 +46,7 @@ const InfoAndPrize = () => {
           <li><strong>Pick Your Winners:</strong> As the tournament unfolds, you’ll make predictions on who will claim the top spots in each match.</li>
           <li><strong>Rack Up Points:</strong> Correct picks will earn you points, and the more accurate your predictions, the higher your score.</li>
           <li><strong>Win Big:</strong> At the end of the tournament, the top pickers will be rewarded with prizes and exclusive goodies.</li>
-        </ol>
+        </ol> */}
       </div>
 
       <div>
@@ -53,8 +61,6 @@ const InfoAndPrize = () => {
           <li>University of NSW: PCSoc</li>
           <li>University of Wollongong: Video-Game Society</li>
           <li>Western Sydney University: Alliance of Social Gamers</li>
-          <li>University of Newcastle: Gaming and Anime Club</li>
-          <li>University of Technology Sydney: UTS Esports</li>
           <li>Macquarie University: Macquarie Uni Gaming Society</li>
           <li>University of Sydney: Society of Gamers</li>
           <li>Australian National University: ANU Esports</li>
@@ -67,25 +73,19 @@ const InfoAndPrize = () => {
         {/* <img src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
         <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <p>
-          The pickems leaderboard offers both in person (Attending Megalan on Sunday) and online rewards:
+          Oceanic Prodigies this time round is offering only in-person rewards:
         </p>
 
-        <p>The in person rewards are as followed:</p>
+        <p>The In-person rewards are as followed:</p>
 
         <ul>
-          <li>1st Place: 1 GS27QCA 27" 1440p 180hz Curved IPS Gaming Monitor</li>
-          <li>2nd to 4th Place: Aorus RGB Mousemat</li>
-          <li>5th to 16th Place: Aorus Chibi Figurine</li>
+          <li>1st Place: 1 Gigabyte arous MO27US Monitor</li>
+          <li>2nd to 20th place: Gigabyte Aorus X GXWS Studios Goodie Bag</li>
         </ul>
 
-        <p>The online rewards are as followed:</p>
-        <ul>
-          <li>1st Place: 1 Aorus Jacket</li>
-        </ul>
-
-        <p>Prizes will be awarded based on the final leaderboard standings. The top scorers will receive their rewards at the event, while the top remote participant will have their Aorus Jacket given to them at a later date (contact via Discord).</p>
-        <p>To check and edit your in person status for Sunday go to the user page and click the edit button to change it.</p>
-        <p>To be prize eligible for either leaderboards you must have your discord ID added to your account. (Go the the user page to add or change your Discord ID)</p>
+        <p>Prizes will be awarded based on the final leaderboard standings. The top scorers will receive their rewards at the event on the 11th of July at UNSW.</p>
+        <p>To check and change your in-person status for the Pickems prizes, go to the user page and click the edit button to change it.</p>
+        <p>To be prize eligible you must have your discord ID added to your account. (Go the the user page to add/change your Discord ID)</p>
         <p>Warning: If your discord ID or in person status is incorrect by the time prizes are distributed you will automatically forfeit any prizes you were about to win.</p>
       </div>
     </div>
