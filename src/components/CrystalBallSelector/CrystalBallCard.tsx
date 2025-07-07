@@ -20,6 +20,13 @@ interface PickemCardProps {
 }
 
 const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCrystalBall }: PickemCardProps) => {
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent form default behavior (page reload)
+
+    await updatePickem(pickemId, inputValue);
+  };
 
   const updatePickem = async (crystalBallId: string, itemId: string) => {
       try {
@@ -82,28 +89,77 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
     }
   );
   return (
-    <Card style={{ maxWidth: "286px", maxHeight:"360px" }} data-bs-theme="light">
+    // If numeric we have textbox input
+    <Card style={{ maxWidth: "286px", maxHeight:"480px", position: "relative", overflow: "visible" }} data-bs-theme="light">
     <div style={{display: "flex", justifyContent: "center"}}>
-        <Card.Img style={{ paddingTop: "10px", paddingBottom: "10px", marginLeft:"auto", marginRight:"auto", width: "auto", maxHeight: "200px" }} variant="top" src={crystalBallPickem.img || defaultImage} />
+        <Card.Img style={{ paddingTop: "10px", paddingBottom: "10px", marginLeft:"auto", marginRight:"auto", width: "auto", maxWidth:"20vw", maxHeight: "200px" }} variant="top" src={crystalBallPickem.img || defaultImage} />
     </div>
-    <Card.Body>
-        <Card.Title style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }} >{crystalBallPickem.title}</Card.Title>
-        <Dropdown style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-        <Dropdown.Toggle as={CustomToggle} id={`dropdown-custom-${pickemId}`} >
-            {userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? (categoryItems.get(userCrystalBall[pickemId])?.name) : "Select Pick"}
-        </Dropdown.Toggle>
+    {crystalBallPickem.category === "Numeric" ? (
+      <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:"0px"}}>{userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? (`Pick: ${userCrystalBall[pickemId]}`) : ""}{}</p>
+      ) : (
+      <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:"0px"}}>{userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? (`Pick: ${categoryItems.get(userCrystalBall[pickemId])?.name}`) : ""}{}</p>
+      )}
+    <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Card.Title style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textAlign:"center", width: '100%' }} >{crystalBallPickem.title}</Card.Title>
+        {crystalBallPickem.closeTime.seconds < Date.now() / 1000 ? (
+          <Button variant="primary" type="submit" disabled style={{ alignSelf: 'center' }}>
+            Pickems Closed
+          </Button>
+        ) : crystalBallPickem.category === "Numeric" ? (
+          <Form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              {/* <Form.Label>Email address</Form.Label> */}
+              <Form.Control 
+                type="text"
+                placeholder="Enter number (0, 1, 2, ...)"
+                value={inputValue} 
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+            </Form.Group>
 
-        <Dropdown.Menu as={CustomMenu}>
-        {Array.from(categoryItems.entries()).map(([itemId, categoryData]) => (
-            <Dropdown.Item
-            key={itemId}
-            onClick={() => updatePickem(pickemId, itemId)}
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        ) : (
+          <Dropdown
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              width: '100%', 
+              position: 'relative', // Add relative positioning to the Dropdown
+              zIndex: 1050, // Ensure it appears above other elements
+            }}
+          >
+            <Dropdown.Toggle as={CustomToggle} id={`dropdown-custom-${pickemId}`}>
+              {userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? "Change Pick" : "Select Pick"}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu
+              as={CustomMenu}
+              renderOnMount
+              align={{ sm: 'start' }}
+              style={{
+                zIndex: 50, // Make sure the dropdown has a higher z-index than the card
+                top: '100%', // Position below the button
+                overflowX: "visible", // Make sure the menu doesn't get clipped
+              }}
+              container="body"
             >
-            {categoryData.name}
-            </Dropdown.Item>
-        ))}
-        </Dropdown.Menu>
-    </Dropdown>
+              {Array.from(categoryItems.entries()).map(([itemId, categoryData]) => (
+                <Dropdown.Item
+                  key={itemId}
+                  className="dropdown-menu-custom"
+                  onClick={() => updatePickem(pickemId, itemId)}
+                >
+                  {categoryData.name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
+        )}
 
     {/* <Button
         className={classNames("crystal-ball-button")}

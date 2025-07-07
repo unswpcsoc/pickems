@@ -80,7 +80,7 @@ const InfoAndPrize = () => {
 
         <ul>
           <li>1st Place: 1 Gigabyte arous MO27US Monitor</li>
-          <li>2nd to 20th place: Gigabyte Aorus X GXWS Studios Goodie Bag</li>
+          <li>2nd to 20th place: Gigabyte AORUS X GXS Studios Goodie Bag</li>
         </ul>
 
         <p>Prizes will be awarded based on the final leaderboard standings. The top scorers will receive their rewards at the event on the 11th of July at UNSW.</p>

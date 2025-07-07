@@ -20,21 +20,33 @@ const CrystalBallSelector = ({ categories, crystalBallPickems, userCrystalBall }
     groupedPickems.get(pickem.type)?.push({id, ...pickem});
   });
 
+  const sortedGroupedPickems = new Map(
+  [...groupedPickems.entries()].sort(([keyA], [keyB]) => {
+    return keyA.localeCompare(keyB);
+  })
+);
 
   return (
     <>
       <div>
         <div>
           {/* Render each type with its corresponding pickems */}
-          {Array.from(groupedPickems.entries()).map(([type, pickems]) => {            
+          {Array.from(sortedGroupedPickems.entries()).map(([type, pickems]) => {
             return (
               <div key={type} className="category-section">
                 <h3 className="category-title">{type}</h3>
 
-                <div className="crystal-ball-selector">
+                <div className="crystal-ball-selector" style={{overflow: "visible"}}>
                   {pickems.map((pickem) => {
-                    const categoryData = categories.get(pickem.category);
-                    const items = categoryData?.items ?? new Map();
+                    // If category is numeric, we will display it with a text box!
+                    let items;
+                    if (pickem.category === "Numeric") {
+                      items = new Map();
+                    } else {
+                      const categoryData = categories.get(pickem.category);
+                      items = categoryData?.items ?? new Map();
+                    }
+                  
                     return (
                       <CrystalBallCard
                         pickemId={pickem.id}

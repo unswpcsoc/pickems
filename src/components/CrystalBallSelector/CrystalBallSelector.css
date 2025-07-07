@@ -1,6 +1,7 @@
+/* CrystalBallSelector.css */
 .crystal-ball-selector {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Allow the cards to wrap onto the next row */
   justify-content: center; /* Center cards horizontally */
   gap: 20px; /* Space between cards */
   padding: 20px; /* Padding around the grid */
@@ -12,7 +13,9 @@
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-width: 270px;  /* Limiting max width for each card */
-  flex: 1; /* Allow the cards to shrink/grow with available space */
+  flex: 1 1 calc(33% - 20px); /* Cards take up 33% of the row with gap considered */
+  min-width: 230px; /* Prevent cards from becoming too small on smaller screens */
+  box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 .crystal-ball-selector .card img {
@@ -40,3 +43,32 @@
 .category-section h3 {
   margin-top: 0;
 }
+
+/* Ensure the dropdown menu is positioned correctly and is above other content */
+.dropdown-menu-custom {
+  z-index: 1050; /* Ensure dropdown is in front of other elements */
+  max-height: 300px; /* Optional: limit dropdown height */
+  overflow-y: auto; /* Adds a scrollbar if content overflows */
+  width: 100%; /* Ensures the dropdown takes the full width of its parent */
+  overflow: visible;
+}
+
+.card {
+  position: relative; /* Makes sure dropdown is positioned relative to the card */
+  z-index: 1; /* Lower z-index than dropdown */
+}
+
+/* Responsiveness: 2 items per row on medium screens */
+@media (max-width: 768px) {
+  .crystal-ball-selector .card {
+    flex: 1 1 calc(50% - 20px); /* 2 items per row */
+  }
+}
+
+/* Responsiveness: 1 item per row on small screens */
+@media (max-width: 480px) {
+  .crystal-ball-selector .card {
+    flex: 1 1 100%; /* 1 item per row */
+  }
+}
+
