@@ -178,10 +178,11 @@ const Signup = () => {
             type="checkbox"
             checked={formData.inPersonBool}
             onChange={(e) => setFormData({...formData, inPersonBool: e.target.checked})}
-            label="Will you be attending Megalan inperson on Sunday the 23rd of Feburary?"
+            label="Will you be attending Oceanic Prodigies in-person on Friday the 11th of July?"
             />
             <Form.Text className="text-muted">
-              Note: If you are not attending Megalan inperson on Sunday, you will only be eligible for the online pickems prize pool (Only the 1st place Aorus Jacket). Other prizes will only be available for inperson attendeess.
+              Note: If you are not attending Oceanic Prodigies in-person on the above date when prizes/winners are announced for pickems you will not be eligible for prizes!
+              <br></br><strong>You cannot get another person on your behalf to collect any prizes.</strong>
             </Form.Text>
           </Form.Group>
 
