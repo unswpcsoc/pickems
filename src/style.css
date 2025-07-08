@@ -49,7 +49,7 @@ body, html {
 }
 
 .secondary-colour {
-  background-color: #4e55b6; /* Default secondary color */
+  background-color: #0c2161; /* Default secondary color */
 }
 
 .teriary_colour {
@@ -57,7 +57,7 @@ body, html {
 }
 
 .accent_colour {
-  background-color: #a76285; /* Default accent color */
+  background-color: #c776e8; /* Default accent color */
 }
 
 .background_colour {
@@ -74,5 +74,5 @@ body, html {
 }
 
 .bs-button {
-  background-color: #a76285 !important;
+  background-color: #c776e8 !important;
 }

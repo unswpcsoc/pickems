@@ -40,6 +40,7 @@ const Header: React.FC<NavbarProps> = ({ user, isAdmin }) => {
                 {isAdmin   ? (
                   <>
                   <Nav.Link href="/InfoAndPrize">Information</Nav.Link>
+                  <Nav.Link href="/brackets">Brackets</Nav.Link>
                   <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
                   <Nav.Link href="/pickems">Pickems</Nav.Link>
                   <Nav.Link href="/admin">Admin</Nav.Link>
@@ -48,6 +49,7 @@ const Header: React.FC<NavbarProps> = ({ user, isAdmin }) => {
                 ) : (
                   <>
                   <Nav.Link href="/InfoAndPrize">Information</Nav.Link>
+                  <Nav.Link href="/brackets">Brackets</Nav.Link>
                   <Nav.Link href="/leaderboard">Leaderboard</Nav.Link>
                   <Nav.Link href="/pickems">Pickems</Nav.Link>
                   <Nav.Link href="/user">User</Nav.Link>
@@ -57,6 +59,7 @@ const Header: React.FC<NavbarProps> = ({ user, isAdmin }) => {
               ) : (
                 <>
                 <Nav.Link href="/InfoAndPrize">Information</Nav.Link>
+                <Nav.Link href="/brackets">Brackets</Nav.Link>
                 <Nav.Link href="/user">User</Nav.Link>
                 </>
               )}
@@ -64,6 +67,7 @@ const Header: React.FC<NavbarProps> = ({ user, isAdmin }) => {
             ) : (
               <>
                 <Nav.Link href="/InfoAndPrize">Information</Nav.Link>
+                <Nav.Link href="/brackets">Brackets</Nav.Link>
                 <Nav.Link href="/signup">Signup</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
               </>

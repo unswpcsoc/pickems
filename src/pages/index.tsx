@@ -1,4 +1,5 @@
 export {default as Admin} from "./Admin/Admin";
+export {default as Brackets} from "./Brackets/Brackets";
 export {default as User} from "./User/User";
 export {default as Home} from "./Home/Home";
 export {default as Leaderboard} from "./Leaderboard/Leaderboard";

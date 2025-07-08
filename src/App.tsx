@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { auth } from './firebase/index';
 import { getIdTokenResult, onAuthStateChanged } from "firebase/auth";
-import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard, InfoAndPrize } from './pages';
+import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard, InfoAndPrize, Brackets } from './pages';
 import { Header, Footer, EmailVerificationAlert } from './components';
 
 function App() {
@@ -68,6 +68,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/InfoAndPrize" element={<InfoAndPrize />} />
+          <Route path="/brackets" element={<Brackets />} />
           <Route
             path="/admin"
             element={(user && user.emailVerified && isAdmin) ? <Admin /> : <Home />}
