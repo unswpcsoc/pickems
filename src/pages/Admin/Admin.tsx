@@ -14,6 +14,7 @@ import { CategoryCreator, CategoryDisplay } from "../../components/index";
 import { MatchDisplay } from "../../components/index";
 import { InpersonLeaderboard, RemoteLeaderboard } from "../../components/index";
 import { updateLeaderboard } from "../../firebase/leaderboard";
+import CrystalBallEditor from '../../components/CrystalBallEditor/CrystalBallEditor';
 
 // createTheme('light', {
 //   background: {
@@ -193,14 +194,17 @@ const Admin = () => {
             className="mb-3"
             data-bs-theme="light"
           >
-            <Tab eventKey="createCrystalBalls" title="Create Crystal Balls">
-              {/* add create ball creator here */}
-              <CrystalBallCreator categories={categories} />
-            </Tab>
             <Tab eventKey="category" title="Categories">
               <CategoryCreator db={db} />
               <h3>Categories</h3>
               <CategoryDisplay categories={categories} />
+            </Tab>
+            <Tab eventKey="createCrystalBalls" title="Create Crystal Balls">
+              {/* add create ball creator here */}
+              <CrystalBallCreator categories={categories} />
+            </Tab>
+            <Tab eventKey="editCrystalBalls" title="Edit/Close Crystal Balls">
+              <CrystalBallEditor categories={categories} />
             </Tab>
           </Tabs>
         </Tab>
@@ -253,6 +257,10 @@ const Admin = () => {
           <h3>Update Leaderboard</h3>
           <p>Leaderboard is updated automatically when a match is closed. However, you can manually update the leaderboard with the button below (Note this could affect the firestore bill by a lot based on the number of users).</p>
           <Button onClick={updateLeaderboard}>Update Leaderboard</Button>
+
+          {/* <h3><strong>Close Crystal Balls/Submit results</strong></h3>
+          <p>Submit crystal balls</p>
+          <Button onClick={}>Close Crystal Balls</Button> */}
         </Tab>
         <Tab eventKey="leaderboards" title="Prize Leaderboards" data-bs-theme="light">
           <Tabs>

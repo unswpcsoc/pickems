@@ -29,6 +29,8 @@ const CrystalBallSelector = ({ categories, crystalBallPickems, userCrystalBall }
   return (
     <>
       <div>
+        <h1 style={{textAlign:"center"}}>Crystal Balls have closed!</h1>
+        <p style={{textAlign:"center"}}>Good luck on brackets pickems!</p>
         <div>
           {/* Render each type with its corresponding pickems */}
           {Array.from(sortedGroupedPickems.entries()).map(([type, pickems]) => {

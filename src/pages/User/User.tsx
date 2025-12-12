@@ -143,9 +143,9 @@ const User = () => {
         <Card.Text>Discord Username: {userData?.discordUsername || "n/a"}</Card.Text>
         <Card.Text>Score: {userData.score}</Card.Text>
         {/* <Card.Text>Rank: {displayRank}</Card.Text> */}
-        <Card.Text>Is attending Inperson on Sunday? {userData?.inPerson === undefined ? "n/a" : userData?.inPerson ? "Yes" : "No"}</Card.Text>
+        <Card.Text>Is attending Inperson on Friday (11th of July)? {userData?.inPerson === undefined ? "n/a" : userData?.inPerson ? "Yes" : "No"}</Card.Text>
         <Button className="bs-button" onClick = {handleShowDiscord} >Update Discord Username</Button>
-        <Button className="bs-button" onClick = {handleShowInPerson} >Update Sunday Inperson Attendance Status</Button>
+        <Button className="bs-button" onClick = {handleShowInPerson} >Update Friday Inperson Attendance Status</Button>
       </Card.Body>
 
       <Modal show={showDiscord} onHide={handleClose}>
@@ -170,16 +170,16 @@ const User = () => {
     
       <Modal show={showInPerson} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Sunday Attendance Status Change</Modal.Title>
+          <Modal.Title>Friday Attendance Status Change</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Check
             type="checkbox"
             onChange={(e) => setInPersonBool(e.target.checked)}
-            label="Will you be attending Megalan in person on Sunday the 23rd of Feburary?"
+            label="Will you be attending Oceanic Prodigies on Friday the 11th of July"
             />
             <Form.Text className="text-muted">
-              Note: If you are not attending Megalan in person on Sunday, you will only be eligible for the online pickems prize pool (Only the 1st place Aorus Jacket). Other prizes will only be available for inperson attendeess.
+              Note: If you are not attending Oceani Prodigies in person on Friday, you will not be eligible for prizes.
           </Form.Text>
         </Modal.Body>
         <Modal.Footer>

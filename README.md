@@ -2,9 +2,11 @@
 **This is the active branch for the project for the 2025 T2 Oceanic Prodigies/ARAM tournament**
 Note that as Firebase offers Backend-As-A-Service (BaaS), you will only need to host the frontend from this repo whilst having a firebase account.
 
-For T2 we will be implementing crystal ball whilst cleaning up the repository. Please contact STBAccuracy on discord for specifics on the db and project.
+For 2026 T1 pickems will have the following features
+- Crystal ball pickems
+- Bracket pickems
 
-To help with the project please refer to the todos at the bottom for current progress and any git issues on the repository.
+~~To help with the project please refer to the todos at the bottom for current progress and any git issues on the repository.~~ Todos have not been changed since the 2025 T2 repo so please dm me for parts to help with.
 
 # How to run the frontend locally
 1) To run it on your own machine make a .env file in the root directory with the following

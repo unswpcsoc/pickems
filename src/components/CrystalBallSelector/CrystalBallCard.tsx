@@ -7,6 +7,7 @@ import { auth, db } from '../../firebase';
 import { User } from 'firebase/auth';
 
 import { doc, updateDoc } from "firebase/firestore";
+import CrystalBallResult from './CrystalBallResult';
 
 /**
  * Method that displays all the crystal ball pickems
@@ -20,6 +21,9 @@ interface PickemCardProps {
 }
 
 const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCrystalBall }: PickemCardProps) => {
+  if (userCrystalBall === undefined || userCrystalBall === null) {
+    userCrystalBall = {["a"]:"a"};
+  }
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,7 +93,6 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
     }
   );
   return (
-    // If numeric we have textbox input
     <Card style={{ maxWidth: "286px", maxHeight:"480px", position: "relative", overflow: "visible" }} data-bs-theme="light">
     <div style={{display: "flex", justifyContent: "center"}}>
         <Card.Img style={{ paddingTop: "10px", paddingBottom: "10px", marginLeft:"auto", marginRight:"auto", width: "auto", maxWidth:"20vw", maxHeight: "200px" }} variant="top" src={crystalBallPickem.img || defaultImage} />
@@ -99,12 +102,22 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
       ) : (
       <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:"0px"}}>{userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? (`Pick: ${categoryItems.get(userCrystalBall[pickemId])?.name}`) : ""}{}</p>
       )}
+
+    {/* Answer: Remove on later iterations */}
+    <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:"0px"}}><strong>Answer: {crystalBallPickem.winner}</strong></p>
+
     <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <Card.Title style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textAlign:"center", width: '100%' }} >{crystalBallPickem.title}</Card.Title>
         {crystalBallPickem.closeTime.seconds < Date.now() / 1000 ? (
-          <Button variant="primary" type="submit" disabled style={{ alignSelf: 'center' }}>
-            Pickems Closed
-          </Button>
+          // Display points instead of button if we have answers submitted
+          crystalBallPickem.winner !== "" ? (
+            <CrystalBallResult pick={crystalBallPickem.winner === userCrystalBall[pickemId]} points={crystalBallPickem.points} />
+          ) : (
+            <Button variant="primary" type="submit" disabled style={{ alignSelf: 'center' }}>
+              Pickems Closed
+            </Button>
+          )
+
         ) : crystalBallPickem.category === "Numeric" ? (
           <Form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <Form.Group className="mb-3" controlId="formBasicEmail">

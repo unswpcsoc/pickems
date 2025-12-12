@@ -10,11 +10,10 @@ function InPersonAlert({ attendanceStatus }: InPersonAlertProp) {
     return (
       <>
         <Alert variant = "primary" dismissible>
-          <Alert.Heading>You haven't added your attendance status for Sunday!</Alert.Heading>
+          <Alert.Heading>You haven't added your attendance status for Friday!</Alert.Heading>
           <p>
-          Add your Megalan in person attendance in the User's page to be eligible for prizes from the pickems!
-          Note: If you are not attending in person on Sunday you will only be eligible for the online pickems prize pool (Only the 1st place Aorus Jacket).
-          The other prizes are only eligible for in person attendees attending Megalan on Sunday.
+          Add your Oceanic Prodigies in person attendance in the User's page to be eligible for prizes from the pickems!
+          Note: If you are not attending in person on Friday the 11th of July you will not be eligible for any pickems prizes!
           </p>
         </Alert>
       </>

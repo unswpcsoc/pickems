@@ -10,11 +10,11 @@ function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
 
-createTheme('dark', {
-  background: {
-    default: 'transparent',
-  },
-});
+// createTheme('dark', {
+//   background: {
+//     default: 'transparent',
+//   },
+// });
 
 type matchDisplayProp = {
   teams: Map<string, {
@@ -171,7 +171,7 @@ const MatchDisplay = ({ teams, matches } : matchDisplayProp) => {
     columns={columns}
     data={matches}
     defaultSortFieldId={1}
-    theme="dark"
+    // theme="dark"
     />
   );
 };
