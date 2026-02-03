@@ -4,11 +4,11 @@ import correctImage from "../../assets/Correct.png";
 import incorrectImage from "../../assets/Incorrect.png";
 
 // Displays the results of a pickem (tick/cross with point value)
-const CrystalBallResult = (pick: boolean, points: string) => {
+const CrystalBallResult = (correct: boolean, points: string) => {
   return (
     <div>
       <h1 style={{display:"flex", alignItems: "center"}}>
-        {pick === true ? (
+        {correct === true ? (
           <>
             <Image src={correctImage} fluid />
             <Badge style={{paddingLeft:"10px", paddingRight:"10px", marginLeft:"10px"}} bg="secondary">+{points}</Badge>
@@ -23,22 +23,6 @@ const CrystalBallResult = (pick: boolean, points: string) => {
         
       </h1>
     </div>
-    // <div>
-    //   <h1>
-    //     {pick === match.winner ? (
-    //       <>
-    //       <Image src={correctImage} fluid />
-    //       <Badge style={{paddingLeft:"10px", paddingRight:"10px",}} bg="secondary">+{match.points}</Badge>
-    //       </>
-    //     ) : (
-    //       <>
-    //       <Image src={incorrectImage} fluid />
-    //       <Badge bg="secondary">+0</Badge>
-    //       </>
-    //     )}
-        
-    //   </h1>
-    // </div>
   );
 }
 

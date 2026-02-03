@@ -55,6 +55,7 @@ const CrystalBallSelector = ({ categories, crystalBallPickems, userCrystalBall }
                         crystalBallPickem={pickem}
                         categoryItems={items}
                         userCrystalBall={userCrystalBall}
+                        isNumeric={pickem.category === "Numeric"}
                       />
                     );
                   })}

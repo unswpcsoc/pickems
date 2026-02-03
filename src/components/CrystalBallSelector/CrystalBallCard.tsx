@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
 import defaultImage from "../../assets/pickem/OP2_ban.jpg"; // Correct image path
-import { Card, Dropdown, Form } from 'react-bootstrap';
+import { Card, Modal, Form, Button } from 'react-bootstrap';
 import { auth, db } from '../../firebase';
 import { User } from 'firebase/auth';
 
 import { doc, updateDoc } from "firebase/firestore";
 import CrystalBallResult from './CrystalBallResult';
+import TextOverlay from './TextOverlay';
 
 /**
  * Method that displays all the crystal ball pickems
@@ -18,25 +19,30 @@ interface PickemCardProps {
     crystalBallPickem: {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}
     categoryItems: Map<string, { img: string, name: string }>;
     userCrystalBall: { [key: string]: string };
+    isNumeric: Boolean;
 }
 
-const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCrystalBall }: PickemCardProps) => {
+const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCrystalBall, isNumeric }: PickemCardProps) => {
   if (userCrystalBall === undefined || userCrystalBall === null) {
     userCrystalBall = {["a"]:"a"};
   }
   const [inputValue, setInputValue] = useState<string>('');
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form default behavior (page reload)
 
     await updatePickem(pickemId, inputValue);
   };
 
+  const [CBSelector, showCBSelector] = useState(false);
+  const handleClose = () => showCBSelector(false);
+  const handleShow = () => showCBSelector(true);
+
   const updatePickem = async (crystalBallId: string, itemId: string) => {
       try {
         // Update the selected state
         console.log("Match:", crystalBallPickem);
         if (!crystalBallPickem || crystalBallPickem.closeTime.seconds < Date.now() / 1000) {
+          handleClose();
           return;
         } else {
           const updatedPicks = { ...userCrystalBall, [crystalBallId]: itemId };
@@ -49,6 +55,7 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
       } catch (error) {
         console.error("Error updating selection:", error);
       }
+      handleClose();
     };
 
   const CustomToggle = React.forwardRef(({ children, onClick }: any, ref: any) => (
@@ -64,123 +71,90 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
     </a>
   ));
 
-  const CustomMenu = React.forwardRef(
-    ({ children, style, className, 'aria-labelledby': labeledBy }: any, ref: any) => {
-      const [value, setValue] = useState('');
-
-      return (
-        <div
-          ref={ref}
-          style={style}
-          className={className}
-          aria-labelledby={labeledBy}
-        >
-          <Form.Control
-            autoFocus
-            className="mx-3 my-2 w-auto"
-            placeholder="Type to filter..."
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-          />
-          <ul className="list-unstyled">
-            {React.Children.toArray(children).filter(
-              (child: any) =>
-                !value || child.props.children.toLowerCase().startsWith(value.toLowerCase())
-            )}
-          </ul>
-        </div>
-      );
-    }
-  );
   return (
     <Card style={{ maxWidth: "286px", maxHeight:"480px", position: "relative", overflow: "visible" }} data-bs-theme="light">
     <div style={{display: "flex", justifyContent: "center"}}>
-        <Card.Img style={{ paddingTop: "10px", paddingBottom: "10px", marginLeft:"auto", marginRight:"auto", width: "auto", maxWidth:"20vw", maxHeight: "200px" }} variant="top" src={crystalBallPickem.img || defaultImage} />
-    </div>
-    {crystalBallPickem.category === "Numeric" ? (
-      <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:"0px"}}>{userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? (`Pick: ${userCrystalBall[pickemId]}`) : ""}{}</p>
+      {/* Check if pickems exist for text overlay */}
+      {userCrystalBall[pickemId] !== undefined && userCrystalBall[pickemId] !== undefined ? (
+
+        isNumeric === true ? (
+          <TextOverlay img={crystalBallPickem.img} text={userCrystalBall[pickemId]} textBool={true}></TextOverlay>
+        ) : (
+          <TextOverlay img={crystalBallPickem.img} text={categoryItems.get(userCrystalBall[pickemId])?.name} textBool={true}></TextOverlay>
+        )
       ) : (
-      <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:"0px"}}>{userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? (`Pick: ${categoryItems.get(userCrystalBall[pickemId])?.name}`) : ""}{}</p>
+        <TextOverlay img={crystalBallPickem.img} text={""} textBool={false}></TextOverlay>
       )}
 
-    {/* Answer: Remove on later iterations */}
-    <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:"0px"}}><strong>Answer: {crystalBallPickem.winner}</strong></p>
+    </div>
 
     <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        <Card.Title style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textAlign:"center", width: '100%' }} >{crystalBallPickem.title}</Card.Title>
-        {crystalBallPickem.closeTime.seconds < Date.now() / 1000 ? (
-          // Display points instead of button if we have answers submitted
-          crystalBallPickem.winner !== "" ? (
-            <CrystalBallResult pick={crystalBallPickem.winner === userCrystalBall[pickemId]} points={crystalBallPickem.points} />
-          ) : (
-            <Button variant="primary" type="submit" disabled style={{ alignSelf: 'center' }}>
-              Pickems Closed
-            </Button>
-          )
+      <Card.Title style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textAlign:"center", width: '100%' }} >{crystalBallPickem.title}</Card.Title>
+      <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center',textAlign:"center", width: '100%' }} >Points: {crystalBallPickem.points}</Card.Body>
 
-        ) : crystalBallPickem.category === "Numeric" ? (
+      {/* Box changes based on response type (numeric/everything else), time is up, or results */}
+
+      {crystalBallPickem.closeTime.seconds > Date.now() / 1000 ? (
+        crystalBallPickem.type === "numeric" ? (
           <Form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               {/* <Form.Label>Email address</Form.Label> */}
               <Form.Control 
                 type="text"
-                placeholder="Enter number (0, 1, 2, ...)"
+                placeholder="Enter a number"
                 value={inputValue} 
                 onChange={(e) => setInputValue(e.target.value)}
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
+            <Button variant="primary" type="submit">Submit</Button>
           </Form>
         ) : (
-          <Dropdown
-            style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              width: '100%', 
-              position: 'relative', // Add relative positioning to the Dropdown
-              zIndex: 1050, // Ensure it appears above other elements
-            }}
-          >
-            <Dropdown.Toggle as={CustomToggle} id={`dropdown-custom-${pickemId}`}>
-              {userCrystalBall[pickemId] !== null && userCrystalBall[pickemId] !== undefined ? "Change Pick" : "Select Pick"}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu
-              as={CustomMenu}
-              renderOnMount
-              align={{ sm: 'start' }}
-              style={{
-                zIndex: 50, // Make sure the dropdown has a higher z-index than the card
-                top: '100%', // Position below the button
-                overflowX: "visible", // Make sure the menu doesn't get clipped
-              }}
-              container="body"
+          // Make drop down (use pop up)
+          <>
+            <Button variant="primary" onClick={handleShow}>Select</Button>
+            <Modal
+              size="lg"
+              show={CBSelector}
+              onHide={handleClose}
+              backdrop="static"
+              keyboard={false}
             >
-              {Array.from(categoryItems.entries()).map(([itemId, categoryData]) => (
-                <Dropdown.Item
-                  key={itemId}
-                  className="dropdown-menu-custom"
-                  onClick={() => updatePickem(pickemId, itemId)}
-                >
-                  {categoryData.name}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-
-        )}
-
-    {/* <Button
-        className={classNames("crystal-ball-button")}
-        variant="light"
-        style={{ marginTop: "10px" }}
-    >
-        <div className="crystal-ball-points">{crystalBallPickem.points} Points</div>
-    </Button> */}
+              <Modal.Header closeButton>
+                <Modal.Title>Select your Crystal Ball Pick</Modal.Title>
+              </Modal.Header>
+              <Modal.Body style={{display: "flex",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                  justifyContent: "center",
+                  maxHeight: "70vh",
+                  overflowY: "auto"}}>
+                {/* Search bar ??? (if we have time) */}
+                {/* Display all category items  */}
+                {Array.from(categoryItems.entries()).map(([id, value]) => 
+                  <div style={{maxHeight:"120px", width: "300px", borderStyle:"solid", display:"flex"}}>
+                    <img src={value.img} style={{maxHeight:"90px", maxWidth:"150px"}}/>
+                    <div>
+                      <h1>{value.name}</h1>
+                      <Button variant="primary" onClick={() => updatePickem(pickemId, id)}>Select</Button>
+                    </div>
+                  </div>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </>
+        )
+      ) : (
+        // Check if results a submitted to display point changes! (TODO)
+        <Button variant="primary" type="submit" disabled style={{ alignSelf: 'center', bottom: 0 }}>
+          Pickems Closed
+        </Button>
+      )}
     </Card.Body>
     </Card>
     );

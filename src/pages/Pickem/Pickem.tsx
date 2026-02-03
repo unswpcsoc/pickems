@@ -196,15 +196,22 @@ const Pickem = () => {
         {pickemType === "Crystal Ball" ? (
           <CrystalBallSelector categories={categories} crystalBallPickems={crystalBallPickems} userCrystalBall={userCrystalBall}/> 
         ) : pickemType === "Bracket Stage" ? (
-          activeMatches.map((match) => (
-            <PickemComponent
-              key={match.matchId}
-              match={match}
-              userPick={userPicks[match.matchId] || ''}
-              teams={teams}
-              handlePick={handlePick}
-            />
-          ))
+          <>
+  
+          <h1 style={{textAlign:"center"}}>Group Stage Pickems is still closed</h1>
+          <h2 style={{textAlign:"center"}}>Bracket Stage Pickems start after Group Stages are completed!</h2>
+          </>
+
+          // TODO: Activate when bracket stage starts
+          // activeMatches.map((match) => (
+          //   <PickemComponent
+          //     key={match.matchId}
+          //     match={match}
+          //     userPick={userPicks[match.matchId] || ''}
+          //     teams={teams}
+          //     handlePick={handlePick}
+          //   />
+          // ))
         ) : (<></>)}
       </div>
     </div>
