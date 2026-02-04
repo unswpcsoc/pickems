@@ -14,7 +14,7 @@ import { CategoryCreator, CategoryDisplay } from "../../components/index";
 import { MatchDisplay } from "../../components/index";
 import { InpersonLeaderboard, RemoteLeaderboard } from "../../components/index";
 import { updateLeaderboard } from "../../firebase/leaderboard";
-import CrystalBallEditor from '../../components/CrystalBallEditor/CrystalBallEditor';
+import CrystalBallEditor from '../../components/Admin/CrystalBallEditor/CrystalBallEditor';
 
 // createTheme('light', {
 //   background: {

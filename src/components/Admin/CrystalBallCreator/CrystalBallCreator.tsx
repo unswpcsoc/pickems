@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { TypesOfMatches } from "../../defines";
+import { TypesOfMatches } from "../../../defines";
 import { Firestore } from "firebase/firestore";
-import { addCrystalBallPickemToDatabase, addMatchToDatabase } from "../../firebase/database";
+import { addCrystalBallPickemToDatabase, addMatchToDatabase } from "../../../firebase/database";
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { db } from '../../firebase';
+import { db } from '../../../firebase';
 
 type UserPanelProps = {
   categories: Map<string, { 

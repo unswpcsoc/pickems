@@ -1,6 +1,6 @@
 import CategoryChangeName from './CategoryChangeName';
 import Card from 'react-bootstrap/Card';
-import defaultImage from "../../assets/default.svg";
+import defaultImage from "../../../assets/default.svg";
 import CategoryAddItems from './CategoryAddItems';
 import CategoryViewItems from "./CategoryViewItems";
 

@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { Firestore } from "firebase/firestore";
-import { addTeamToDatabase } from "../../firebase/database"; 
+import { addTeamToDatabase } from "../../../firebase/database"; 
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { ImageUpload } from "../../components"
+import { ImageUpload } from "../../../components"
 
 type UserPanelProps = {
   db: Firestore; 

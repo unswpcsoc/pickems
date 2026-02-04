@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { auth } from "../../firebase/index";
+import { auth } from "../../../firebase/index";
 import { Firestore, Timestamp, doc, updateDoc } from "firebase/firestore";  
 
 import Button from 'react-bootstrap/Button';

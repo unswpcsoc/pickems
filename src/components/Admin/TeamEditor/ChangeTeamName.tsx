@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { auth, db } from "../../firebase/index";
+import { auth, db } from "../../../firebase/index";
 
 import { doc, updateDoc } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
@@ -7,26 +7,26 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 
-interface ChangeTeamColourProps {
+interface ChangeTeamNameProps {
   id: string
   teamData: {name: string, teamColour: string, teamLogo: string };
 }
 
-const ChangeTeamColour = ({ id, teamData }: ChangeTeamColourProps) => {
-  const [teamColour, setTeamColour] = useState("");
+const ChangeTeamName = ({ id, teamData }: ChangeTeamNameProps) => {
+  const [teamName, setTeamName] = useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => {setShow(false)}
   const handleShow = () => setShow(true);
 
-  const editTeamColour = async () => {
-    if (teamColour == "" || auth.currentUser == null) {
+  const editTeamName = async () => {
+    if (teamName == "" || auth.currentUser == null) {
       return;
     }
 
     try {
       const updatedTeamData = {
-        [id]: { ...teamData, teamColour: teamColour }, 
+        [id]: { ...teamData, name: teamName }, 
       };
       await updateDoc(doc(db, "teams", "teamData"), updatedTeamData);
       handleClose();
@@ -37,25 +37,25 @@ const ChangeTeamColour = ({ id, teamData }: ChangeTeamColourProps) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>Edit Colour</Button>
+      <Button variant="primary" onClick={handleShow}>Edit Name</Button>
 
       <div style={{ width: "95vw", margin: "auto"}}>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Change Team Colour</Modal.Title>
+            <Modal.Title>Change Team Name</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Label htmlFor="basic-url">Select Team Colour</Form.Label>
+            <Form.Label htmlFor="basic-url">New Team Name</Form.Label>
             <InputGroup className="mb-3">
-              <input type="color" id="teamColour" name="teamColour" value={teamColour} onChange={(e) => setTeamColour(e.target.value)} />
+              <Form.Control id="teamName" aria-describedby="basic-addon3" onChange={(e) => setTeamName(e.target.value)}/>
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={editTeamColour}>
-              Update Team Colour
+            <Button variant="primary" onClick={editTeamName}>
+              Update Team Name
             </Button>
           </Modal.Footer>
         </Modal>
@@ -64,4 +64,4 @@ const ChangeTeamColour = ({ id, teamData }: ChangeTeamColourProps) => {
   )
 };
 
-export default ChangeTeamColour;
+export default ChangeTeamName;

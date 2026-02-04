@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { auth, db, storage } from "../../firebase/index";
-import { ImageUpload } from "../../components";
+import { auth, db, storage } from "../../../firebase/index";
+import { ImageUpload } from "../..";
 
 import { doc, updateDoc } from "firebase/firestore";
 import { ref, deleteObject } from 'firebase/storage';

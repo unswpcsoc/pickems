@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { auth, db } from "../../firebase/index";
+import { auth, db } from "../../../firebase/index";
 
 import { doc, updateDoc } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
@@ -7,28 +7,28 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 
-interface ChangeTeamNameProps {
+interface ChangeTeamColourProps {
   id: string
-  category: {name: string, items: Map<string, {img: string, name: string}> };
+  teamData: {name: string, teamColour: string, teamLogo: string };
 }
 
-const CategoryChangeName = ({ id, category }: ChangeTeamNameProps) => {
-  const [categoryName, setCategoryName] = useState("");
+const ChangeTeamColour = ({ id, teamData }: ChangeTeamColourProps) => {
+  const [teamColour, setTeamColour] = useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => {setShow(false)}
   const handleShow = () => setShow(true);
 
-  const editCategoryName = async () => {
-    if (categoryName == "" || auth.currentUser == null) {
+  const editTeamColour = async () => {
+    if (teamColour == "" || auth.currentUser == null) {
       return;
     }
 
     try {
-      const updatedCategoryData = {
-        [id]: { ...category, name: categoryName }, 
+      const updatedTeamData = {
+        [id]: { ...teamData, teamColour: teamColour }, 
       };
-      await updateDoc(doc(db, "crystalBall", "categories"), updatedCategoryData);
+      await updateDoc(doc(db, "teams", "teamData"), updatedTeamData);
       handleClose();
     } catch (error) {
       console.log(error);
@@ -37,25 +37,25 @@ const CategoryChangeName = ({ id, category }: ChangeTeamNameProps) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>Edit Name</Button>
+      <Button variant="primary" onClick={handleShow}>Edit Colour</Button>
 
       <div style={{ width: "95vw", margin: "auto"}}>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Change Category Name</Modal.Title>
+            <Modal.Title>Change Team Colour</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Label htmlFor="basic-url">New Category Name</Form.Label>
+            <Form.Label htmlFor="basic-url">Select Team Colour</Form.Label>
             <InputGroup className="mb-3">
-              <Form.Control id="teamName" aria-describedby="basic-addon3" onChange={(e) => setCategoryName(e.target.value)}/>
+              <input type="color" id="teamColour" name="teamColour" value={teamColour} onChange={(e) => setTeamColour(e.target.value)} />
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={editCategoryName}>
-              Update Category Name
+            <Button variant="primary" onClick={editTeamColour}>
+              Update Team Colour
             </Button>
           </Modal.Footer>
         </Modal>
@@ -64,4 +64,4 @@ const CategoryChangeName = ({ id, category }: ChangeTeamNameProps) => {
   )
 };
 
-export default CategoryChangeName;
+export default ChangeTeamColour;

@@ -2,7 +2,7 @@ import ChangeTeamName from './ChangeTeamName';
 import ChangeTeamColour from "./ChangeTeamColour";
 import ChangeTeamLogo from "./ChangeTeamLogo";
 import Card from 'react-bootstrap/Card';
-import defaultImage from "../../assets/default.svg";
+import defaultImage from "../../../assets/default.svg";
 
 const TeamCard = (id: string, team: {name: string, teamColour: string, teamLogo: string }) => {
   return (

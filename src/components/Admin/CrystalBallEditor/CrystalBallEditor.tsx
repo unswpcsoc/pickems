@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from "../../firebase/index";
+import { auth, db } from "../../../firebase/index";
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
-import { PickemComponent } from '../../components'; // Import the PickemBar component
+import { PickemComponent } from '../..'; // Import the PickemBar component
 import { Button, Dropdown, ButtonGroup } from "react-bootstrap";
-import DiscordAlert from "../../components/DiscordAlert/DiscordAlert";
-import InPersonAlert from "../../components/InPersonAlert/InPersonAlert";
+import DiscordAlert from "../../DiscordAlert/DiscordAlert";
+import InPersonAlert from "../../InPersonAlert/InPersonAlert";
 // import CategoryCard from "./CrystalBallEditorCard"
 // import CrystalBallEditorCard from './CrystalBallEditorCard';
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Firestore } from "firebase/firestore";
-import { addCategoryToDatabase } from "../../firebase/database"; 
+import { addCategoryToDatabase } from "../../../firebase/database"; 
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';

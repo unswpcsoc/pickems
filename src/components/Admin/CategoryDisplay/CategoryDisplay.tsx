@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { TypesOfMatches } from "../../defines";
+import { TypesOfMatches } from "../../../defines";
 import { Firestore } from "firebase/firestore";
-import { addMatchToDatabase } from "../../firebase/database";
+import { addMatchToDatabase } from "../../../firebase/database";
 import CategoryCard from "./CategoryCard"
 
 type DisplayProp = {
