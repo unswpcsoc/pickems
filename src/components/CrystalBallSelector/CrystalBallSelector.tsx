@@ -29,8 +29,8 @@ const CrystalBallSelector = ({ categories, crystalBallPickems, userCrystalBall }
   return (
     <>
       <div>
-        <h1 style={{textAlign:"center"}}>Crystal Balls have closed!</h1>
-        <p style={{textAlign:"center"}}>Good luck on brackets pickems!</p>
+        {/* <h1 style={{textAlign:"center"}}>Crystal Balls have closed!</h1>
+        <p style={{textAlign:"center"}}>Good luck on brackets pickems!</p> */}
         <div>
           {/* Render each type with its corresponding pickems */}
           {Array.from(sortedGroupedPickems.entries()).map(([type, pickems]) => {
@@ -64,16 +64,6 @@ const CrystalBallSelector = ({ categories, crystalBallPickems, userCrystalBall }
             );
           })}
         </div>
-        {/* <div className="crystal-ball-selector">
-          {Array.from(crystalBallPickems.entries()).map(([pickemId, pickem]) => {
-            const categoryData = categories.get(pickem.category);
-            const items = categoryData?.items ?? new Map();
-
-            return (
-              <CrystalBallCard pickemId={pickemId} crystalBallPickem={pickem} categoryItems={items} userCrystalBall={userCrystalBall} />
-            )
-          })}
-        </div> */}
       </div>
     </>
   );

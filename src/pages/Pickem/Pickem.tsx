@@ -171,11 +171,11 @@ const Pickem = () => {
       <InPersonAlert attendanceStatus={userInPerson}/>
       <br/>
 
-      <div className="flex-container" style={{ marginLeft: "10vw", marginRight: "10vw" }}>
-        <div style={{textAlign: "left"}}>
+      <div className="flex-container" style={{ display: "flex", alignItems: "center", marginLeft: "10vw", marginRight: "10vw" }}>
+        <div style={{textAlign: "left", flex: "1 1 0px", width:"0"}}>
           <h2>Pick'ems</h2>
         </div>
-        <div style={{textAlign: "center"}}>
+        <div style={{display: "flex", alignItems: "center",justifyContent: "center", flex: "1 1 0px", width:"0"}}>
           <Dropdown as={ButtonGroup} size="lg">
             <Dropdown.Toggle variant="success" id="dropdown-basic">
               {pickemType}
@@ -187,8 +187,8 @@ const Pickem = () => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
-        <div style={{ display: "flex", gap: "10px", justifyContent: "right"}}>
-          <a href="/InfoAndPrize" rel="noopener noreferrer">Info and Prizes</a>
+        <div style={{ display: "flex", gap: "10px", justifyContent: "right", alignItems: "center", flex: "1 1 0px", width:"0"}}>
+          <a href="/leaderboard" rel="noopener noreferrer">Leaderboard</a>
           <div><Button variant="info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>

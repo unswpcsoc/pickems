@@ -173,7 +173,6 @@ export const addCategoryToDatabase = async (db: Firestore, categoryName: string)
   }
 };
 
-// TODO!
 // Function to add a crystalBall Pickem to the Firestore database
 export const addCrystalBallPickemToDatabase = async (
   db: Firestore,

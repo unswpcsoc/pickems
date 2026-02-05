@@ -72,8 +72,8 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
   ));
 
   return (
-    <Card style={{ maxWidth: "286px", maxHeight:"480px", position: "relative", overflow: "visible" }} data-bs-theme="light">
-    <div style={{display: "flex", justifyContent: "center"}}>
+    <Card style={{ maxWidth: "286px", maxHeight:"480px", position: "relative", overflow: "visible" }} className=" text-colour primary-colour ">
+    <div style={{display: "flex", justifyContent: "center", paddingTop: "10px"}}>
       {/* Check if pickems exist for text overlay */}
       {userCrystalBall[pickemId] !== undefined && userCrystalBall[pickemId] !== undefined ? (
 
@@ -132,11 +132,11 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
                 {/* Search bar ??? (if we have time) */}
                 {/* Display all category items  */}
                 {Array.from(categoryItems.entries()).map(([id, value]) => 
-                  <div style={{maxHeight:"120px", width: "300px", borderStyle:"solid", display:"flex"}}>
+                  <div style={{maxHeight:"120px", width: "32  0px", borderStyle:"solid", display:"flex"}}>
                     <img src={value.img} style={{maxHeight:"90px", maxWidth:"150px"}}/>
-                    <div>
+                    <div style={{paddingLeft: "10px", display:"grid"}}>
                       <h1>{value.name}</h1>
-                      <Button variant="primary" onClick={() => updatePickem(pickemId, id)}>Select</Button>
+                      <Button variant="primary" style={{width:"80px"}} onClick={() => updatePickem(pickemId, id)}>Select</Button>
                     </div>
                   </div>
                 )}
