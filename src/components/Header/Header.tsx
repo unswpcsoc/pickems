@@ -22,7 +22,7 @@ const Header: React.FC<NavbarProps> = ({ user, isAdmin }) => {
             className="d-inline-block align-top"
             style={{ marginRight: '10px' }}
           />{' '}
-           Oceanic Prodigies: Valorant
+           Oceanic Prodigies - RE:BIRTH
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

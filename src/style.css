@@ -27,7 +27,7 @@ body, html {
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* Prevent horizontal scroll */
-  background-color: #000000;
+  background-color: #132045;
 }
 
 .container {
@@ -45,11 +45,11 @@ body, html {
 /* EASY STYLYING FOR COLOUR SCHEME */
 /* WITH HOW our colour scheme changes for every OP this is needed to quickly change the colour scheme */
 .primary-colour {
-  background-color: #282828 !important; /* Default primary color */
+  background-color: #223c56 !important; /* Default primary color */
 }
 
 .secondary-colour {
-  background-color: #3f3f3f !important; /* Default secondary color */
+  background-color: #223c56 !important; /* Default secondary color */
 }
 
 .teriary_colour {
@@ -61,7 +61,7 @@ body, html {
 }
 
 .background_colour {
-  background-color: #ffffff !important; /* Default accent color */
+  background-color: #5ea3a9 !important; /* Default accent color */
 }
 
 .text-colour {
@@ -70,9 +70,9 @@ body, html {
 
 /* Bootstrap specific overrides */
 .navbar-header {
-  background-color: #1e1e1e !important; /* Apply the background color */
+  background-color: #487e8c !important; /* Apply the background color */
 }
 
 .bs-button {
-  background-color: #353535 !important;
+  background-color: #0d3761 !important;
 }

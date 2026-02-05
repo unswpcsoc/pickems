@@ -103,7 +103,7 @@ const HomePage = () => {
         </div>
 
         {/* Right side: General info */}
-        <div style={{ flex: 1, padding: '16px', color: 'black' }} className={"secondary-colour"}>
+        <div style={{ flex: 1, padding: '16px' }} className={"secondary-colour"}>
           <h2>General Information</h2>
           <p>🎮 OCEANIC PRODIGIES: ACT II - AN INTER-UNI ESPORTS TOURNAMENT 🎮</p>
           <p>Prepare for OCEANIC PRODIGIES: ACT II, the most intense inter-university esports battle of the year! 🔥 Six top-tier universities from across NSW and ACT will go head-to-head in a 3-day action-packed event featuring the best of Valorant and League of Legends.</p>

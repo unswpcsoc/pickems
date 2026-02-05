@@ -1,5 +1,7 @@
 // Files containing crucial defines that are used throughout the project
 
+import { Timestamp } from "firebase/firestore";
+
 export enum TypesOfMatches {
   WinnerRound1 = "winnerround1",
   WinnerRound2 = "winnerround2",
@@ -11,3 +13,14 @@ export enum TypesOfMatches {
   LoserRound4 = "loserround4",
   LosersFinals = "losersfinals",
 };
+
+export type CrystalBallEntry = {
+  category: string;
+  title: string;
+  points: string;
+  closeTime: Timestamp;
+  winner: string;
+  img: string;
+  type: string;
+};
+

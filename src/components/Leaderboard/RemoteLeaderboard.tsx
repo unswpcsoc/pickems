@@ -1,9 +1,12 @@
 import { getOrdinalSuffix } from "../../utils";
 import DataTable from 'react-data-table-component';
 import { createTheme } from 'react-data-table-component';
-createTheme('dark', {
+createTheme('OP2', {
+  text: {
+    primary: "#ffffff"
+  },
   background: {
-    default: 'transparent',
+    default: '#487e8c',
   },
 });
 
@@ -44,7 +47,7 @@ const RemoteLeaderboard = ({ leaderboard }: leaderboardProp) => {
       columns={columns}
       data={leaderboard}
       defaultSortFieldId={1}
-      theme='light'
+      theme='OP2'
     />
   );
 };

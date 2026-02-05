@@ -46,29 +46,28 @@
 
 /* Ensure the dropdown menu is positioned correctly and is above other content */
 .dropdown-menu-custom {
-  z-index: 1050; /* Ensure dropdown is in front of other elements */
-  max-height: 300px; /* Optional: limit dropdown height */
-  overflow-y: auto; /* Adds a scrollbar if content overflows */
-  width: 100%; /* Ensures the dropdown takes the full width of its parent */
+  z-index: 1050;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
   overflow: visible;
 }
 
 .card {
-  position: relative; /* Makes sure dropdown is positioned relative to the card */
-  z-index: 1; /* Lower z-index than dropdown */
+  position: relative;
+  z-index: 1;
 }
 
-/* Responsiveness: 2 items per row on medium screens */
+/* For Mobile i think */
 @media (max-width: 768px) {
   .crystal-ball-selector .card {
-    flex: 1 1 calc(50% - 20px); /* 2 items per row */
+    flex: 1 1 calc(50% - 20px);
   }
 }
 
-/* Responsiveness: 1 item per row on small screens */
 @media (max-width: 480px) {
   .crystal-ball-selector .card {
-    flex: 1 1 100%; /* 1 item per row */
+    flex: 1 1 100%;
   }
 }
 

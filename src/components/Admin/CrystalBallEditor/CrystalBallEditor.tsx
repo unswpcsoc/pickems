@@ -7,7 +7,7 @@ import { Button, Dropdown, ButtonGroup } from "react-bootstrap";
 import DiscordAlert from "../../DiscordAlert/DiscordAlert";
 import InPersonAlert from "../../InPersonAlert/InPersonAlert";
 // import CategoryCard from "./CrystalBallEditorCard"
-// import CrystalBallEditorCard from './CrystalBallEditorCard';
+import CrystalBallEditorCard from './CrystalBallEditorCard';
 
 
 type DisplayProp = {
@@ -57,16 +57,23 @@ const CrystalBallEditor = ({ categories }: DisplayProp) => {
             justifyContent: 'flex-start', // Aligns cards to the left
         }}
         >
-        {Array.from(crystalBallPickems.entries()).map(([id, crystalBall]) => (
-            <div
-            style={{
-                flex: '0 0 286px', // Fixed box width
-                boxSizing: 'border-box',
-            }}
-            >
-            {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
-            {/* {CrystalBallEditorCard(id, crystalBall, categories)}  */}
-            </div>
+        {Array.from(crystalBallPickems.entries())
+        .sort(([idA, cbA], [idB, cbB]) => cbA.title.localeCompare(cbB.title))
+        .map(([id, crystalBall]) => (
+          <div
+          style={{
+              flex: '0 0 286px', // Fixed box width
+              boxSizing: 'border-box',
+          }}
+          >
+          {/* REMEMBER TO ADD IN THE IMAGE PATH IN SECOND */}
+          <CrystalBallEditorCard 
+              pickemId={id} 
+              crystalBall={crystalBall} 
+              category={categories} 
+            key={id}
+          />
+          </div>
         ))}
         </div>
     );

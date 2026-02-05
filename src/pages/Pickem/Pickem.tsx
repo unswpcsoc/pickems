@@ -30,7 +30,7 @@ const Pickem = () => {
   const [crystalBallPickems, setCrystalBallPickems] = useState<Map<string, {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}>>(new Map());
   const [userCrystalBall, setUserCrystalBall] = useState<{ [key: string]: string }>({});
 
-  const [pickemType, setPickemType] = useState<string>('Select Pickems'); // State to manage the selected pickem type
+  const [pickemType, setPickemType] = useState<string>('Crystal Ball'); // State to manage the selected pickem type
 
   useEffect(() => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
