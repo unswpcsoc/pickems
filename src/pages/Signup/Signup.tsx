@@ -95,16 +95,17 @@ const Signup = () => {
     };
 
   return (
-    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }} className="text-colour">
+    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }} className="text-colour " >
       <br />
       <h1 className="text-colour" >Sign up</h1>
       <Tabs
       defaultActiveKey="email"
       id="uncontrolled-tab-example"
-      className="mb-3 text-colour"
+      className="mb-3 text-colour "
       data-bs-theme="light"
     >
-        <Tab eventKey="email" title="Email" data-bs-theme="light">
+        <Tab eventKey="email" title="Email" data-bs-theme="light" className="text-colour">
+        <div style={{width:"95%", paddingLeft:"15px"}}>
           <Form onSubmit={handleSignup}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>Username</Form.Label>
@@ -115,7 +116,7 @@ const Signup = () => {
               value={formData.name}
               onChange={handleChange}
             />
-            <Form.Text className="text-muted">
+            <Form.Text className="text-colour">
               Visible name that will be displayed on the leaderboard and used when distributing prizes.
             </Form.Text>
           </Form.Group>
@@ -129,7 +130,7 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
             />
-            <Form.Text className="text-muted">
+            <Form.Text className="text-colour">
               Note: Only edu.au emails are accepted as valid emails.
             </Form.Text>
           </Form.Group>
@@ -143,8 +144,8 @@ const Signup = () => {
               value={formData.discordUsername}
               onChange={handleChange}
             />
-            <Form.Text className="text-muted">
-              Discord usernames are strictly used for contacting winners who won prizes for the pickems.
+            <Form.Text className="text-colour">
+              Discord usernames are strictly used for contacting pickems prize winners.
             </Form.Text>
           </Form.Group>
 
@@ -157,7 +158,7 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
             />
-            <Form.Text className="text-muted">
+            <Form.Text className="text-colour">
               Note: Passwords must be 6 characters or longer and contain at least 1 uppercase letter, lowercase letter, and numeric character.
             </Form.Text>
           </Form.Group>
@@ -178,9 +179,9 @@ const Signup = () => {
             type="checkbox"
             checked={formData.inPersonBool}
             onChange={(e) => setFormData({...formData, inPersonBool: e.target.checked})}
-            label="Will you be attending Oceanic Prodigies in-person on Friday the 11th of July?"
+            label="Will you be attending Oceanic Prodigies in-person on the 10th of March?"
             />
-            <Form.Text className="text-muted">
+            <Form.Text className="text-colour">
               Note: If you are not attending Oceanic Prodigies in-person on the above date when prizes/winners are announced for pickems you will not be eligible for prizes!
               <br></br><strong>You cannot get another person on your behalf to collect any prizes.</strong>
             </Form.Text>
@@ -191,6 +192,7 @@ const Signup = () => {
             Submit
           </Button>
           </Form>
+        </div>
         </Tab>
         <Tab eventKey="google" title="Google">
           <Button variant="primary" onClick={handleGoogleLogin}>Sign up with Google</Button>

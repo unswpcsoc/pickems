@@ -4,8 +4,9 @@ import { Button } from "react-bootstrap";
 
 // Legacy
 // import oceanProdigies from "../assets/HomePage/oceanProdigiesWide.jpg";
-// import megalan from "../assets/HomePage/megalanWide.jpg";
-const oceanProdigies = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FOP2_banner(1).jpg?alt=media&token=3382b12d-92af-4d09-a1d6-dadd7685bb48";
+import megalan from "../../assets/HomePage/megalanArmageddon.png";
+import oceanicProdigies from "../../assets/HomePage/OP2.png";
+// const oceanProdigies = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FOP2_banner(1).jpg?alt=media&token=3382b12d-92af-4d09-a1d6-dadd7685bb48";
 // add more photos for carousel if needed
 // const megalan = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FmegalanWide-min.jpg?alt=media&token=0d27118f-b9a0-43fb-a977-2fc617d4c583";
 
@@ -25,15 +26,15 @@ const HomePage = () => {
         <Carousel.Item>
           <div style={{
             width: "100%",
-            height: "100%",
+            height: "auto",
             display: "flex",
             justifyContent: "center",
-            backgroundColor: "black", 
+            backgroundColor: "black",
             padding: "0 10%"
           }}>
-            <a href="/InfoAndPrize"><img
-              src={oceanProdigies} 
-              alt="First slide" 
+            <a href="https://events.humanitix.com/megalan" target="_blank" rel="noopener noreferrer"><img
+              src={megalan} 
+              alt="first slide" 
               style={{ 
                 width: "100%",
                 height: "100%", 
@@ -44,18 +45,18 @@ const HomePage = () => {
             /></a>
           </div>
         </Carousel.Item>
-        {/* <Carousel.Item>
+        <Carousel.Item>
           <div style={{
             width: "100%",
-            height: "auto",
+            height: "100%",
             display: "flex",
             justifyContent: "center",
-            backgroundColor: "black",
+            backgroundColor: "black", 
             padding: "0 10%"
           }}>
-            <a href="https://events.humanitix.com/megalan" target="_blank" rel="noopener noreferrer"><img
-              src={megalan} 
-              alt="Second slide" 
+            <a href="/InfoAndPrize"><img
+              src={oceanicProdigies} 
+              alt="second slide" 
               style={{ 
                 width: "100%",
                 height: "100%", 
@@ -65,8 +66,7 @@ const HomePage = () => {
               }}
             /></a>
           </div>
-
-        </Carousel.Item> */}
+        </Carousel.Item>
       </Carousel>
 
       <br/><br/>

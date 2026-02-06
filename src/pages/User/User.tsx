@@ -143,9 +143,9 @@ const User = () => {
         <Card.Text>Discord Username: {userData?.discordUsername || "n/a"}</Card.Text>
         <Card.Text>Score: {userData.score}</Card.Text>
         {/* <Card.Text>Rank: {displayRank}</Card.Text> */}
-        <Card.Text>Is attending Inperson on Friday (11th of July)? {userData?.inPerson === undefined ? "n/a" : userData?.inPerson ? "Yes" : "No"}</Card.Text>
+        {/* <Card.Text>Is attending Inperson on Friday (11th of July)? {userData?.inPerson === undefined ? "n/a" : userData?.inPerson ? "Yes" : "No"}</Card.Text> */}
         <Button className="bs-button" onClick = {handleShowDiscord} >Update Discord Username</Button>
-        <Button className="bs-button" onClick = {handleShowInPerson} >Update Friday Inperson Attendance Status</Button>
+        {/* <Button className="bs-button" onClick = {handleShowInPerson} >Update Friday Inperson Attendance Status</Button> */}
       </Card.Body>
 
       <Modal show={showDiscord} onHide={handleClose}>
@@ -179,7 +179,7 @@ const User = () => {
             label="Will you be attending Oceanic Prodigies on Friday the 11th of July"
             />
             <Form.Text className="text-muted">
-              Note: If you are not attending Oceani Prodigies in person on Friday, you will not be eligible for prizes.
+              Note: If you are not attending Oceanic Prodigies in person on Friday, you will not be eligible for prizes.
           </Form.Text>
         </Modal.Body>
         <Modal.Footer>

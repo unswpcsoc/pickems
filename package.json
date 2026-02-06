@@ -19,7 +19,7 @@
     "classnames": "^2.5.1",
     "datatables.net-dt": "^2.2.1",
     "dotenv": "^16.4.7",
-    "firebase": "^11.3.0",
+    "firebase": "^11.10.0",
     "firebase-admin": "^13.0.2",
     "fs": "^0.0.1-security",
     "react": "^18.3.1",

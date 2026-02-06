@@ -1,12 +1,13 @@
 // Legacy images
-// import fullBanner from "../assets/InfoPage/full_banner.png";
+// import verticalBanner from "../assets/InfoPage/full_banner.png";
 // import teams from "../assets/InfoPage/teams.png";
 // import monitor from "../assets/InfoPage/monitor.jpg";
 // import brackets from "../assets/InfoPage/brackets.jpg";
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-const fullBanner = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/uploads%2F2026T1%2FOPActI.jpeg?alt=media&token=68d0abd1-ad01-496d-8472-cea08e038c3a";
+const verticalBanner = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/uploads%2F2026T1%2FOPActI.jpeg?alt=media&token=68d0abd1-ad01-496d-8472-cea08e038c3a";
+import horizontalBanner from "../../assets/HomePage/OP2.png";
 const teams = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FThe%20teams(1).png?alt=media&token=8d746656-ff32-4580-b99c-ebe5a04d5ecc";
 const monitor = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fmonitor.jpg?alt=media&token=a48ca0fe-85c2-4ca3-ba35-c5fbb0530641";
 // const brackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FInterUni_Brackets_Day_1(1).png?alt=media&token=93f45612-51cb-4583-8535-6eaa347b0aad";
@@ -16,24 +17,27 @@ const InfoAndPrize = () => {
     <div style={{ maxWidth: '1400px', width:"100%", margin: 'auto' }} className='text-colour'>
       <br />
       <div>
-        {/* <img src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
-        <LazyLoadImage  src={fullBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
+        {/* <img src={verticalBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
+        <LazyLoadImage  src={horizontalBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
         <h1>Event Overview</h1>
         <p>
           The Oceanic Prodigies - RE:BIRTH tournament is a celebration of university esports, where teams from universities across Australia compete for glory.
-          Watch as 8 of the best university esports teams from across the country battle it out in Valorant for a $X AUD cash prize pool and ultimate supremacy.
+          Watch as 7 of the best university esports teams from across the country battle it out in Valorant for a $X AUD cash prize pool and ultimate supremacy.
         </p>
 
         <h1>Event Details</h1>
+
+        <h2>Group Stages</h2>
         <ul>
-          <li>Group Stages: 21-22nd February 2026</li>
+          <li>When: 21-22nd February 2026</li>
           <li>Where: Tyree Building at UNSW Kensington Campus, Sydney, NSW</li>
-          <li>Tickets: $X Admission – Come and watch the action live!</li>
+          <a href='https://events.humanitix.com/megalan'><li>Tickets: $10 Early Bird Admission – Come and watch the action live!</li></a>
         </ul>
 
+        <h2>Bracket Stages</h2>
         <ul>
-          <li>Bracket Stages: 10th March 2026</li>
-          <li>Where: TBA</li>
+          <li>When: 9th-10th March 2026</li>
+          <li>Where: Roundhouse</li>
           <li>Tickets: TBA</li>
         </ul>
 
@@ -72,14 +76,15 @@ const InfoAndPrize = () => {
         </ul>
       </div> */}
 
-      {/* <div>
+      <div>
         <br/>
         <h1>What are the Prizes?</h1>
-        <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
-        <p>
+        <p>TBA!</p>
+        {/* <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/> */}
+        {/* <p>
           Oceanic Prodigies this time round is offering only in-person rewards:
-        </p>
-
+        </p> */}
+{/* 
         <p>The In-person rewards are as followed:</p>
 
         <ul>
@@ -90,8 +95,9 @@ const InfoAndPrize = () => {
         <p>Prizes will be awarded based on the final leaderboard standings. The top scorers will receive their rewards at the event on the 11th of July at UNSW.</p>
         <p>To check and change your in-person status for the Pickems prizes, go to the user page and click the edit button to change it.</p>
         <p>To be prize eligible you must have your discord ID added to your account. (Go the the user page to add/change your Discord ID)</p>
-        <p>Warning: If your discord ID or in person status is incorrect by the time prizes are distributed you will automatically forfeit any prizes you were about to win.</p>
-      </div>*/}
+        <p>Warning: If your discord ID or in person status is incorrect by the time prizes are distributed you will automatically forfeit any prizes you were about to win.</p> */}
+      </div>
+      <br/>
     </div> 
   );
 };
