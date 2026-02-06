@@ -105,14 +105,22 @@ const HomePage = () => {
         {/* Right side: General info */}
         <div style={{ flex: 1, padding: '16px' }} className={"secondary-colour"}>
           <h2>General Information</h2>
-          <p>🎮 OCEANIC PRODIGIES: ACT II - AN INTER-UNI ESPORTS TOURNAMENT 🎮</p>
-          <p>Prepare for OCEANIC PRODIGIES: ACT II, the most intense inter-university esports battle of the year! 🔥 Six top-tier universities from across NSW and ACT will go head-to-head in a 3-day action-packed event featuring the best of Valorant and League of Legends.</p>
-          <p>This isn’t just another tournament—it’s a clash of esports titans, as students from six prestigious societies battle it out for ultimate glory and a share of the $5,000 AUD cash prize pool! 🏆💰</p>
-          <p>Key Details:</p>
+          <p>🎮 OCEANIC PRODIGIES - RE:BIRTH 🎮</p>
+          <p>Prepare for RE:BIRTH, PCSoc's Esport tournament start for 2026! 🔥 Seven top-tier universities from across NSW and ACT will go head-to-head across four days of action-packed Valorant gameplay!</p>
+          <b><p>Key Details:</p></b>
+          
+          <p>Group Stage</p>
           <ul>
-            <li>📅 When: 9–11 July 2025</li>
+            <li>📅 When: 21-22nd February 2026</li>
+            <li>📍 Where: Tyree Energy Technologies Building UNSW, Kensington Campus, NSW</li>
+          </ul>
+
+          <p>Bracket Stage</p>
+          <ul>
+            <li>📅 When: 9-10th March 2026</li>
             <li>📍 Where: Roundhouse UNSW, Kensington Campus, NSW</li>
           </ul>
+
           <a href="https://www.oceanicprodigies.com"><Button className="bs-button">More Information</Button></a>
         </div>
       </div>
