@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { Button } from "react-bootstrap";
+import "./Home.css";
 
 // Legacy
 // import oceanProdigies from "../assets/HomePage/oceanProdigiesWide.jpg";
@@ -16,6 +17,9 @@ const HomePage = () => {
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
+
+  // const ranking = [{name: "T1", points: 50},{name: "T2", points: 49},{name: "T3", points: 48},{name: "T4", points: 47},{name: "T5", points: 45},{name: "T6", points: 40},{name: "T7", points: 39}];
+  const ranking = [];
 
   return (
     <div style={{ maxWidth: '85vw', margin: 'auto' }}>
@@ -102,8 +106,40 @@ const HomePage = () => {
           ></iframe>
         </div>
 
-        {/* Right side: General info */}
+        {/* Right side: General info / Standings*/}
         <div style={{ flex: 1, padding: '16px' }} className={"secondary-colour"}>
+          {/* Show ranking only when we have a match */}
+          {ranking.length === 0 ? (
+            <></>
+          ) : (
+            <>
+            <h2>Tournament Standing</h2>
+            <table className="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Team Name</th>
+                  <th>Points</th>
+                </tr>
+              </thead>
+                {ranking.map((value, index) => (
+                  <tr className={`rank-${index+1}`} style={{borderWidth: "1px"}}>
+                      <td className="rank" style={{borderWidth: "1px"}}>{index+1}</td>
+                      <td className="user">
+                          {/* <img src="https://placehold.co/45?text=AV" alt="Avatar" className="avatar"/> */}
+                          <span className="username">{value.name}</span>
+                      </td>
+                      <td className="points" style={{borderWidth: "1px"}}>{value.points}</td>
+                  </tr>
+                ))}
+              <tbody>
+                {/* For each rank just display team */}
+              </tbody>
+            </table>
+            </>
+          )}
+
+          <br/>
           <h2>General Information</h2>
           <p>🎮 OCEANIC PRODIGIES - RE:BIRTH 🎮</p>
           <p>Prepare for RE:BIRTH, PCSoc's Esport tournament start for 2026! 🔥 Seven top-tier universities from across NSW and ACT will go head-to-head across four days of action-packed Valorant gameplay!</p>
@@ -117,7 +153,7 @@ const HomePage = () => {
 
           <p>Bracket Stage</p>
           <ul>
-            <li>📅 When: 9-10th March 2026</li>
+            <li>📅 When: 10th March 2026</li>
             <li>📍 Where: Roundhouse UNSW, Kensington Campus, NSW</li>
           </ul>
 

@@ -1,0 +1,76 @@
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Poppins', sans-serif; /* A more playful, modern font */
+}
+
+.leaderboard-table thead th {
+    padding: 12px 15px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: #888;
+    text-align: left;
+    border-bottom: 2px solid #eee;
+}
+.leaderboard-table thead .th-points {
+    text-align: left;
+}
+
+.leaderboard-table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee ; 
+    font-size: 0.95rem;
+}
+.leaderboard-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.leaderboard-table .rank {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
+    width: 60px;
+    text-align: center;
+}
+
+.leaderboard-table .user {
+    display: flex;
+    align-items: center;
+}
+.leaderboard-table .user .avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+.leaderboard-table .user .username {
+    font-weight: 600;
+}
+
+.leaderboard-table .points {
+    text-align: right;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+/* --- Top 3 Styling --- */
+.leaderboard-table .rank-1,
+.leaderboard-table .rank-2,
+.leaderboard-table .rank-3 {
+    font-weight: 700;
+}
+
+.leaderboard-table .rank-1 .rank::before,
+.leaderboard-table .rank-2 .rank::before,
+.leaderboard-table .rank-3 .rank::before {
+    font-size: 1.5rem;
+    display: block;
+    margin: -5px auto 5px; /* Adjust spacing of medal icon */
+}
+
+.leaderboard-table .rank-1 { background-color: #e0b508; }
+.leaderboard-table .rank-2 { background-color: #8693b1; }
+.leaderboard-table .rank-3 { background-color: #c2672a; }
