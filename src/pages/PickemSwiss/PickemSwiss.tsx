@@ -4,19 +4,16 @@ import { auth, db } from "../../firebase/index";
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import { PickemComponent } from '../../components'; // Import the PickemBar component
-import { Button, Dropdown, ButtonGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import DiscordAlert from "../../components/DiscordAlert/DiscordAlert";
-import InPersonAlert from "../../components/InPersonAlert/InPersonAlert";
 
-
-import './pickem.css';
-import CrystalBallSelector from '../../components/CrystalBallSelector/CrystalBallSelector';
+import './PickemSwiss.css';
 
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
 
-const Pickem = () => {
+const PickemSwiss = () => {
   const [activeMatches, setActiveMatches] = useState<
     { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} }[]
   >([]);
@@ -24,13 +21,6 @@ const Pickem = () => {
   const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
   const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogo: string }}>({});
   const [userDiscordId, setDiscordId] = useState<string | null>(null);
-  const [userInPerson, setInPerson] = useState<boolean | null>(null);
-
-  const [categories, setCategories] = useState<Map<string, { name: string, items: Map<string, {img: string, name: string}> }>>(new Map());
-  const [crystalBallPickems, setCrystalBallPickems] = useState<Map<string, {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}>>(new Map());
-  const [userCrystalBall, setUserCrystalBall] = useState<{ [key: string]: string }>({});
-
-  const [pickemType, setPickemType] = useState<string>('Crystal Ball'); // State to manage the selected pickem type
 
   useEffect(() => {
     const matchesDocRef = doc(db, 'matches', 'matchData');
@@ -63,16 +53,11 @@ const Pickem = () => {
     const unsubscribeUserPicks = onSnapshot(doc(db, 'users', (auth.currentUser as User).uid), (docSnapshot) => {
       if (docSnapshot.exists()) {
         const picks = docSnapshot.data().picks;
-        const crystalBall = (docSnapshot.data().crystalBall === null) ? {} : docSnapshot.data().crystalBall;
         setUserPicks(picks);
         setUserScore(docSnapshot.data().score);
-        setUserCrystalBall(crystalBall);
 
         const discordId = docSnapshot.data().discordName;
         discordId === "" ? setDiscordId(null) : setDiscordId(discordId);
-
-        const inPerson = docSnapshot.data().inPerson;
-        inPerson === "" ? setInPerson(null) : setInPerson(inPerson);
       }
     });
 
@@ -94,60 +79,12 @@ const Pickem = () => {
       }
     });
 
-    const fetchCategories = onSnapshot(doc(db, "crystalBall", "categories"), (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const categoryData = docSnapshot.data();
-        const categories =  new Map<string, { name: string, items: Map<string, {img: string, name: string}>}>();
-        
-        Object.keys(categoryData).forEach((id) => {
-          const rawItems = categoryData[id].items || {};
-          const itemsMap = new Map<string, { img: string; name: string }>(
-            Object.entries(rawItems)
-          );
-
-          categories.set(id, {
-            name: categoryData[id].name, 
-            items: itemsMap
-          })
-        })
-
-        setCategories(categories);
-      }
-    }, (error) => {
-      console.error("Error fetching categories: ", error);
-    });
-
-    const fetchCrystalBall = onSnapshot(doc(db, "crystalBall", "pickems"), (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const pickData = docSnapshot.data();
-        const crystalBallPicks =  new Map<string, {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}>;
-        
-        Object.keys(pickData).forEach((id) => {
-          crystalBallPicks.set(id, {
-            category: pickData[id].category,
-            closeTime: pickData[id].closeTime,
-            img: pickData[id].img,
-            points: pickData[id].points,
-            title: pickData[id].title,
-            winner: pickData[id].winner,
-            type: pickData[id].type
-          })
-        })
-
-        setCrystalBallPickems(crystalBallPicks);
-      }
-    }, (error) => {
-      console.error("Error fetching categories: ", error);
-    });
-
     return () => {
       unsubscribeActiveMatches();
       unsubscribeUserPicks();
       unsubscribeTeams();
-      fetchCategories();
-      fetchCrystalBall();
 
-      console.log("refreshing and rereading db!")
+      // console.log("refreshing and rereading db!")
     };
   }, [db]);
 
@@ -168,24 +105,14 @@ const Pickem = () => {
   return (
     <div style={{ width: "100vw", margin: "auto" }} className="text-colour">
       <DiscordAlert discordId={userDiscordId} />
-      <InPersonAlert attendanceStatus={userInPerson}/>
       <br/>
 
       <div className="flex-container" style={{ display: "flex", alignItems: "center", marginLeft: "10vw", marginRight: "10vw" }}>
         <div style={{textAlign: "left", flex: "1 1 0px", width:"0"}}>
-          <h2>Pick'ems</h2>
+          <a href="javascript:history.back()"><h2>Back to Menu</h2></a>
         </div>
         <div style={{display: "flex", alignItems: "center",justifyContent: "center", flex: "1 1 0px", width:"0"}}>
-          <Dropdown as={ButtonGroup} size="lg">
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-              {pickemType}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setPickemType("Crystal Ball")}>Crystal Ball</Dropdown.Item>
-              <Dropdown.Item onClick={() => setPickemType("Bracket Stage")}>Bracket Stage</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <h2>Swiss Stage Pickems</h2>
         </div>
         <div style={{ display: "flex", gap: "10px", justifyContent: "right", alignItems: "center", flex: "1 1 0px", width:"0"}}>
           <a href="/leaderboard" rel="noopener noreferrer">Leaderboard</a>
@@ -193,29 +120,18 @@ const Pickem = () => {
         </div>
       </div>
       <div style={{ marginLeft: "10vw", marginRight: "10vw" }}>
-        {pickemType === "Crystal Ball" ? (
-          <CrystalBallSelector categories={categories} crystalBallPickems={crystalBallPickems} userCrystalBall={userCrystalBall}/> 
-        ) : pickemType === "Bracket Stage" ? (
-          <>
-  
-          <h1 style={{textAlign:"center"}}>Group Stage Pickems is still closed</h1>
-          <h2 style={{textAlign:"center"}}>Bracket Stage Pickems start after Group Stages are completed!</h2>
-          </>
-
-          // TODO: Activate when bracket stage starts
-          // activeMatches.map((match) => (
-          //   <PickemComponent
-          //     key={match.matchId}
-          //     match={match}
-          //     userPick={userPicks[match.matchId] || ''}
-          //     teams={teams}
-          //     handlePick={handlePick}
-          //   />
-          // ))
-        ) : (<></>)}
+        {activeMatches.map((match) => (
+            <PickemComponent
+              key={match.matchId}
+              match={match}
+              userPick={userPicks[match.matchId] || ''}
+              teams={teams}
+              handlePick={handlePick}
+            />
+          ))}
       </div>
     </div>
   );
 };
 
-export default Pickem;
+export default PickemSwiss;

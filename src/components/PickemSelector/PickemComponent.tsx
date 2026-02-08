@@ -63,7 +63,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
                   </div>
 
                   <div className="team-name" style={{ color: "white" }}>
-                    {(userPick === match.team1Id) ? `${(match.votes.team1Vote/match.votes.totalVote * 100).toFixed(2)}% PICKED ` : ""}
+                    {(userPick === match.team1Id) ? `${((match.votes.team1Vote + 1)/(match.votes.totalVote + 1) * 100).toFixed(2)}% PICKED ` : ""}
                   </div>
                 </div>
                 
@@ -106,7 +106,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
                   </div>
 
                   <div className="team-name" style={{ color: "white" }}>
-                    {(userPick === match.team2Id) ? `${((match.votes.totalVote - match.votes.team1Vote)/match.votes.totalVote * 100).toFixed(2)}% PICKED ` : ""}
+                    {(userPick === match.team2Id) ? `${((match.votes.totalVote - match.votes.team1Vote + 1)/(match.votes.totalVote + 1) * 100).toFixed(2)}% PICKED ` : ""}
                   </div>
                 </div>
               </div>

@@ -14,6 +14,11 @@ export enum TypesOfMatches {
   LosersFinals = "losersfinals",
 };
 
+export type TeamRanking = {
+  name: string;
+  points: number;
+}[];
+
 export type CrystalBallEntry = {
   category: string;
   title: string;
@@ -23,4 +28,3 @@ export type CrystalBallEntry = {
   img: string;
   type: string;
 };
-

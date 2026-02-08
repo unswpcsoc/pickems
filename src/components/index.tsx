@@ -17,6 +17,8 @@ export {default as RemoteLeaderboard} from "./Leaderboard/RemoteLeaderboard";
 export {default as InpersonLeaderboard} from "./Leaderboard/InpersonLeaderboard";
 export {default as MatchDisplay} from "./MatchDisplay/MatchDisplay";
 
+export {default as TournamentStanding} from "./TournamentStanding/TournamentStanding";
+
 export {default as DiscordAlert} from "./DiscordAlert/DiscordAlert";
 export {default as InPersonAlert} from "./InPersonAlert/InPersonAlert";
 export {default as EmailVerificationAlert} from "./EmailVerificationAlert/EmailVerificationAlert";

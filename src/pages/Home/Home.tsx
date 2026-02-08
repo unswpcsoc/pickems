@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { Button } from "react-bootstrap";
-import "./Home.css";
+
+// Credit to https://www.quackit.com/html/html_editors/scratchpad/?example=/html/templates/tables/leaderboard_ranking_table
+// For their leaderboard
 
 // Legacy
 // import oceanProdigies from "../assets/HomePage/oceanProdigiesWide.jpg";
 import megalan from "../../assets/HomePage/megalanArmageddon.png";
 import oceanicProdigies from "../../assets/HomePage/OP2.png";
+import { TournamentStanding } from '../../components';
+import { TeamRanking } from '../../defines';
 // const oceanProdigies = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FOP2_banner(1).jpg?alt=media&token=3382b12d-92af-4d09-a1d6-dadd7685bb48";
 // add more photos for carousel if needed
 // const megalan = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2FmegalanWide-min.jpg?alt=media&token=0d27118f-b9a0-43fb-a977-2fc617d4c583";
@@ -19,7 +23,7 @@ const HomePage = () => {
   };
 
   // const ranking = [{name: "T1", points: 50},{name: "T2", points: 49},{name: "T3", points: 48},{name: "T4", points: 47},{name: "T5", points: 45},{name: "T6", points: 40},{name: "T7", points: 39}];
-  const ranking = [];
+  const ranking: TeamRanking = [];
 
   return (
     <div style={{ maxWidth: '85vw', margin: 'auto' }}>
@@ -114,28 +118,7 @@ const HomePage = () => {
           ) : (
             <>
             <h2>Tournament Standing</h2>
-            <table className="leaderboard-table">
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Team Name</th>
-                  <th>Points</th>
-                </tr>
-              </thead>
-                {ranking.map((value, index) => (
-                  <tr className={`rank-${index+1}`} style={{borderWidth: "1px"}}>
-                      <td className="rank" style={{borderWidth: "1px"}}>{index+1}</td>
-                      <td className="user">
-                          {/* <img src="https://placehold.co/45?text=AV" alt="Avatar" className="avatar"/> */}
-                          <span className="username">{value.name}</span>
-                      </td>
-                      <td className="points" style={{borderWidth: "1px"}}>{value.points}</td>
-                  </tr>
-                ))}
-              <tbody>
-                {/* For each rank just display team */}
-              </tbody>
-            </table>
+            <TournamentStanding ranking={ranking} />
             </>
           )}
 

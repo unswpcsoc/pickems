@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { auth } from './firebase/index';
 import { getIdTokenResult, onAuthStateChanged } from "firebase/auth";
-import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, Pickem, Leaderboard, InfoAndPrize, Brackets } from './pages';
+import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, PickemMenu, Leaderboard, InfoAndPrize, Brackets, PickemCrystalBall, PickemSwiss } from './pages';
 import { Header, Footer, EmailVerificationAlert } from './components';
 
 function App() {
-  const [user, setUser] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false); // Track user admin status
+  const [user, setUser] = useState<any>(null); // Track if user is logged in
+  const [isAdmin, setIsAdmin] = useState<boolean>(false); // Tracks the user's admin status
   const [loading, setLoading] = useState<boolean>(true);
   const [isContentLarge, setIsContentLarge] = useState<boolean>(false);  // To track content height
 
@@ -79,7 +79,15 @@ function App() {
           />
           <Route
             path="/pickems"
-            element={(user && user.emailVerified) ? <Pickem /> : <Login />}
+            element={(user && user.emailVerified) ? <PickemMenu /> : <Login />}
+          />
+          <Route
+            path="/pickems/crystalball"
+            element={(user && user.emailVerified) ? <PickemCrystalBall /> : <Login />}
+          />
+          <Route
+            path="/pickems/swiss"
+            element={(user && user.emailVerified) ? <PickemSwiss /> : <Login />}
           />
           <Route
             path="/leaderboard"
