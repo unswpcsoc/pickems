@@ -25,7 +25,7 @@
 
 .pick-button-image {
   vertical-align: middle;
-  max-width: 500px;
+  max-width: 400px;
 }
 
 .centred-text {
@@ -34,7 +34,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 36px;
-  pointer-events: none
+  pointer-events: none;
 }
 
 .bottom-centred-text {
@@ -43,7 +43,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 18px;
-  pointer-events: none
+  pointer-events: none;
+  width: 300px;
 }
 
 .twitch-player-container {

@@ -6,7 +6,7 @@ import { User } from 'firebase/auth';
 import { TournamentStanding } from '../../components';
 import { Button } from "react-bootstrap";
 import DiscordAlert from "../../components/DiscordAlert/DiscordAlert";
-import opStock from "../../assets/HomePage/oceanProdigiesWide.jpg"
+import opStock from "../../assets/pickem/BG_2.png";
 
 import './PickemMenu.css';
 import { TeamRanking } from '../../defines';
@@ -43,7 +43,7 @@ const PickemMenu = () => {
       <DiscordAlert discordId={userDiscordId} />
       <br/>
 
-      <div className="flex-container" style={{ display: "flex", alignItems: "center", marginLeft: "10vw", marginRight: "10vw" }}>
+      <div className="flex-container" style={{ display: "flex", alignItems: "center", marginLeft: "10vw", marginRight: "10vw"}}>
         <div style={{textAlign: "left", flex: "1 1 0px", width:"0"}}>
           <h2>2026 Pickems</h2>
         </div>
@@ -52,7 +52,7 @@ const PickemMenu = () => {
           <div><Button variant="info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>
-      <div style={{ marginLeft: "10vw", marginRight: "10vw", display: 'flex', flexWrap: "wrap", justifyContent: 'center', gap: '24px', alignItems: "flex-start" }}>
+      <div style={{ marginLeft: "10vw", marginRight: "10vw", display: 'flex', flexWrap: "wrap", justifyContent: 'center', gap: '24px', alignItems: "flex-start", marginBottom: "10vh" }}>
         {/* Add three buttons for crystal ball, swiss, bracket */}
         <div className="pickem-button-div">
           <div onClick={handleClick("/pickems/crystalball")} className='pick-button-container'>
