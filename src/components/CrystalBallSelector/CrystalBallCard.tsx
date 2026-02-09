@@ -134,7 +134,9 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
                   alignItems: "stretch"
                 }}>
                 {/* Other: Display all category items  */}
-                {Array.from(categoryItems.entries()).map(([id, value]) => 
+                {Array.from(categoryItems.entries()).sort((a,b) => {
+                  return a[1].name.localeCompare(b[1].name);
+                }).map(([id, value]) => 
                 <div style={{width: "400px", borderStyle:"solid", display:"flex", flexDirection: "row"}}>
                   <img src={value.img} style={{maxHeight:"90px", maxWidth:"150px"}}/>
                   <div style={{paddingLeft: "10px", display:"grid", justifyContent: "flex-end"}}>
