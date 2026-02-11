@@ -93,18 +93,17 @@ const PickemCrystalBall = () => {
       <DiscordAlert discordId={userDiscordId} />
       <br/>
 
-      <div className="flex-container" style={{ display: "flex", alignItems: "center", marginLeft: "10vw", marginRight: "10vw" }}>
+      <div className="flex-container" style={{ display: "flex", alignItems: "baseline", marginLeft: "10vw", marginRight: "10vw"}}>
         <div style={{textAlign: "left", flex: "1 1 0px", width:"0"}}>
-          <a href="javascript:history.back()"><h2>Back to Menu</h2></a>
-        </div>
-        <div style={{display: "flex", alignItems: "center",justifyContent: "center", flex: "1 1 0px", width:"0"}}>
-          <h2>Crystal Ball Pickems</h2>
+          <a href="/pickems"><h2 className="flex-div-text">Back to Menu</h2></a>
         </div>
         <div style={{ display: "flex", gap: "10px", justifyContent: "right", alignItems: "center", flex: "1 1 0px", width:"0"}}>
-          <a href="/leaderboard" rel="noopener noreferrer">Leaderboard</a>
+          <a className="flex-div-text"  href="/leaderboard" rel="noopener noreferrer">Leaderboard</a>
           <div><Button variant="info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>
+      <div style={{display: "flex", justifyContent: "center"}}><h2>Crystal Ball Pickems</h2></div>
+
       <div style={{ marginLeft: "10vw", marginRight: "10vw" }}>
         <CrystalBallSelector categories={categories} crystalBallPickems={crystalBallPickems} userCrystalBall={userCrystalBall}/> 
       </div>

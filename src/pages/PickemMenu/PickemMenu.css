@@ -8,9 +8,8 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   height: fit-content;
-
   flex: 2; 
-  
+  gap: 20px;
 }
 
 .pick-button-container {
@@ -18,14 +17,22 @@
   text-align: center;
   display: flex;
 
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
   margin-bottom: 30px;
+
+  flex: 1 1 250px;
+  min-width: 400px;
+  /* min-width: calc(50%-100px); */
+  max-width: calc(50% - 10px);
 }
 
 .pick-button-image {
   vertical-align: middle;
-  max-width: 400px;
+  max-width: 100%;
+  width: 100%;
+  height:auto;
+  object-fit: cover;
 }
 
 .centred-text {
@@ -45,6 +52,63 @@
   font-size: 18px;
   pointer-events: none;
   width: 300px;
+}
+
+@media(max-width: 1610px) {
+  .button-container {
+    flex-direction: column;
+  }
+  
+  .pickem-button-div,
+  .standing-container {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+  
+  .pick-button-container {
+    min-width: 400px;
+    max-width: calc(40%-10px);
+  }
+}
+
+@media (max-width: 1026px) {
+  .pick-button-container {
+    flex: 1 1 100%;
+    min-width: 250px;
+    max-width: 100%;
+  }
+  
+  .button-container {
+    gap: 16px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+  
+  /* Make pickem-button-div take full width */
+  .pickem-button-div {
+    width: 100%;
+    flex: 1 1 100%;
+    display: flex;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 670px) {
+  .flex-div-text {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 580px) {
+  .flex-div-text {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 500px) {
+  .flex-div-text {
+    font-size: 14px;
+  }
 }
 
 .twitch-player-container {

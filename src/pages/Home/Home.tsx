@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { Button } from "react-bootstrap";
+import "./Home.css"
 
 // Credit to https://www.quackit.com/html/html_editors/scratchpad/?example=/html/templates/tables/leaderboard_ranking_table
 // For their leaderboard
@@ -18,7 +19,7 @@ import { TeamRanking } from '../../defines';
 const HomePage = () => {
   const [index, setIndex] = useState(0);
 
-  const handleSelect = (selectedIndex) => {
+  const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
   };
 
@@ -26,52 +27,26 @@ const HomePage = () => {
   const ranking: TeamRanking = [];
 
   return (
-    <div style={{ maxWidth: '85vw', margin: 'auto' }}>
+    <div className='home-body'>
       <br />
 
       {/* Carousel with smaller image and borders on left and right */}
-      <Carousel activeIndex={index} variant="light" indicators={true} onSelect={handleSelect} style={{ maxHeight: "600px", overflow: "hidden" }}>
+      <Carousel activeIndex={index} variant="light" indicators={true} onSelect={handleSelect} className='carousel-container'>
         <Carousel.Item>
-          <div style={{
-            width: "100%",
-            height: "auto",
-            display: "flex",
-            justifyContent: "center",
-            backgroundColor: "black",
-            padding: "0 10%"
-          }}>
+          <div className='carousel-item-div'>
             <a href="https://events.humanitix.com/megalan" target="_blank" rel="noopener noreferrer"><img
               src={megalan} 
               alt="first slide" 
-              style={{ 
-                width: "100%",
-                height: "100%", 
-                maxHeight: "600px",
-                objectFit: "contain",
-                objectPosition: "center"
-              }}
+              className='carousel-image'
             /></a>
           </div>
         </Carousel.Item>
         <Carousel.Item>
-          <div style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            backgroundColor: "black", 
-            padding: "0 10%"
-          }}>
+          <div className='carousel-item-div'>
             <a href="/InfoAndPrize"><img
               src={oceanicProdigies} 
               alt="second slide" 
-              style={{ 
-                width: "100%",
-                height: "100%", 
-                maxHeight: "600px",
-                objectFit: "contain",
-                objectPosition: "center"
-              }}
+              className='carousel-image'
             /></a>
           </div>
         </Carousel.Item>
@@ -83,27 +58,10 @@ const HomePage = () => {
       <div style={{ display: 'flex', flexWrap: "wrap", justifyContent: 'center', gap: '24px' }}>
         
         {/* Left side: Twitch embedded */}
-        <div
-          style={{
-            position: 'relative',
-            width: '65%', 
-            minWidth: '300px',
-            paddingBottom: '36.75%', 
-            height: 0,
-            overflow: 'hidden',
-          }}
-        >
+        <div className='twitch-player-container-home'>
           <iframe
             src="https://player.twitch.tv/?channel=unswpcsoc&parent=localhost&parent=alexgao.au&parent=pickems.oceanicprodigies.com&parent=pickems.megalan.com.au"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              minWidth: '340px',
-              height: '100%',
-              minHeight:'400px',
-            }}
+            className='twitch-player-iframe-home'
             title="PCSoc Stream"
             frameBorder="0"
             allowFullScreen={true}
@@ -111,7 +69,7 @@ const HomePage = () => {
         </div>
 
         {/* Right side: General info / Standings*/}
-        <div style={{ flex: 1, padding: '16px' }} className={"secondary-colour"}>
+        <div className='info-container secondary-colour'>
           {/* Show ranking only when we have a match */}
           {ranking.length === 0 ? (
             <></>

@@ -43,16 +43,17 @@ const PickemMenu = () => {
       <DiscordAlert discordId={userDiscordId} />
       <br/>
 
-      <div className="flex-container" style={{ display: "flex", alignItems: "center", marginLeft: "10vw", marginRight: "10vw"}}>
+      <div className="flex-container" style={{ display: "flex", alignItems: "baseline", marginLeft: "10vw", marginRight: "10vw"}}>
         <div style={{textAlign: "left", flex: "1 1 0px", width:"0"}}>
-          <h2>2026 Pickems</h2>
+          <h2 className="flex-div-text" >2026 Pickems</h2>
         </div>
         <div style={{ display: "flex", gap: "10px", justifyContent: "right", alignItems: "center", flex: "1 1 0px", width:"0"}}>
-          <a href="/leaderboard" rel="noopener noreferrer">Leaderboard</a>
+          <a className="flex-div-text"  href="/leaderboard" rel="noopener noreferrer">Leaderboard</a>
           <div><Button variant="info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>
-      <div style={{ marginLeft: "10vw", marginRight: "10vw", display: 'flex', flexWrap: "wrap", justifyContent: 'center', gap: '24px', alignItems: "flex-start", marginBottom: "10vh" }}>
+
+      <div className="button-container" style={{ marginLeft: "10vw", marginRight: "10vw", display: 'flex', flexWrap: "wrap", justifyContent: 'center', gap: '24px', alignItems: "flex-start", marginBottom: "10vh" }}>
         {/* Add three buttons for crystal ball, swiss, bracket */}
         <div className="pickem-button-div">
           <div onClick={handleClick("/pickems/crystalball")} className='pick-button-container'>
@@ -73,13 +74,13 @@ const PickemMenu = () => {
         </div>
 
         {/* Add tournament standing to right */}
-        <div style={{ minWidth: "250px", flex: 1, padding: '16px' }} className={"secondary-colour"}>
+        <div style={{ minWidth: "250px", flex: 1, padding: '16px' }} className="secondary-colour standing-container">
           {/* Show ranking only when we have a match */}
           {ranking.length === 0 ? (
             <></>
           ) : (
             <>
-            <h2>Tournament Standing</h2>
+            <h2>Tournament Standing (Swiss Stage)</h2>
             <TournamentStanding ranking={ranking} />
             </>
           )}
