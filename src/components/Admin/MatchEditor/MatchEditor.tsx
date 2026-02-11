@@ -5,21 +5,18 @@ import { Firestore, Timestamp, doc, updateDoc } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { SwissMatchData, TeamData } from '../../../defines';
 
 interface MatchEditorProp {
   db: Firestore;
-  teamOptions: Map<string, {
-    name: string;
-    teamColour: string;
-    teamLogo: string;
-  }>;
+  teamOptions: Map<string, TeamData>;
   matchId: string;
-  matches: { matchId: string; team1Id: string; team2Id: string; category: string; points: string; closeTime: Timestamp; open: boolean; winner: number, votes: {team1Vote: number, totalVote: number} }[];
+  matches: SwissMatchData[];
 }
 
 const MatchEditor = ({ db, teamOptions, matchId, matches }: MatchEditorProp) => {
   // State management for match data and modal visibility
-  const [matchData, setMatchData] = useState<{ matchId: string; team1Id: string; team2Id: string; category: string; points: string; closeTime: Timestamp; open: boolean; winner: number, votes: {team1Vote: number, totalVote: number} } | null>(null);
+  const [matchData, setMatchData] = useState<SwissMatchData | null>(null);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

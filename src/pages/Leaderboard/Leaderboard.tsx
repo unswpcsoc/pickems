@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from "../../firebase/index";
 import { doc, onSnapshot } from 'firebase/firestore';
-import './User.css';
+import './Leaderboard.css';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { FullLeaderboard, InpersonLeaderboard, RemoteLeaderboard } from '../../components';
@@ -65,7 +65,7 @@ const Leaderboard = () => {
   }, [db]);
 
   return (
-    <div style={{ width: "95vw", margin: "auto"}} className="text-colour">
+    <div className="text-colour leaderboard-body">
       <br />
       <h1>Leaderboard</h1>
       <p>Click which leaderboard you would like to see!</p>

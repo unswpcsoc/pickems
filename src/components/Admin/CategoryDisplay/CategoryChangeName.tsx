@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { auth, db } from "../../../firebase/index";
+import { auth, db } from "../../../firebase";
 
 import { doc, updateDoc } from "firebase/firestore";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
+import { CategoryData } from '../../../defines';
 
 interface ChangeTeamNameProps {
   id: string
-  category: {name: string, items: Map<string, {img: string, name: string}> };
+  category: CategoryData;
 }
 
 const CategoryChangeName = ({ id, category }: ChangeTeamNameProps) => {

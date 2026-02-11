@@ -1,0 +1,10 @@
+.signup-body {
+    width:45vw;
+    min-width: 350px;
+    margin: auto;
+}
+
+.signup-form-container {
+    width: 95%;
+    padding-left: 15px;
+}

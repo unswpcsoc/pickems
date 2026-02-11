@@ -2,21 +2,15 @@ import Card from 'react-bootstrap/Card';
 import defaultImage from "../../../assets/default.svg";
 import { Button, CardBody } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import { editCrystalBallPickemToDatabase, submitAnswerCrystalBall } from '../../../firebase/database';
+import { editCrystalBallPickemToDatabase, submitAnswerCrystalBall } from '../../../firebase/databaseCrystalBall';
 import { useState } from 'react';
 import { db } from '../../../firebase';
-import { CrystalBallEntry } from '../../../defines';
+import { CategoryData, CrystalBallEntry } from '../../../defines';
 
 type CrystalBallEditorCardProps = {
   pickemId: string;
   crystalBall: CrystalBallEntry;
-  category: Map<
-    string,
-    {
-      name: string;
-      items: Map<string, { img: string; name: string }>;
-    }
-  >;
+  category: Map<string, CategoryData>;
 };
 
 const CrystalBallEditorCard = ({pickemId, crystalBall, category}: CrystalBallEditorCardProps) => {
@@ -33,7 +27,7 @@ const CrystalBallEditorCard = ({pickemId, crystalBall, category}: CrystalBallEdi
     let [answer, setAnswer] = useState("");
     
     const editCrystalBall = async () => {
-        const success = await editCrystalBallPickemToDatabase(db, crystalBallData, pickemId);
+        const success = await editCrystalBallPickemToDatabase(crystalBallData, pickemId);
         if (success) {
             // something
         } else {
@@ -42,12 +36,9 @@ const CrystalBallEditorCard = ({pickemId, crystalBall, category}: CrystalBallEdi
     };
 
     const submitAnswer = async () => {
-        console.log("fdfs")
-        const success = await submitAnswerCrystalBall(db, crystalBallData, answer, pickemId);
+        const success = await submitAnswerCrystalBall(crystalBallData, answer, pickemId);
         if (success) {
-            // something
-            console.log("here it is")
-            console.log(crystalBallData)
+            // Success ig
         } else {
             console.error("Error submitting answer", success);
         }

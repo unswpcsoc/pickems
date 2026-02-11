@@ -1,27 +1,19 @@
 import { useState } from 'react';
-import { TypesOfMatches } from "../../../defines";
-import { Firestore } from "firebase/firestore";
-import { addCrystalBallPickemToDatabase, addMatchToDatabase } from "../../../firebase/database";
+import { addCrystalBallPickemToDatabase } from '../../../firebase/databaseCrystalBall';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { db } from '../../../firebase';
+import { CategoryData, CrystalBallFormData } from '../../../defines';
 
 type UserPanelProps = {
-  categories: Map<string, { 
-    name: string, 
-    items: Map<string, {
-      img: string, 
-      name: string
-    }> 
-  }>
+  categories: Map<string, CategoryData>
 };
 
 const CrystalBallCreator = ({ categories }: UserPanelProps) => { 
   // States for forms/input when making teams and matches
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CrystalBallFormData>({
     category: '',
     title: '',
     points: '',
@@ -32,10 +24,9 @@ const CrystalBallCreator = ({ categories }: UserPanelProps) => {
   // States for team and match display
 
   // Adding numeric pickems (pickems that dont rely on a category but a discrete numeric value)
-  let operableCategories: Map<string, { name: string, items: Map<string, { img: string, name: string}>}> =
-    categories;
+  // TODO: Fix this cursed shit
+  let operableCategories: Map<string, CategoryData> = categories;
   operableCategories.set("Numeric", {name: "numeric", items: new Map()});
-  console.log(formData)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLInputElement>) => {
       const { name, value } = e.target;
@@ -46,7 +37,7 @@ const CrystalBallCreator = ({ categories }: UserPanelProps) => {
     };
   
   const addCrystalBall = async () => {
-    const success = await addCrystalBallPickemToDatabase(db, formData);
+    const success = await addCrystalBallPickemToDatabase(formData);
     if (success) {
       setFormData({
         category: '',

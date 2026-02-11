@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { TypesOfMatches } from "../../../defines";
+import { CategoryData, TypesOfMatches } from "../../../defines";
 import { Firestore } from "firebase/firestore";
 import { addMatchToDatabase } from "../../../firebase/database";
 import CategoryCard from "./CategoryCard"
 
 type DisplayProp = {
-  categories: Map<string, { 
-    name: string, 
-    items: Map<string, {img: string, name: string}> }>;
+  categories: Map<string, CategoryData>;
 };
 
 const CategoryDisplay = ({ categories }: DisplayProp) => {

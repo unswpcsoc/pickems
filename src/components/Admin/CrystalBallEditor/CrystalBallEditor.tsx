@@ -1,29 +1,22 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from "../../../firebase/index";
-import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
-import { User } from 'firebase/auth';
-import { PickemComponent } from '../..'; // Import the PickemBar component
-import { Button, Dropdown, ButtonGroup } from "react-bootstrap";
-import DiscordAlert from "../../DiscordAlert/DiscordAlert";
-import InPersonAlert from "../../InPersonAlert/InPersonAlert";
-// import CategoryCard from "./CrystalBallEditorCard"
+import { db } from "../../../firebase/index";
+import { doc, onSnapshot } from 'firebase/firestore';
 import CrystalBallEditorCard from './CrystalBallEditorCard';
+import { CategoryData, CrystalBallEntry } from '../../../defines';
 
 
 type DisplayProp = {
-  categories: Map<string, { 
-    name: string, 
-    items: Map<string, {img: string, name: string}> }>;
+  categories: Map<string, CategoryData>;
 };
 
 const CrystalBallEditor = ({ categories }: DisplayProp) => {
-    const [crystalBallPickems, setCrystalBallPickems] = useState<Map<string, {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}>>(new Map());
+    const [crystalBallPickems, setCrystalBallPickems] = useState<Map<string, CrystalBallEntry>>(new Map());
 
       useEffect(() => {
         const fetchCrystalBall = onSnapshot(doc(db, "crystalBall", "pickems"), (docSnapshot) => {
           if (docSnapshot.exists()) {
             const pickData = docSnapshot.data();
-            const crystalBallPicks =  new Map<string, {category: string, closeTime: any, img: string, points: string, title: string, winner: string, type: string}>;
+            const crystalBallPicks =  new Map<string, CrystalBallEntry>;
             
             Object.keys(pickData).forEach((id) => {
               crystalBallPicks.set(id, {

@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import "./Signup.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ const Signup = () => {
   
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
+        // This gives you a Google Access Token. (use for google API)
         const credential = GoogleAuthProvider.credentialFromResult(result);
         if (credential === null) {
           setError("Google Auth Error");
@@ -95,7 +96,7 @@ const Signup = () => {
     };
 
   return (
-    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }} className="text-colour " >
+    <div className="text-colour signup-body" >
       <br />
       <h1 className="text-colour" >Sign up</h1>
       <Tabs
@@ -105,7 +106,7 @@ const Signup = () => {
       data-bs-theme="light"
     >
         <Tab eventKey="email" title="Email" data-bs-theme="light" className="text-colour">
-        <div style={{width:"95%", paddingLeft:"15px"}}>
+        <div className="signup-form-container">
           <Form onSubmit={handleSignup}>
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>Username</Form.Label>

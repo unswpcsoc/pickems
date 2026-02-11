@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { auth, db } from "../../../firebase/index";
+import { auth, db } from "../../../firebase";
 import { v4 as uuidv4} from 'uuid';
 
 import { doc, updateDoc } from "firebase/firestore";
@@ -8,11 +8,11 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 import CategoryImageUpload from './CategoryImageUpload';
-import { mapToObject } from '../../../utils';
+import { CategoryData } from '../../../defines';
 
 interface ChangeTeamNameProps {
   id: string
-  category: {name: string, items: Map<string, {img: string, name: string}> };
+  category: CategoryData;
 }
 
 const CategoryAddItems = ({ id, category }: ChangeTeamNameProps) => {

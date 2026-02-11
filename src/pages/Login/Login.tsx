@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import "./Login.css"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -63,7 +64,7 @@ const Login = () => {
     };
 
   return (
-    <div style={{ width: "45vw", minWidth: "350px", margin: "auto" }} className="text-colour">
+    <div className="text-colour login-body">
       <br />
       <h1>Sign in</h1>
       <Tabs

@@ -10,6 +10,7 @@ const valorantBrackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c
 const leagueBrackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fbrackets-page%2FLeagueSchedule.png?alt=media&token=001c7000-e49e-4001-a0ff-0972e4e2934a";
 // https://www.iloveimg.com/download/8sAkvk9r9vb0r11x9pm93wAf73t7kfcsp9r5y8mpwxqAlAcp9fmq71fvny3kpfpzk3ldkclgk779pzbjjj0Ap0vg3k31t9lv8nnk0g8lr367msAn22s9j4Ac45232nj86gdx4tc81s9hlc833hbp2y9bd6gw1yhyrA2hy4tqmpq96fyr8bf1/10
 
+// Not in use
 const Brackets = () => {
   return (
     <div style={{ maxWidth: '1400px', width:"100%", margin: 'auto' }} className='text-colour'>

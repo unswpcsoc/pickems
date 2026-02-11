@@ -1,7 +1,7 @@
 // Purpose: Display the MatchBuilder component which allows users to create matches (pickems)
 
 import { useState } from 'react';
-import { TypesOfMatches } from "../../../defines";
+import { TeamData, TypesOfMatches } from "../../../defines";
 import { Firestore } from "firebase/firestore";
 import { addMatchToDatabase } from "../../../firebase/database";
 
@@ -12,11 +12,7 @@ import Col from 'react-bootstrap/Col';
 
 type UserPanelProps = {
   db: Firestore;
-  teamOptions: Map<string, {
-    name: string;
-    teamColour: string;
-    teamLogo: string;
-  }>
+  teamOptions: Map<string, TeamData>
 };
 
 const MatchBuilder = ({ db, teamOptions }: UserPanelProps) => { 

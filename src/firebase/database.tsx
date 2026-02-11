@@ -1,7 +1,8 @@
 // src/database.ts
 import { v4 as uuidv4} from 'uuid';
-import { doc, getDoc, setDoc, Firestore, Timestamp, updateDoc, collection, getDocs } from "firebase/firestore";
-import { CrystalBallEntry } from '../defines';
+import { doc, getDoc, setDoc, Firestore, Timestamp, updateDoc, collection, getDocs, query } from "firebase/firestore";
+import {db } from "../firebase";
+import { CrystalBallEntry, SwissMatchData } from '../defines';
 import { updateLeaderboard } from './leaderboard';
 
 // Function to add a team to the Firestore database
@@ -175,153 +176,37 @@ export const addCategoryToDatabase = async (db: Firestore, categoryName: string)
   }
 };
 
-// Function to add a crystalBall Pickem to the Firestore database
-export const addCrystalBallPickemToDatabase = async (
-    db: Firestore,
-    formData: {
-      category: string;
-      title: string;
-      points: string;
-      closeTime: string;
-      type: string;
-    }
-  ) => {
-  const { category, title, points, closeTime, type} = formData;
-  if (!category || !title || !points || !closeTime || !type) {
-    console.log('Please fill out all fields');
-    return false;
-  }
+export const updateMatchVotingStat = async (matches: SwissMatchData[]) => {
+    const usersCollectionQuery = query(collection(db, "users"));
+    const usersCollectionDocsSnap = await getDocs(usersCollectionQuery);
+    if (!usersCollectionDocsSnap.empty) {
+      const users = usersCollectionDocsSnap.docs.map((userData) => {
+        const data = userData.data();
+        return {
+          picks: data.picks,
+        }
+      })
 
-  try {
-    // Get the category pickem doc
-    // Add extra array of category into pickem doc (pickemId -> name: blah, points: blah, closeTime: blah, array of map<str, int> of category)
-    const categoryPickemDocRef = doc(db, "crystalBall", "pickems"); // Document holding crystal ball for this category
-    const categoryPickemDocSnap = await getDoc(categoryPickemDocRef);
-
-    let crystalBallData: Record<string, CrystalBallEntry> = {};
-    if (categoryPickemDocSnap.exists()) {
-      crystalBallData = categoryPickemDocSnap.data();
-    }
-
-    const pickemId = uuidv4();
-    const closeTimestamp = Timestamp.fromDate(new Date(closeTime));
-
-    crystalBallData[pickemId] = {
-      category: category,
-      title: title,
-      points: points,
-      closeTime: closeTimestamp,
-      winner: "",
-      img: "",
-      type: type,
-    };
-
-    await setDoc(categoryPickemDocRef, crystalBallData);  // Update the entire document with the new match
-    console.log('Match added to Firestore successfully!');
-    return true;
-  } catch (error) {
-    console.log('Error adding match/pickem:', error);
-    return false;
-  }
-};
-
-// Function to edit a crystalBall Pickem to the Firestore database
-export const editCrystalBallPickemToDatabase = async (
-    db: Firestore,
-    formData: CrystalBallEntry,
-    id: string
-  ) => {
-  const { category, title, points, closeTime, winner, img} = formData;
-  if (!category || !title || !points || !closeTime || !id) {
-    console.log('Please fill out all fields');
-    return false;
-  }
-
-  try {
-    // Get the category pickem doc
-    // Add extra array of category into pickem doc (pickemId -> name: blah, points: blah, closeTime: blah, array of map<str, int> of category)
-    const categoryPickemDocRef = doc(db, "crystalBall", "pickems"); // Document holding crystal ball for this category
-    const categoryPickemDocSnap = await getDoc(categoryPickemDocRef);
-
-    let crystalBallData: Record<string, CrystalBallEntry> = {};
-    if (categoryPickemDocSnap.exists()) {
-      crystalBallData = categoryPickemDocSnap.data();
-    }
-
-    crystalBallData[formData.id] = {
-      category: category,
-      title: title,
-      points: points,
-      closeTime: closeTime,
-      winner: winner,
-      img: img,
-      type: id,
-    };
-
-    await setDoc(categoryPickemDocRef, crystalBallData);  // Update the entire document with the new match
-    console.log('Match edited successfully!');
-    return true;
-  } catch (error) {
-    console.log('Error editing match/pickem:', error);
-    return false;
-  }
-};
-
-// Function to edit a crystalBall Pickem to the Firestore database
-export const submitAnswerCrystalBall = async (
-    db: Firestore,
-    formData: CrystalBallEntry,
-    answer: string,
-    id: string
-  ) => {
-  const { category, title, points, closeTime, winner, img, type} = formData;
-  try {
-    // Get the category pickem doc
-    // Add extra array of category into pickem doc (pickemId -> name: blah, points: blah, closeTime: blah, array of map<str, int> of category)
-    const categoryPickemDocRef = doc(db, "crystalBall", "pickems"); // Document holding crystal ball for this category
-    const categoryPickemDocSnap = await getDoc(categoryPickemDocRef);
-
-    let crystalBallData: Record<string, CrystalBallEntry> = {};
-    if (categoryPickemDocSnap.exists()) {
-      crystalBallData = categoryPickemDocSnap.data();
-    }
-
-    // Update in Firestore to ensure no user can change pick post update
-    const closeTimestamp = Timestamp.fromDate(new Date());
-    await updateDoc(categoryPickemDocRef, {
-      [`${id}`]: {
-        category: category,
-        title: title,
-        points: points,
-        closeTime: closeTimestamp,
-        winner: answer,
-        img: img,
-        type: type,
+      // + 1 to ensure no divide by 0 issue in first few seconds of voting
+      for (const match of matches) {
+        match.votes.team1Vote = 0 + 1;
+        match.votes.totalVote = 0 + 1;
       }
-    });
 
-    // Update all user scores
-    const usersCollectionRef = collection(db, "users");
-    const userDocsSnap = await getDocs(usersCollectionRef);
-
-    userDocsSnap.forEach(async (userDoc) => {
-      const userData = userDoc.data();
-      // Check if the user made a pick for this match
-      const userPick = userData.crystalBall?.[id];
-      if (userPick === answer) {
-        const updatedScore = (userData.score || 0) + parseInt(points, 10);
-        // Update the user's score in their document
-        await updateDoc(doc(db, "users", userDoc.id), {
-          score: updatedScore,
-        });
+      for (const user of users) {
+        if (user.picks !== undefined) {
+          for (const userPick of Object.entries(user.picks)) {
+            for (const match of matches) {
+              if (match.matchId === userPick[0] && match.team1Id === userPick[1]) {
+                match.votes.team1Vote++;
+                match.votes.totalVote++;
+              } else if (match.matchId === userPick[0]) {
+                match.votes.totalVote++;
+              }
+            }
+          }
+        }
       }
-    });
-
-    // New leaderboard based on new scores
-    updateLeaderboard();
-
-    return true;
-  } catch (error) {
-    return false;
+      addVoteDataToMatch(db, matches);
+    }
   }
-};

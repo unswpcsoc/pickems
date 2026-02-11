@@ -9,12 +9,13 @@ import { teamCard, TeamBuilder, MatchBuilder, CrystalBallCreator } from "../../c
 import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 
-import { addVoteDataToMatch } from "../../firebase/database"
+import { addVoteDataToMatch, updateMatchVotingStat } from "../../firebase/database"
 import { CategoryCreator, CategoryDisplay } from "../../components/index";
 import { MatchDisplay } from "../../components/index";
 import { InpersonLeaderboard, RemoteLeaderboard } from "../../components/index";
 import { updateLeaderboard } from "../../firebase/leaderboard";
 import CrystalBallEditor from '../../components/Admin/CrystalBallEditor/CrystalBallEditor';
+import { CategoryData, SwissMatchData, TeamData } from '../../defines';
 
 // createTheme('light', {
 //   background: {
@@ -25,12 +26,11 @@ import CrystalBallEditor from '../../components/Admin/CrystalBallEditor/CrystalB
 
 const Admin = () => {
   // States for team and match display
-  const [teams, setTeams] = useState<Map<string, {name: string, teamColour: string, teamLogo: string}>>(new Map());
-  const [matches, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
+  const [teams, setTeams] = useState<Map<string, TeamData>>(new Map());
+  const [matches, setMatches] = useState<SwissMatchData[]>([]); // Matches state
 
     // States for categories and category pickems
-  const [categories, setCategories] = useState<Map<string, { name: string, items: Map<string, {img: string, name: string}> }>>(new Map());
-  // const [crystalPickems, setMatches] = useState<{ matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number} }[]>([]); // Matches state
+  const [categories, setCategories] = useState<Map<string, CategoryData>>(new Map());
   // First get categories, from each category get their respecitve pickems (multiple files 0 -> n).
   // all these pickems should be in crystalPickems.
 
@@ -44,7 +44,7 @@ const Admin = () => {
       if (docSnapshot.exists()) {
         const teamsData = docSnapshot.data();
         console.log(teamsData);
-        const teams =  new Map<string, {name: string, teamColour: string, teamLogo: string}>();
+        const teams =  new Map<string, TeamData>();
         Object.keys(teamsData).forEach((id) => {
           teams.set(id, {
             name: teamsData[id].name, 
@@ -86,7 +86,7 @@ const Admin = () => {
       if (docSnapshot.exists()) {
         const categoryData = docSnapshot.data();
         // console.log(categoryData);
-        const categories =  new Map<string, { name: string, items: Map<string, {img: string, name: string}>}>();
+        const categories =  new Map<string, CategoryData>();
         
         Object.keys(categoryData).forEach((id) => {
           const rawItems = categoryData[id].items || {};
@@ -142,40 +142,6 @@ const Admin = () => {
     };
   }, [db]);
 
-  const updateVoteStats = async () => {
-    const usersCollectionQuery = query(collection(db, "users"));
-    const usersCollectionDocsSnap = await getDocs(usersCollectionQuery);
-    if (!usersCollectionDocsSnap.empty) {
-      const users = usersCollectionDocsSnap.docs.map((userData) => {
-        const data = userData.data();
-        return {
-          picks: data.picks,
-        }
-      })
-
-      for (const match of matches) {
-        match.votes.team1Vote = 0;
-        match.votes.totalVote = 0;
-      }
-
-      for (const user of users) {
-        if (user.picks !== undefined) {
-          for (const userPick of Object.entries(user.picks)) {
-            for (const match of matches) {
-              if (match.matchId === userPick[0] && match.team1Id === userPick[1]) {
-                match.votes.team1Vote++;
-                match.votes.totalVote++;
-              } else if (match.matchId === userPick[0]) {
-                match.votes.totalVote++;
-              }
-            }
-          }
-        }
-      }
-      addVoteDataToMatch(db, matches);
-    }
-  }
-
   return (
     <div style={{ width: "95vw", margin: "auto"}} className="text-colour"> 
       <br />
@@ -195,7 +161,7 @@ const Admin = () => {
             data-bs-theme="light"
           >
             <Tab eventKey="category" title="Categories">
-              <CategoryCreator db={db} />
+              <CategoryCreator />
               <h3>Categories</h3>
               <CategoryDisplay categories={categories} />
             </Tab>
@@ -252,7 +218,7 @@ const Admin = () => {
         <Tab eventKey="miscellaneous" title="Miscellaneous Commands" data-bs-theme="light">
           <h3>Update Vote Stats</h3>
           <p>This is a manual command, and will update the data on the percentage of votes of each pickems.</p>
-          <Button onClick={updateVoteStats}>Update Stats</Button>
+          <Button onClick={() => updateMatchVotingStat(matches)}>Update Stats</Button>
 
           <h3>Update Leaderboard</h3>
           <p>Leaderboard is updated automatically when a match is closed. However, you can manually update the leaderboard with the button below (Note this could affect the firestore bill by a lot based on the number of users).</p>

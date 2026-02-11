@@ -5,6 +5,7 @@
 // import brackets from "../assets/InfoPage/brackets.jpg";
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import "./Info.css"
 
 const verticalBanner = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/uploads%2F2026T1%2FOPActI.jpeg?alt=media&token=68d0abd1-ad01-496d-8472-cea08e038c3a";
 import horizontalBanner from "../../assets/HomePage/OP2.png";
@@ -12,13 +13,13 @@ const teams = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebas
 const monitor = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fmonitor.jpg?alt=media&token=a48ca0fe-85c2-4ca3-ba35-c5fbb0530641";
 // const brackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FInterUni_Brackets_Day_1(1).png?alt=media&token=93f45612-51cb-4583-8535-6eaa347b0aad";
 
-const InfoAndPrize = () => {
+const Info = () => {
   return (
-    <div style={{ maxWidth: '1400px', width:"100%", margin: 'auto' }} className='text-colour'>
+    <div className='text-colour info-body'>
       <br />
       <div>
         {/* <img src={verticalBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}></img> */}
-        <LazyLoadImage  src={horizontalBanner} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
+        <LazyLoadImage  src={horizontalBanner} className='lazy-loading-container'/>
         <h1>Event Overview</h1>
         <p>
           The Oceanic Prodigies - RE:BIRTH tournament is a celebration of university esports, where teams from universities across Australia compete for glory.
@@ -102,4 +103,4 @@ const InfoAndPrize = () => {
   );
 };
 
-export default InfoAndPrize;
+export default Info;
