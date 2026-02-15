@@ -49,7 +49,7 @@
     padding: 16px;
 }
 
-@media(max-width:1620px) {
+@media(max-width:2050px) {
     .twitch-player-container-home {
         width: 100%;
     }

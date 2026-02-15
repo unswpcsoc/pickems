@@ -23,8 +23,7 @@ const HomePage = () => {
     setIndex(selectedIndex);
   };
 
-  // const ranking = [{name: "T1", points: 50},{name: "T2", points: 49},{name: "T3", points: 48},{name: "T4", points: 47},{name: "T5", points: 45},{name: "T6", points: 40},{name: "T7", points: 39}];
-  const ranking: TeamRanking = [];
+  const ranking = [{name: "UNSW PCSoc", points: 0},{name: "UTS Esports", points: 0},{name: "MQU Gaming", points: 0},{name: "WSU Esports", points: 0},{name: "USYD SOG", points: 0},{name: "UOW Esports", points: 0},{name: "ANU Esports", points: 0}];
 
   return (
     <div className='home-body'>
