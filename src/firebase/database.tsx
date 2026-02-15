@@ -110,7 +110,7 @@ export const addMatchToDatabase = async (
 export const addVoteDataToMatch = async (
   db: Firestore,
   formData: {
-  matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Vote: number, totalVote: number}}[]
+  matchId: string, team1Id: string, team2Id: string, category: string, points: string, closeTime: Timestamp, open: boolean, winner: number, votes: {team1Votes: number, totalVotes: number}}[]
 ) => {
   try {
     const matchesDocRef = doc(db, "matches", "matchData"); // Document holding all matches
@@ -187,10 +187,10 @@ export const updateMatchVotingStat = async (matches: SwissMatchData[]) => {
         }
       })
 
-      // + 1 to ensure no divide by 0 issue in first few seconds of voting
+      // + 1 to ensure no divide by 0 issue in the first few seconds of voting
       for (const match of matches) {
-        match.votes.team1Vote = 0 + 1;
-        match.votes.totalVote = 0 + 1;
+        match.votes.team1Votes = 0 + 1;
+        match.votes.totalVotes = 0 + 1;
       }
 
       for (const user of users) {
@@ -198,10 +198,10 @@ export const updateMatchVotingStat = async (matches: SwissMatchData[]) => {
           for (const userPick of Object.entries(user.picks)) {
             for (const match of matches) {
               if (match.matchId === userPick[0] && match.team1Id === userPick[1]) {
-                match.votes.team1Vote++;
-                match.votes.totalVote++;
+                match.votes.team1Votes++;
+                match.votes.totalVotes++;
               } else if (match.matchId === userPick[0]) {
-                match.votes.totalVote++;
+                match.votes.totalVotes++;
               }
             }
           }

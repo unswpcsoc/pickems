@@ -63,7 +63,7 @@ const PickemMenu = () => {
           </div>
           <div onClick={handleClick("/pickems/swiss")} className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
-            <div className='centred-text'>Swiss Stage</div>
+            <div className='centred-text'>Round Robin Stage</div>
             <div className='bottom-centred-text'>Rolling open/close from 21st of February 9:00am</div>
           </div>
           <div className='pick-button-container'>

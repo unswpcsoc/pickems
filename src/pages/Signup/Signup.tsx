@@ -67,7 +67,7 @@ const Signup = () => {
         // This gives you a Google Access Token. (use for google API)
         const credential = GoogleAuthProvider.credentialFromResult(result);
         if (credential === null) {
-          setError("Google Auth Error");
+          setError("System error, please wait a couple minutes before signing up."); // Error when Google Auth fails
         }
         
         const user = auth.currentUser as User;

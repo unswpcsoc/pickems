@@ -73,7 +73,7 @@ const MatchEditor = ({ db, teamOptions, matchId, matches }: MatchEditorProp) => 
         closeTime: matchData.closeTime,
         open: matchData.open,
         winner: matchData.winner,
-        votes: (matchData.votes === undefined ? {team1Vote: 0, totalVote: 0} : matchData.votes)
+        votes: (matchData.votes === undefined ? {team1Votes: 0, totalVotes: 0} : matchData.votes)
       }, 
     };
     console.log(updatedMatchData)

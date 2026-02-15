@@ -72,7 +72,7 @@ const Admin = () => {
           closeTime: matchesData[id].closeTime,
           open: matchesData[id].open,
           winner: matchesData[id].winner,
-          votes: (matchesData[id].votes === undefined ? {team1Vote: 0, totalVote: 0} : matchesData[id].votes)
+          votes: (matchesData[id].votes === undefined ? {team1Votes: 0, totalVotes: 0} : matchesData[id].votes)
         }));
 
         matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);

@@ -3,16 +3,23 @@ import Button from 'react-bootstrap/Button';
 import classNames from 'classnames';
 import { pickemResult } from "..";
 import imagea from "../../assets/faker.png"; // Correct image path
+import "../../style.css";
 
 interface PickemBarProps {
-  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} };
+  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Votes: number, totalVotes: number} };
   userPick: string;
   teams: { [key: string]: { name: string, colour: string, teamLogo: string } };
   handlePick: (matchId: number, teamId: string) => void;
 }
 
-function isOpen(match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} }) {
+function isOpen(match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Votes: number, totalVotes: number} }) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
+}
+
+function temp(  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Votes: number, totalVotes: number} }) {
+  console.log(match.votes.team1Votes)
+  console.log(match.votes.totalVotes)
+  return;
 }
 
 const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, handlePick }) => {
@@ -20,6 +27,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
   const noPick: boolean = (userPick === "");
   const noUserPickTeam1 :boolean = (noPick && match.winner === match.team1Id);
   const noUserPickTeam2 :boolean = (noPick && match.winner === match.team2Id);
+  ((match.votes.team1Votes + 1)/(match.votes.totalVotes + 1) * 100).toFixed(2);
 
   // console.log(match.team1Id, match.team2Id , match.winner,"||", userPick)
   return (
@@ -28,7 +36,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
       <h4>{`${match.closeTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true})} ${match.closeTime.toDate().toLocaleDateString([], { weekday: "long", month: "long", day: "numeric"})}`}</h4>
     </div>
 
-    <div key={match.matchId} className="match-container" style={{ backgroundColor:"#212529" }}>
+    <div key={match.matchId} className="match-container primary-colour">
       <div className="teams">
         {/* Team 1 Section */}
         <div
@@ -41,6 +49,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
           <Button
             variant={userPick === match.team1Id  ? 'secondary' : 'outline-secondary'}
             disabled={!isOpen(match)}
+            onClick={() => temp(match)}
             style={{
               flex: 1,
               minHeight: '120px',
@@ -63,7 +72,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
                   </div>
 
                   <div className="team-name" style={{ color: "white" }}>
-                    {(userPick === match.team1Id) ? `${((match.votes.team1Vote + 1)/(match.votes.totalVote + 1) * 100).toFixed(2)}% PICKED ` : ""}
+                    {(userPick === match.team1Id) ? `${((match.votes.team1Votes + 1)/(match.votes.totalVotes + 1) * 100).toFixed(2)}% PICKED ` : ""}
                   </div>
                 </div>
                 
@@ -106,7 +115,7 @@ const PickemComponent: React.FC<PickemBarProps> = ({ match, userPick, teams, han
                   </div>
 
                   <div className="team-name" style={{ color: "white" }}>
-                    {(userPick === match.team2Id) ? `${((match.votes.totalVote - match.votes.team1Vote + 1)/(match.votes.totalVote + 1) * 100).toFixed(2)}% PICKED ` : ""}
+                    {(userPick === match.team2Id) ? `${((match.votes.totalVotes - match.votes.team1Votes + 1)/(match.votes.totalVotes + 1) * 100).toFixed(2)}% PICKED ` : ""}
                   </div>
                 </div>
               </div>

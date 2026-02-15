@@ -10,10 +10,10 @@ function InPersonAlert({ attendanceStatus }: InPersonAlertProp) {
     return (
       <>
         <Alert variant = "primary" dismissible>
-          <Alert.Heading>You haven't added your attendance status for Friday!</Alert.Heading>
+          <Alert.Heading>Add In-person attendance status for Oceanic Prodigies!</Alert.Heading>
           <p>
-          Add your Oceanic Prodigies in person attendance in the User's page to be eligible for prizes from the pickems!
-          Note: If you are not attending in person on Friday the 11th of July you will not be eligible for any pickems prizes!
+          Add your Oceanic Prodigies in-person attendance on the User's page to be eligible for Pickems prizes.
+          Note: If you are not attending in person on the 10th of March you will be ineligible for Pickems prizes.
           </p>
         </Alert>
       </>

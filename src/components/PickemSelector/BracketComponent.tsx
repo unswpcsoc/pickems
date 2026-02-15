@@ -6,13 +6,13 @@ import { Button } from 'react-bootstrap';
 
 
 interface PickemBarProps {
-  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} };
+  match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Votes: number, totalVotes: number} };
   userPick: string;
   teams: { [key: string]: { name: string, colour: string, teamLogo: string } };
   handlePick: (matchId: number, teamId: string) => void;
 }
 
-function isOpen(match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Vote: number, totalVote: number} }) {
+function isOpen(match: { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Votes: number, totalVotes: number} }) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
 

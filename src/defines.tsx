@@ -30,8 +30,8 @@ export type SwissMatchData = {
   open: boolean;
   winner: number;
   votes: {
-    team1Vote: number;
-    totalVote: number;
+    team1Votes: number;
+    totalVotes: number;
   };
 }
 

@@ -43,7 +43,7 @@ const MatchBuilder = ({ db, teamOptions }: UserPanelProps) => {
         matchTeam2: '',
         category: '',
         points: '',
-        closeTime: '',
+        closeTime: formData.closeTime,
       });
     }
   };
