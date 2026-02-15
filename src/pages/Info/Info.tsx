@@ -10,7 +10,7 @@ import "./Info.css"
 const verticalBanner = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/uploads%2F2026T1%2FOPActI.jpeg?alt=media&token=68d0abd1-ad01-496d-8472-cea08e038c3a";
 import horizontalBanner from "../../assets/HomePage/OP2.png";
 const teams = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FThe%20teams(1).png?alt=media&token=8d746656-ff32-4580-b99c-ebe5a04d5ecc";
-const monitor = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2Fmonitor.jpg?alt=media&token=a48ca0fe-85c2-4ca3-ba35-c5fbb0530641";
+const monitor = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Fhome-page%2F670(2).png?alt=media&token=c889c0b6-3314-46b1-bd4a-6f17161bbf60";
 // const brackets = "https://firebasestorage.googleapis.com/v0/b/pickems-2c806.firebasestorage.app/o/website-assets%2Finfo-page%2FInterUni_Brackets_Day_1(1).png?alt=media&token=93f45612-51cb-4583-8535-6eaa347b0aad";
 
 const Info = () => {
@@ -80,23 +80,21 @@ const Info = () => {
       <div>
         <br/>
         <h1>What are the Prizes?</h1>
-        <p>TBA!</p>
-        {/* <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/> */}
-        {/* <p>
-          Oceanic Prodigies this time round is offering only in-person rewards:
-        </p> */}
-{/* 
-        <p>The In-person rewards are as followed:</p>
+        <LazyLoadImage  src={monitor} style={{ maxWidth: '1400px', width:"100%", height:"auto"}}/>
+        <p>
+          Oceanic Prodigies this time round is offering only in-person rewards!
+        </p>
+        <p>For MEGALAN (20-21st of February)</p>
 
         <ul>
-          <li>1st Place: 1 Gigabyte arous MO27US Monitor</li>
-          <li>2nd to 20th place: Gigabyte AORUS X GXS Studios Goodie Bag</li>
+          <li>1st Place: 1 Gigabyte AORUS M32U Gaming Monitor</li>
+          <li>2nd to 3rd place: AORUS X GXS Studios Goodie Bag</li>
         </ul>
 
-        <p>Prizes will be awarded based on the final leaderboard standings. The top scorers will receive their rewards at the event on the 11th of July at UNSW.</p>
+        <p>Prizes will be awarded based on the final leaderboard standings at the end of MEGALAN - RE:BIRTH. The top scorers will receive their rewards at the event on the 21st of February.</p>
         <p>To check and change your in-person status for the Pickems prizes, go to the user page and click the edit button to change it.</p>
         <p>To be prize eligible you must have your discord ID added to your account. (Go the the user page to add/change your Discord ID)</p>
-        <p>Warning: If your discord ID or in person status is incorrect by the time prizes are distributed you will automatically forfeit any prizes you were about to win.</p> */}
+        <p>Warning: If your discord ID or in person status is incorrect by the time prizes are distributed you will automatically forfeit any prizes you were about to win.</p>
       </div>
       <br/>
     </div> 
