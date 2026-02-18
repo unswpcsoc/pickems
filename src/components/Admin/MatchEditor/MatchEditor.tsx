@@ -58,6 +58,11 @@ const MatchEditor = ({ db, teamOptions, matchId, matches }: MatchEditorProp) => 
     }
   };
 
+  const formatDate = (timestampe: Timestamp) => {
+    const date = new Date(timestampe.toDate());
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0,16);
+  }
+
   const editMatch = async () => {
     if (!auth.currentUser || !matchData) {
       return;
@@ -146,17 +151,8 @@ const MatchEditor = ({ db, teamOptions, matchId, matches }: MatchEditorProp) => 
                 <Form.Control
                   type="datetime-local"
                   name="closeTime"
-                  value={matchData.closeTime
-                    ? new Date(matchData.closeTime.toDate()).toLocaleString('en-US', { 
-                        timeZone: 'Australia/Sydney', 
-                        hour12: false, 
-                        year: 'numeric', 
-                        month: '2-digit', 
-                        day: '2-digit', 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })
-                    : ""} 
+                  value={matchData.closeTime.toDate()
+                    ? formatDate(matchData.closeTime) : ""} 
                   onChange={handleChange}
                 />
               </>

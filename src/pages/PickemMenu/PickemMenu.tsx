@@ -15,7 +15,7 @@ import { TeamRanking } from '../../defines';
 
 const PickemMenu = () => {
   // const ranking: TeamRanking = [];
-  const ranking = [{name: "UNSW PCSoc", points: 0},{name: "UTS Esports", points: 0},{name: "MQU Gaming", points: 0},{name: "WSU Esports", points: 0},{name: "USYD SOG", points: 0},{name: "UOW Esports", points: 0},{name: "ANU Esports", points: 0}];
+  const ranking = [{name: "UNSW PCSoc", points: 0},{name: "UTS Esports", points: 0},{name: "MQU Gaming", points: 0},{name: "WSU Esports", points: 0},{name: "USYD SOG", points: 0},{name: "UOW Esports", points: 0}];
 
   const [userScore, setUserScore] = useState<number>(0)
   const [userDiscordId, setDiscordId] = useState<string | null>(null);

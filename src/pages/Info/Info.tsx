@@ -23,7 +23,7 @@ const Info = () => {
         <h1>Event Overview</h1>
         <p>
           The Oceanic Prodigies - RE:BIRTH tournament is a celebration of university esports, where teams from universities across Australia compete for glory.
-          Watch as 7 of the best university esports teams from across the country battle it out in Valorant for a $X AUD cash prize pool and ultimate supremacy.
+          Watch as 6 of the best university esports teams from across the country battle it out in Valorant for a $X AUD cash prize pool and ultimate supremacy.
         </p>
 
         <h1>Event Details</h1>
@@ -91,6 +91,7 @@ const Info = () => {
           <li>2nd to 3rd place: AORUS X GXS Studios Goodie Bag</li>
         </ul>
 
+        <p>MEGALAN Pickems prizes will be calculated based off the Crystal Ball Pickems and the Round Robin Stage games played during MEGALAN - RE:BIRTH.</p>
         <p>Prizes will be awarded based on the final leaderboard standings at the end of MEGALAN - RE:BIRTH. The top scorers will receive their rewards at the event on the 21st of February.</p>
         <p>To check and change your in-person status for the Pickems prizes, go to the user page and click the edit button to change it.</p>
         <p>To be prize eligible you must have your discord ID added to your account. (Go the the user page to add/change your Discord ID)</p>
