@@ -82,7 +82,7 @@ const HomePage = () => {
           <br/>
           <h2>General Information</h2>
           <p>🎮 OCEANIC PRODIGIES - RE:BIRTH 🎮</p>
-          <p>Prepare for RE:BIRTH, PCSoc's Esport tournament start for 2026! 🔥 Seven top-tier universities from across NSW and ACT will go head-to-head across four days of action-packed Valorant gameplay!</p>
+          <p>Prepare for RE:BIRTH, PCSoc's Esport tournament start for 2026! 🔥 Six top-tier universities from across NSW will go head-to-head across three days of action-packed Valorant gameplay!</p>
           <b><p>Key Details:</p></b>
           
           <p>Group Stage</p>

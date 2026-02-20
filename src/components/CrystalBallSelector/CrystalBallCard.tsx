@@ -63,7 +63,8 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
     handleClose();
   };
 
-  let winner = categoryItems.get(crystalBallPickem.winner)?.name;
+  
+  let winner = (crystalBallPickem.category === "Numeric") ? crystalBallPickem.winner : categoryItems.get(crystalBallPickem.winner)?.name;
   if (winner === undefined) {
     winner = "";
   }
@@ -112,10 +113,11 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
                 <h3>Enter a number (e.g. 1, 2 , 3, ...) </h3>
                 <InputGroup className="mb-3">
                   <Form.Control
+                    type="text"
                     placeholder="Enter a number (0, 1, 2 , ...)"
                     aria-label="Enter a number for the pickems"
                     aria-describedby="basic-addon2"
-                    value={numericValue}
+                    value={numericValue.toString() === "NaN" ? "" : numericValue.toString()}
                     onChange={(e) => handleChange(e)}
                   />
                   <Button variant="primary" id="button-addon2" onClick={() => updatePickem(pickemId, numericValue.toString())}>
@@ -166,7 +168,12 @@ const CrystalBallCard = ({ pickemId, crystalBallPickem, categoryItems, userCryst
               <Button variant="primary" type="submit" disabled style={{ alignSelf: 'center', bottom: 0 }}>
                 Answer: {winner}
               </Button>
-              <CrystalBallResult winnerId={crystalBallPickem.winner} winner={winner} points={crystalBallPickem.points} pick={userCrystalBall[pickemId]} />
+
+              {crystalBallPickem.category === "Numeric" ? (
+                <CrystalBallResult winnerId={crystalBallPickem.winner} winner={winner} points={crystalBallPickem.points} pick={userCrystalBall[pickemId]} />
+              ) : (
+                <CrystalBallResult winnerId={crystalBallPickem.winner} winner={winner} points={crystalBallPickem.points} pick={userCrystalBall[pickemId]} />
+              )}
             </>
           )
       )}

@@ -60,17 +60,17 @@ const PickemMenu = () => {
           <div onClick={handleClick("/pickems/crystalball")} className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
             <div className='centred-text'>Crystal Ball</div>
-            <div className='bottom-centred-text'>Open till 21st of February 9:00am</div>
+            <div className='bottom-centred-text'>Open till 21st of February 10:30am</div>
           </div>
           <div onClick={handleClick("/pickems/swiss")} className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
             <div className='centred-text'>Round Robin Stage</div>
-            <div className='bottom-centred-text'>Rolling open/close from 21st of February 9:00am</div>
+            <div className='bottom-centred-text'>All games are open, close at their respective match start time</div>
           </div>
           <div className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
             <div className='centred-text'>Bracket Stage</div>
-            <div className='bottom-centred-text'>Open 22nd of February 9:00pm, Closes 10th of March 9:00am</div>
+            <div className='bottom-centred-text'>Opens after MEGALAN!! </div>
           </div>
         </div>
 

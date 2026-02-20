@@ -96,6 +96,7 @@ const Info = () => {
         <p>To check and change your in-person status for the Pickems prizes, go to the user page and click the edit button to change it.</p>
         <p>To be prize eligible you must have your discord ID added to your account. (Go the the user page to add/change your Discord ID)</p>
         <p>Warning: If your discord ID or in person status is incorrect by the time prizes are distributed you will automatically forfeit any prizes you were about to win.</p>
+        <p>Oceanic Prodigies Roundhouse (March 10th) pickem prizes will be announced closer to Oceanic Prodigies.</p>
       </div>
       <br/>
     </div> 
