@@ -14,8 +14,8 @@ import { TeamRanking } from '../../defines';
 
 
 const PickemMenu = () => {
-  // const ranking: TeamRanking = [];
-  const ranking = [{name: "UNSW PCSoc", points: 0},{name: "UTS Esports", points: 0},{name: "MQU Gaming", points: 0},{name: "WSU Esports", points: 0},{name: "USYD SOG", points: 0},{name: "UOW Esports", points: 0}];
+  const ranking: TeamRanking = [];
+  // const ranking = [{name: "UNSW PCSoc", points: 0},{name: "UTS Esports", points: 0},{name: "MQU Gaming", points: 0},{name: "WSU Esports", points: 0},{name: "USYD SOG", points: 0},{name: "UOW Esports", points: 0}];
 
   const [userScore, setUserScore] = useState<number>(0)
   const [userDiscordId, setDiscordId] = useState<string | null>(null);
@@ -62,15 +62,15 @@ const PickemMenu = () => {
             <div className='centred-text'>Crystal Ball</div>
             <div className='bottom-centred-text'>Open till 21st of February 10:30am</div>
           </div>
-          <div onClick={handleClick("/pickems/swiss")} className='pick-button-container'>
-            <img className='pick-button-image' src={opStock} />
-            <div className='centred-text'>Round Robin Stage</div>
-            <div className='bottom-centred-text'>All games are open, close at their respective match start time</div>
-          </div>
           <div className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
+            <div className='centred-text'>Round Robin Stage</div>
+            <div className='bottom-centred-text'>Closed!!</div>
+          </div>
+          <div onClick={handleClick("/pickems/brackets")} className='pick-button-container'>
+            <img className='pick-button-image' src={opStock} />
             <div className='centred-text'>Bracket Stage</div>
-            <div className='bottom-centred-text'>Opens after MEGALAN!! </div>
+            <div className='bottom-centred-text'>Opening soon!! </div>
           </div>
         </div>
 

@@ -85,9 +85,13 @@ function App() {
             path="/pickems/crystalball"
             element={(user && user.emailVerified) ? <PickemCrystalBall /> : <Login />}
           />
-          <Route
+          {/* <Route
             path="/pickems/swiss"
             element={(user && user.emailVerified) ? <PickemSwiss /> : <Login />}
+          /> */}
+          <Route
+            path="/pickems/brackets"
+            element={(user && user.emailVerified) ? <PickemCrystalBall /> : <Login /> }
           />
           <Route
             path="/leaderboard"

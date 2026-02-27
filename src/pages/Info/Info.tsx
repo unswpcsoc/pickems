@@ -28,18 +28,11 @@ const Info = () => {
 
         <h1>Event Details</h1>
 
-        <h2>Group Stages</h2>
-        <ul>
-          <li>When: 21-22nd February 2026</li>
-          <li>Where: Tyree Building at UNSW Kensington Campus, Sydney, NSW</li>
-          <a href='https://events.humanitix.com/megalan'><li>Tickets: $10 Early Bird Admission – Come and watch the action live!</li></a>
-        </ul>
-
         <h2>Bracket Stages</h2>
         <ul>
           <li>When: 9th-10th March 2026</li>
           <li>Where: Roundhouse</li>
-          <li>Tickets: TBA</li>
+          <a href="https://events.humanitix.com/oceanicprodigies?c=op-website" ><li>Tickets: Free</li></a>
         </ul>
 
         {/* <h1>Tournament Formats and Rules</h1>
@@ -84,19 +77,19 @@ const Info = () => {
         <p>
           Oceanic Prodigies this time round is offering only in-person rewards!
         </p>
-        <p>For MEGALAN (20-21st of February)</p>
+        <p>For Oceanic Prodigies (10th of March)</p>
 
         <ul>
-          <li>1st Place: 1 Gigabyte AORUS M32U Gaming Monitor</li>
-          <li>2nd to 3rd place: AORUS X GXS Studios Goodie Bag</li>
+          <li>???</li>
+          <li>???</li>
         </ul>
 
-        <p>MEGALAN Pickems prizes will be calculated based off the Crystal Ball Pickems and the Round Robin Stage games played during MEGALAN - RE:BIRTH.</p>
+        {/* <p>MEGALAN Pickems prizes will be calculated based off the Crystal Ball Pickems and the Round Robin Stage games played during MEGALAN - RE:BIRTH.</p>
         <p>Prizes will be awarded based on the final leaderboard standings at the end of MEGALAN - RE:BIRTH. The top scorers will receive their rewards at the event on the 21st of February.</p>
         <p>To check and change your in-person status for the Pickems prizes, go to the user page and click the edit button to change it.</p>
         <p>To be prize eligible you must have your discord ID added to your account. (Go the the user page to add/change your Discord ID)</p>
         <p>Warning: If your discord ID or in person status is incorrect by the time prizes are distributed you will automatically forfeit any prizes you were about to win.</p>
-        <p>Oceanic Prodigies Roundhouse (March 10th) pickem prizes will be announced closer to Oceanic Prodigies.</p>
+        <p>Oceanic Prodigies Roundhouse (March 10th) pickem prizes will be announced closer to Oceanic Prodigies.</p> */}
       </div>
       <br/>
     </div> 
