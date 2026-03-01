@@ -1,10 +1,10 @@
-import { db } from "../../firebase/index";
+import { db } from "../../../firebase/index";
 import { collection, getDocs, Timestamp, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";  //REMOVE IF MAKING database.tsx
 
-import { MatchEditor } from "../../components"
+import { MatchEditor } from "../../../components"
 import DataTable from 'react-data-table-component';
 import { createTheme } from 'react-data-table-component';
-import { updateLeaderboard } from "../../firebase/leaderboard";
+import { updateLeaderboard } from "../../../firebase/leaderboard";
 
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;

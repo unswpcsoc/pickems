@@ -3,47 +3,38 @@ import { useState, useEffect } from 'react';
 import { auth, db } from "../../firebase/index";
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { User } from 'firebase/auth';
-import { PickemComponent } from '../../components'; // Import the PickemBar component
+import { BracketComponent, PickemComponent } from '../../components'; // Import the PickemBar component
 import { Button } from "react-bootstrap";
 import DiscordAlert from "../../components/DiscordAlert/DiscordAlert";
 
-import './PickemSwiss.css';
+
+import './PickemBracket.css';
+import { BracketMatchData } from '../../defines';
 
 function isOpen(match: any) {
   return match.open && match.closeTime.seconds > Date.now() / 1000;
 }
 
-const PickemSwiss = () => {
-  const [activeMatches, setActiveMatches] = useState<
-    { matchId: number; team1Id: string; team2Id: string; category: string; points: string; closeTime: any, open: boolean, winner: string, votes: {team1Votes: number, totalVotes: number} }[]
-  >([]);
+const PickemBracket = () => {
+  const [activeMatches, setActiveMatches] = useState<BracketMatchData[]>([]);
   const [userScore, setUserScore] = useState<number>(0)
-  const [userPicks, setUserPicks] = useState<{ [key: number]: string }>({});
+  const [userBracketPicks, setUserBracketPicks] = useState<{ [key: number]: string }>({});
   const [teams, setTeams] = useState<{[key: string]: { name: string, colour: string, teamLogo: string }}>({});
   const [userDiscordId, setDiscordId] = useState<string | null>(null);
 
   useEffect(() => {
-    const matchesDocRef = doc(db, 'matches', 'matchData');
+    const matchesDocRef = doc(db, 'matches', 'bracketMatches');
     const unsubscribeActiveMatches = onSnapshot(matchesDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const matchesData = docSnapshot.data();
         
-        let matchList = Object.keys(matchesData).map((id) => ({
-          matchId: matchesData[id].matchId,
-          team1Id: matchesData[id].team1Id,
-          team2Id: matchesData[id].team2Id,
-          category: matchesData[id].category,
+        let matchList: BracketMatchData[] = Object.keys(matchesData).map((id) => ({
+          matchId: Number(id),
           points: matchesData[id].points,
-          closeTime: matchesData[id].closeTime,
-          open: matchesData[id].open,
+          team1Id: matchesData[id].teamId1,
+          team2Id: matchesData[id].teamId2,
           winner: matchesData[id].winner,
-          votes: (matchesData[id].votes === undefined ? {team1Votes: 0, totalVotes: 0} : matchesData[id].votes)
         }));
-
-        matchList = matchList.sort((a, b) => a.matchId - b.matchId);
-        matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
-        // matchList = matchList.filter(isOpen);
-
         setActiveMatches(matchList);
       }
     }, (error) => {
@@ -52,8 +43,8 @@ const PickemSwiss = () => {
 
     const unsubscribeUserPicks = onSnapshot(doc(db, 'users', (auth.currentUser as User).uid), (docSnapshot) => {
       if (docSnapshot.exists()) {
-        const picks = docSnapshot.data().picks;
-        setUserPicks(picks);
+        const picks = docSnapshot.data().bracketPickems || {};
+        setUserBracketPicks(picks);
         setUserScore(docSnapshot.data().score);
 
         const discordId = docSnapshot.data().discordName;
@@ -83,25 +74,10 @@ const PickemSwiss = () => {
       unsubscribeActiveMatches();
       unsubscribeUserPicks();
       unsubscribeTeams();
-
-      // console.log("refreshing and rereading db!")
     };
   }, [db]);
 
-  const handlePick = async (matchId: number, teamId: string) => {
-    const match = activeMatches.find((m) => m.matchId === matchId);
-    if (!match || !isOpen(match)) {
-      return;
-    } else {
-      const updatedPicks = { ...userPicks, [matchId]: teamId };
-      const userDocRef = doc(db, 'users', (auth.currentUser as User).uid);
-      await updateDoc(userDocRef, {
-        picks: updatedPicks,
-      });
-      setUserPicks(updatedPicks); // Optimistic UI update
-    }
-  };
-
+  console.log(activeMatches)
   return (
     <div style={{ width: "100vw", margin: "auto" }} className="text-colour">
       <DiscordAlert discordId={userDiscordId} />
@@ -115,21 +91,13 @@ const PickemSwiss = () => {
           <div><Button variant="info" size="lg" active disabled>Points: {userScore}</Button></div>
         </div>
       </div>
-      <div style={{display: "flex", justifyContent: "center"}}><h2>Swiss Pickems</h2></div>
+      <div style={{display: "flex", justifyContent: "center"}}><h2>Bracket Stage Pickems</h2></div>
 
       <div style={{ marginLeft: "10vw", marginRight: "10vw" }}>
-        {activeMatches.map((match) => (
-            <PickemComponent
-              key={match.matchId}
-              match={match}
-              userPick={userPicks[match.matchId] || ''}
-              teams={teams}
-              handlePick={handlePick}
-            />
-          ))}
+        <BracketComponent teams={teams} matches={activeMatches} picks={userBracketPicks}/>
       </div>
     </div>
   );
 };
 
-export default PickemSwiss;
+export default PickemBracket;

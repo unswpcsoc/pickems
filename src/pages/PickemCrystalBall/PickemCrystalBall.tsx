@@ -91,7 +91,6 @@ const PickemCrystalBall = () => {
   return (
     <div style={{ width: "100vw", margin: "auto" }} className="text-colour">
       <DiscordAlert discordId={userDiscordId} />
-      <br/>
 
       <div className="flex-container" style={{ display: "flex", alignItems: "baseline", marginLeft: "10vw", marginRight: "10vw"}}>
         <div style={{textAlign: "left", flex: "1 1 0px", width:"0"}}>

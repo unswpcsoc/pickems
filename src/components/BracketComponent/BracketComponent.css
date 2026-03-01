@@ -1,0 +1,199 @@
+/* body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+} */
+
+.bracket-container {
+  /* padding: 40px; */
+  /* margin-bottom: 100px; */
+}
+
+.bracket {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  margin-top: 40px;
+}
+
+.type-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1e293b;
+  border-radius: 12px;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 14px;
+}
+
+.bracket {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 150px;
+  margin-top: 40px;
+}
+
+/* left col: semis */
+.bracket > .round:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 400px; /* controls spacing between semis */
+  width: 250px;
+}
+
+/* right col: (finals + losers) */
+.bracket > .round:first-child {
+  position: relative;
+}
+
+.bracket > .round:last-child {
+  position: relative;
+  width: 250px;
+}
+
+/* Container for finals/loser */
+.round-finals {
+  position: relative;
+  height: 400px; /* must match left column height */
+  /* margin-bottom: 300px; */
+}
+
+/* Finals div formatting */
+.round-finals > .match:first-child {
+  position: relative;
+  top: 23%;
+  /* transform: translateY(0%);  FIGURE OUT A NEW SOLN TO GET CSS NICELY */
+  width: 100%;
+}
+
+/* losers final div formatting */
+.round-finals > .match:last-child {
+  position: absolute;
+  top: calc(10% + 50px);
+  width: 100%;
+  margin-top: 200px;
+}
+
+.match {
+  position: relative;
+  background: #1e293b;
+  /* padding: 15px; */
+  border-radius: 8px;
+  margin: 20px 0;
+  min-width: 200px;
+}
+
+.teamBrackets {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 70px;
+  padding: 0px !important;
+  margin: 0px 0 !important;
+  background: #334155;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.teamBrackets:hover {
+  background: #475569;
+}
+
+.teamBrackets-image {
+  max-width: 35px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.selected {
+  border: 4px solid #e2e2e2 !important;
+  font-weight: bold;
+}
+
+.result-icon {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.result-icon img {
+  width: 32px;
+  height: auto;
+  margin-right: 12px;
+}
+
+.placeholder {
+  padding: 10px;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.results {
+  margin-top: 40px;
+}
+
+.submission-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 120px;
+}
+
+.submission-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #0026ff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  
+}
+
+.submission-button:hover {
+  background: #2becdc;
+}
+
+/* horizontal line from semi to middle */
+.bracket > .round:first-child .match::after {
+  content: "";
+  position: absolute;
+  right: -75px;        /* adjust based on gap */
+  top: 50%;
+  width: 75px;
+  height: 2px;
+  background: white;
+}
+
+/* vertical line connecting semi lines */
+.bracket > .round:first-child::after {
+  content: "";
+  position: absolute;
+  right: -75px;
+  top: 36%;
+  height: 44.5%;
+  width: 2px;
+  background: white;
+}
+
+.round-finals > .match:first-child::before {
+  content: "";
+  position: absolute;
+  left: -75px;
+  top: 50%;
+  width: 75px;
+  height: 2px;
+  background: white;
+}

@@ -6,6 +6,7 @@ export {default as Leaderboard} from "./Leaderboard/Leaderboard";
 export {default as PickemMenu} from "./PickemMenu/PickemMenu";
 export {default as PickemCrystalBall} from "./PickemCrystalBall/PickemCrystalBall";
 export {default as PickemSwiss} from "./PickemSwiss/PickemSwiss";
+export {default as PickemBracket} from "./PickemBracket/PickemBracket";
 export {default as InfoAndPrize} from "./Info/Info";
 export {default as Signup} from "./Signup/Signup";
 export {default as Login} from "./Login/Login";

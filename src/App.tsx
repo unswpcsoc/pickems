@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { auth } from './firebase/index';
 import { getIdTokenResult, onAuthStateChanged } from "firebase/auth";
-import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, PickemMenu, Leaderboard, InfoAndPrize, Brackets, PickemCrystalBall, PickemSwiss } from './pages';
+import { Home, Admin, User, Signup, Login, PasswordReset, PasswordForgot, PickemMenu, Leaderboard, InfoAndPrize, Brackets, PickemCrystalBall, PickemSwiss, PickemBracket } from './pages';
 import { Header, Footer, EmailVerificationAlert } from './components';
 
 function App() {
@@ -91,7 +91,7 @@ function App() {
           /> */}
           <Route
             path="/pickems/brackets"
-            element={(user && user.emailVerified) ? <PickemCrystalBall /> : <Login /> }
+            element={(user && user.emailVerified) ? <PickemBracket /> : <Login /> }
           />
           <Route
             path="/leaderboard"

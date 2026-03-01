@@ -5,7 +5,7 @@ import { collection, query, getDocs, Timestamp, doc, onSnapshot } from "firebase
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { teamCard, TeamBuilder, MatchBuilder, CrystalBallCreator } from "../../components"
+import { teamCard, TeamBuilder, MatchBuilder, CrystalBallCreator, MatchBracketDisplay } from "../../components"
 import { createTheme } from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
 
@@ -15,7 +15,7 @@ import { MatchDisplay } from "../../components/index";
 import { InpersonLeaderboard, RemoteLeaderboard } from "../../components/index";
 import { updateLeaderboard } from "../../firebase/leaderboard";
 import CrystalBallEditor from '../../components/Admin/CrystalBallEditor/CrystalBallEditor';
-import { CategoryData, SwissMatchData, TeamData } from '../../defines';
+import { BracketMatchData, CategoryData, SwissMatchData, TeamData } from '../../defines';
 
 // createTheme('light', {
 //   background: {
@@ -27,9 +27,10 @@ import { CategoryData, SwissMatchData, TeamData } from '../../defines';
 const Admin = () => {
   // States for team and match display
   const [teams, setTeams] = useState<Map<string, TeamData>>(new Map());
-  const [matches, setMatches] = useState<SwissMatchData[]>([]); // Matches state
+  const [matches, setMatches] = useState<SwissMatchData[]>([]);
+  const [bracketMatches, setBracketMatches] = useState<BracketMatchData[]>([]);
 
-    // States for categories and category pickems
+  // States for categories and category pickems
   const [categories, setCategories] = useState<Map<string, CategoryData>>(new Map());
   // First get categories, from each category get their respecitve pickems (multiple files 0 -> n).
   // all these pickems should be in crystalPickems.
@@ -77,6 +78,23 @@ const Admin = () => {
 
         matchList = matchList.sort((a, b) => a.closeTime.seconds - b.closeTime.seconds);
         setMatches(matchList);
+      }
+    }, (error) => {
+      console.error("Error listening to matches: ", error);
+    });
+
+    const fetchBracketPickems = onSnapshot(doc(db, 'matches', 'bracketMatches'), (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const matchesData = docSnapshot.data();
+        
+        let matchList: BracketMatchData[] = Object.keys(matchesData).map((id) => ({
+          matchId: Number(id),
+          points: matchesData[id].points,
+          team1Id: matchesData[id].teamId1,
+          team2Id: matchesData[id].teamId2,
+          winner: matchesData[id].winner,
+        }));
+        setBracketMatches(matchList);
       }
     }, (error) => {
       console.error("Error listening to matches: ", error);
@@ -136,6 +154,7 @@ const Admin = () => {
     return () => {
       fetchTeams();
       fetchMatches();
+      fetchBracketPickems();
       fetchCategories();
       inPersonUnsubscribe();
       remoteUnsubscribe();
@@ -174,17 +193,21 @@ const Admin = () => {
             </Tab>
           </Tabs>
         </Tab>
-        <Tab eventKey="brackets" title="Brackets">
+        <Tab eventKey="brackets" title="Matches">
           <Tabs
             defaultActiveKey="match"
             id="uncontrolled-tab-example"
             className="mb-3"
             data-bs-theme="light"
           >
-            <Tab eventKey="match" title="Matches">
+            <Tab eventKey="swiss" title="Swiss Matches">
               <MatchBuilder db={db} teamOptions={teams}/>
 
               <MatchDisplay teams={teams} matches={matches} />
+            </Tab>
+
+            <Tab eventKey="bracket" title="Bracket Matches">
+              <MatchBracketDisplay teams={teams} matches={bracketMatches} />
             </Tab>
 
             <Tab eventKey="teams" title="Teams">

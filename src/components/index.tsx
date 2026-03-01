@@ -15,7 +15,10 @@ export {default as CrystalBallCreator} from "./Admin/CrystalBallCreator/CrystalB
 export {default as FullLeaderboard} from "./Leaderboard/FullLeaderboard";
 export {default as RemoteLeaderboard} from "./Leaderboard/RemoteLeaderboard";
 export {default as InpersonLeaderboard} from "./Leaderboard/InpersonLeaderboard";
-export {default as MatchDisplay} from "./MatchDisplay/MatchDisplay";
+export {default as MatchDisplay} from "./Admin/MatchDisplay/MatchDisplay";
+export {default as MatchBracketDisplay} from "./Admin/MatchBracketDisplay/MatchBracketDisplay";
+
+export {default as BracketComponent} from "./BracketComponent/BracketComponent";
 
 export {default as TournamentStanding} from "./TournamentStanding/TournamentStanding";
 

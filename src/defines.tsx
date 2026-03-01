@@ -35,6 +35,14 @@ export type SwissMatchData = {
   };
 }
 
+export type BracketMatchData = {
+  matchId: number;
+  team1Id: string;
+  team2Id: string;
+  points: number;
+  winner: string
+}
+
 export type CategoryData = {
   name: string; // This is the name of the category
   items: Map<string, {

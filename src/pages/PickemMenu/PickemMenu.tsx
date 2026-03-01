@@ -42,7 +42,6 @@ const PickemMenu = () => {
   return (
     <div style={{ width: "100vw", margin: "auto" }} className="text-colour">
       <DiscordAlert discordId={userDiscordId} />
-      <br/>
 
       <div className="flex-container" style={{ display: "flex", alignItems: "baseline", marginLeft: "10vw", marginRight: "10vw"}}>
         <div style={{textAlign: "left", flex: "1 1 0px", width:"0"}}>
@@ -60,7 +59,7 @@ const PickemMenu = () => {
           <div onClick={handleClick("/pickems/crystalball")} className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
             <div className='centred-text'>Crystal Ball</div>
-            <div className='bottom-centred-text'>Open till 21st of February 10:30am</div>
+            <div className='bottom-centred-text'>Open till 10th of March 10am!</div>
           </div>
           <div className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
@@ -70,7 +69,7 @@ const PickemMenu = () => {
           <div onClick={handleClick("/pickems/brackets")} className='pick-button-container'>
             <img className='pick-button-image' src={opStock} />
             <div className='centred-text'>Bracket Stage</div>
-            <div className='bottom-centred-text'>Opening soon!! </div>
+            <div className='bottom-centred-text'>Open till 10th of March 10am!</div>
           </div>
         </div>
 
