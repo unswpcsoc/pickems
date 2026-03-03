@@ -24,7 +24,7 @@ const PickemCrystalBall = () => {
         setUserCrystalBall(crystalBall);
         setUserScore(docSnapshot.data().score);
 
-        const discordId = docSnapshot.data().discordName;
+        const discordId = docSnapshot.data().discordUsername;
         discordId === "" ? setDiscordId(null) : setDiscordId(discordId);
       }
     });
