@@ -64,7 +64,7 @@ function App() {
       </header>
       {user && (<EmailVerificationAlert verified={user.emailVerified as boolean} />)}
 
-      <main style={{ minHeight: '100vh' }}>  {/* Ensure the main content area is at least 100vh */}
+      <main style={{ minHeight: '80vh' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/InfoAndPrize" element={<InfoAndPrize />} />

@@ -100,8 +100,9 @@ const BracketComponent = ({teams, matches, picks}: BracketComponentProp) => {
   }
 
   return (
+    <>
+    <p style={{fontSize: "20px", textAlign: "center", marginBottom: "0px"}}>{message}</p>
     <div className="bracket-container">
-      <p style={{fontSize: "20px", textAlign: "center", marginBottom: "0px"}}>{message}</p>
       <div className="bracket">
 
         {/* Semi Finals */}
@@ -217,13 +218,13 @@ const BracketComponent = ({teams, matches, picks}: BracketComponentProp) => {
           
         </div>
       </div>
-      
-      <div className="submission-button-container">
-        <button className="submission-button" onClick={submitPickem}>
-          Submit Pickems
-        </button>
-      </div>
     </div>
+    <div className="submission-button-container">
+      <button className="submission-button" onClick={submitPickem}>
+        Submit Pickems
+      </button>
+    </div>
+    </>
   );
 }
 
