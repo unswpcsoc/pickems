@@ -19,6 +19,7 @@
 @media (max-width: 816px) {
   .bracket-container {
     justify-content: flex-start;
+    overflow-y: scroll;
   }
 }
 
